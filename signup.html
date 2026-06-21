@@ -41,109 +41,82 @@
             cursor: pointer; font-family: 'Cairo', sans-serif; margin-top: 5px;
         }
         .btn:hover { background: #b20710; }
-        .btn-outline { background: #333; }
         #msg { margin-top: 12px; font-size: 13px; }
         .link { margin-top: 18px; color: #888; font-size: 13px; }
         .link a { color: #E50914; text-decoration: none; font-weight: 600; }
-        .code-display {
-            background: #0a0a0a; border: 1px solid #E50914; border-radius: 10px;
-            padding: 18px; margin: 15px 0;
+        .info-box {
+            background: #1a1a1a; border: 1px solid #333; border-radius: 8px;
+            padding: 12px; margin-bottom: 15px; text-align: right; font-size: 12px; color: #aaa;
         }
-        .code-display .code {
-            font-size: 32px; font-weight: 900; color: #46d369;
-            letter-spacing: 8px; font-family: monospace;
-        }
-        .step-indicator {
-            display: flex; justify-content: center; gap: 10px; margin-bottom: 20px;
-        }
-        .step-dot {
-            width: 12px; height: 12px; border-radius: 50%; background: #333;
-        }
-        .step-dot.active { background: #E50914; }
-        .hidden { display: none; }
+        .info-box strong { color: #E50914; }
     </style>
 </head>
 <body>
 
 <div class="form-box">
-    <div class="step-indicator">
-        <div class="step-dot active" id="dot1"></div>
-        <div class="step-dot" id="dot2"></div>
-        <div class="step-dot" id="dot3"></div>
-    </div>
-
     <h2>📝 إنشاء حساب</h2>
-    <p id="stepTitle">الخطوة 1 : معلومات الحساب</p>
-
-    <!-- STEP 1 -->
-    <div id="step1">
-        <label>البريد الإلكتروني</label>
-        <input type="email" id="email" placeholder="exemple@gmail.com">
-        
-        <label>كلمة المرور</label>
-        <input type="password" id="password" placeholder="كلمة المرور">
-        
-        <button class="btn" onclick="step1()">التالي ←</button>
-        <p id="msg1" style="margin-top:10px; font-size:13px;"></p>
+    <p>سجل مجاناً وابدأ</p>
+    
+    <div class="info-box">
+        <strong>📧 مسموح فقط :</strong> Gmail (@gmail.com) • Outlook (@outlook.com, @hotmail.com)
     </div>
 
-    <!-- STEP 2 -->
-    <div id="step2" class="hidden">
-        <p style="color:#ccc; margin-bottom:10px;">تم إرسال رمز التحقق إلى :</p>
-        <p style="color:#E50914; font-weight:700;" id="emailDisplay"></p>
-        
-        <div class="code-display">
-            <p style="color:#888; font-size:12px; margin-bottom:8px;">رمز التحقق (انسخه) :</p>
-            <div class="code" id="verificationCode"></div>
-        </div>
-        
-        <p style="color:#888; font-size:11px; margin-bottom:15px;">
-            ⚠️ في النسخة النهائية، سيتم إرسال الرمز إلى بريدك الإلكتروني
-        </p>
-        
-        <label>أدخل رمز التحقق</label>
-        <input type="text" id="codeInput" placeholder="أدخل الرمز" maxlength="6">
-        
-        <button class="btn" onclick="step2()">تحقق وإنشاء الحساب</button>
-        <p id="msg2" style="margin-top:10px; font-size:13px;"></p>
-        
-        <button class="btn btn-outline" onclick="goBack()" style="margin-top:8px;">↩ الرجوع</button>
-    </div>
-
-    <!-- STEP 3 -->
-    <div id="step3" class="hidden">
-        <div class="code-display">
-            <p style="color:#46d369; font-size:18px; font-weight:700;">✅ تم إنشاء الحساب !</p>
-            <p style="color:#ccc; margin-top:10px;">جاري تحويلك إلى لوحة التحكم...</p>
-        </div>
-    </div>
+    <label>البريد الإلكتروني</label>
+    <input type="email" id="email" placeholder="exemple@gmail.com">
+    
+    <label>كلمة المرور</label>
+    <input type="password" id="password" placeholder="كلمة المرور (6 أحرف على الأقل)">
+    
+    <button class="btn" onclick="signup()">إنشاء الحساب</button>
+    <p id="msg"></p>
     
     <p class="link">عندك حساب ؟ <a href="login.html">سجل الدخول</a></p>
 </div>
 
+<script src="https://www.gstatic.com/firebasejs/10.1.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.1.0/firebase-auth-compat.js"></script>
+
 <script>
-// Bloquer les emails temporaires
-const BLOCKED_DOMAINS = [
-    'mohmal.com', 'mohmal.fr', 'temp-mail.org', 'tempmail.com',
-    '10minutemail.com', 'guerrillamail.com', 'mailinator.com',
-    'yopmail.com', 'throwaway.email', 'trashmail.com',
-    'sharklasers.com', 'spam4.me', 'tempr.email',
-    'discard.email', 'disposable.com', 'maildrop.cc'
-];
+const firebaseConfig = {
+    apiKey: "AIzaSyAHXk3N1xEhDMu5HPq1-u3-Z3hJAeJkFRU",
+    authDomain: "premium-zone-5f17d.firebaseapp.com",
+    projectId: "premium-zone-5f17d",
+    storageBucket: "premium-zone-5f17d.firebasestorage.app",
+    messagingSenderId: "402341593844",
+    appId: "1:402341593844:web:e740eebf719fd6b54d54a1",
+    measurementId: "G-3D7WMPFGZM"
+};
 
-let generatedCode = '';
-let userEmail = '';
-let userPassword = '';
+firebase.initializeApp(firebaseConfig);
+const auth = firebase.auth();
 
-function isBlockedDomain(email) {
+const ALLOWED_DOMAINS = ['gmail.com', 'outlook.com', 'hotmail.com'];
+
+const BLOCKED_DOMAINS = ['mohmal.com', 'mohmal.fr', 'temp-mail.org', 'tempmail.com', '10minutemail.com', 'guerrillamail.com', 'mailinator.com', 'yopmail.com', 'throwaway.email', 'trashmail.com', 'sharklasers.com', 'spam4.me', 'tempr.email', 'discard.email', 'disposable.com', 'maildrop.cc', 'emailinbo.live', 'emailnax.com', 'emailtemp.com', 'tempmail.net', 'tmpmail.org', 'dispostable.com', 'fakeinbox.com', 'mailnesia.com', 'spambox.us', 'getnada.com', 'inboxalias.com', 'moakt.com', 'dropmail.me', '0wnd.net', '0wnd.org'];
+
+function isBlocked(email) {
     const domain = email.split('@')[1]?.toLowerCase();
     return BLOCKED_DOMAINS.some(d => domain?.includes(d));
 }
 
-function step1() {
+function isAllowed(email) {
+    const domain = email.split('@')[1]?.toLowerCase();
+    return ALLOWED_DOMAINS.includes(domain);
+}
+
+function saveUser(email) {
+    localStorage.setItem('currentUser', email);
+    let users = JSON.parse(localStorage.getItem('users') || '{}');
+    if (!users[email]) {
+        users[email] = { password: '', credits: 0, history: [] };
+        localStorage.setItem('users', JSON.stringify(users));
+    }
+}
+
+function signup() {
     const email = document.getElementById('email').value.trim();
     const password = document.getElementById('password').value.trim();
-    const msg = document.getElementById('msg1');
+    const msg = document.getElementById('msg');
     
     if (!email || !password) {
         msg.style.color = '#e87c03';
@@ -151,80 +124,40 @@ function step1() {
         return;
     }
     
-    if (!email.includes('@') || !email.includes('.')) {
+    if (password.length < 6) {
         msg.style.color = '#e87c03';
-        msg.textContent = '❌ بريد إلكتروني غير صالح';
+        msg.textContent = '❌ كلمة المرور قصيرة (6 أحرف)';
         return;
     }
     
-    if (isBlockedDomain(email)) {
+    if (isBlocked(email)) {
         msg.style.color = '#e87c03';
-        msg.textContent = '❌ البريد المؤقت غير مسموح به. استخدم بريد حقيقي.';
+        msg.textContent = '❌ البريد المؤقت غير مسموح';
         return;
     }
     
-    if (password.length < 4) {
+    if (!isAllowed(email)) {
         msg.style.color = '#e87c03';
-        msg.textContent = '❌ كلمة المرور قصيرة جداً (4 أحرف على الأقل)';
+        msg.textContent = '❌ فقط Gmail أو Outlook مسموح';
         return;
     }
     
-    let users = JSON.parse(localStorage.getItem('users') || '{}');
+    msg.style.color = '#f0ad4e';
+    msg.textContent = '⏳ جاري إنشاء الحساب...';
     
-    if (users[email]) {
-        msg.style.color = '#e87c03';
-        msg.textContent = '❌ هذا البريد مسجل بالفعل';
-        return;
-    }
-    
-    // Générer code de vérification
-    generatedCode = Math.floor(100000 + Math.random() * 900000).toString();
-    userEmail = email;
-    userPassword = password;
-    
-    document.getElementById('emailDisplay').textContent = email;
-    document.getElementById('verificationCode').textContent = generatedCode;
-    
-    document.getElementById('step1').classList.add('hidden');
-    document.getElementById('step2').classList.remove('hidden');
-    document.getElementById('dot1').classList.remove('active');
-    document.getElementById('dot2').classList.add('active');
-    document.getElementById('stepTitle').textContent = 'الخطوة 2 : تحقق من البريد';
-}
-
-function step2() {
-    const codeInput = document.getElementById('codeInput').value.trim();
-    const msg = document.getElementById('msg2');
-    
-    if (codeInput !== generatedCode) {
-        msg.style.color = '#e87c03';
-        msg.textContent = '❌ رمز التحقق غير صحيح';
-        return;
-    }
-    
-    // Créer le compte
-    let users = JSON.parse(localStorage.getItem('users') || '{}');
-    users[userEmail] = { password: userPassword, credits: 0, history: [] };
-    localStorage.setItem('users', JSON.stringify(users));
-    localStorage.setItem('currentUser', userEmail);
-    
-    document.getElementById('step2').classList.add('hidden');
-    document.getElementById('step3').classList.remove('hidden');
-    document.getElementById('dot2').classList.remove('active');
-    document.getElementById('dot3').classList.add('active');
-    document.getElementById('stepTitle').textContent = 'الخطوة 3 : تم بنجاح';
-    
-    setTimeout(() => {
-        window.location.href = 'dashboard.html';
-    }, 2000);
-}
-
-function goBack() {
-    document.getElementById('step2').classList.add('hidden');
-    document.getElementById('step1').classList.remove('hidden');
-    document.getElementById('dot2').classList.remove('active');
-    document.getElementById('dot1').classList.add('active');
-    document.getElementById('stepTitle').textContent = 'الخطوة 1 : معلومات الحساب';
+    auth.createUserWithEmailAndPassword(email, password)
+        .then(() => {
+            saveUser(email);
+            window.location.href = 'dashboard.html';
+        })
+        .catch((error) => {
+            msg.style.color = '#e87c03';
+            if (error.code === 'auth/email-already-in-use') {
+                msg.textContent = '❌ هذا البريد مسجل بالفعل';
+            } else {
+                msg.textContent = '❌ ' + error.message;
+            }
+        });
 }
 </script>
 
