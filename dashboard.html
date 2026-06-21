@@ -39,24 +39,34 @@
         /* Header */
         .dash-header {
             text-align: center;
-            margin-bottom: 25px;
+            margin-bottom: 30px;
         }
         
         .dash-header .logo {
-            font-size: 36px;
+            font-size: 40px;
             font-weight: 900;
             color: var(--red);
-            letter-spacing: 4px;
+            letter-spacing: 6px;
+            margin-bottom: 2px;
+        }
+        
+        .dash-header .brand {
+            font-size: 13px;
+            color: var(--gold);
+            font-weight: 700;
+            letter-spacing: 3px;
+            text-transform: uppercase;
         }
         
         .dash-header .welcome {
             color: var(--text2);
-            font-size: 13px;
-            margin-top: 5px;
+            font-size: 14px;
+            margin-top: 8px;
         }
         
         .dash-header .welcome strong {
             color: var(--text);
+            font-size: 16px;
         }
         
         /* Balance */
@@ -79,7 +89,19 @@
             width: 100px;
             height: 100px;
             background: var(--red);
-            opacity: 0.1;
+            opacity: 0.08;
+            border-radius: 50%;
+        }
+        
+        .balance-card::after {
+            content: '';
+            position: absolute;
+            bottom: -20px;
+            left: -20px;
+            width: 70px;
+            height: 70px;
+            background: var(--gold);
+            opacity: 0.08;
             border-radius: 50%;
         }
         
@@ -89,6 +111,7 @@
             text-transform: uppercase;
             letter-spacing: 3px;
             margin-bottom: 10px;
+            position: relative;
         }
         
         .balance-amount {
@@ -96,13 +119,14 @@
             font-weight: 900;
             color: var(--green);
             line-height: 1;
+            position: relative;
         }
         
-        .balance-amount span {
-            font-size: 18px;
+        .balance-amount .currency {
+            font-size: 20px;
             color: var(--text2);
             font-weight: 400;
-            margin-right: 5px;
+            margin-left: 5px;
         }
         
         /* Actions */
@@ -110,7 +134,7 @@
             display: grid;
             grid-template-columns: 1fr 1fr;
             gap: 10px;
-            margin-bottom: 20px;
+            margin-bottom: 12px;
         }
         
         .action-btn {
@@ -218,6 +242,53 @@
             font-size: 14px;
         }
         
+        /* Contact admin */
+        .contact-card {
+            background: var(--card);
+            border: 1px solid #2a2a2a;
+            border-radius: 12px;
+            padding: 14px 18px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 15px;
+            transition: 0.2s;
+        }
+        
+        .contact-card:hover {
+            border-color: #e87c03;
+        }
+        
+        .contact-card .contact-icon {
+            font-size: 24px;
+        }
+        
+        .contact-card .contact-text {
+            flex: 1;
+            font-size: 12px;
+            color: var(--text2);
+        }
+        
+        .contact-card .contact-text strong {
+            color: #e87c03;
+            display: block;
+            font-size: 13px;
+        }
+        
+        .contact-card .btn-contact {
+            padding: 8px 16px;
+            background: #e87c03;
+            color: #000;
+            border: none;
+            border-radius: 8px;
+            font-size: 12px;
+            font-weight: 700;
+            cursor: pointer;
+            font-family: 'Cairo', sans-serif;
+            text-decoration: none;
+            white-space: nowrap;
+        }
+        
         /* Bottom nav */
         .bottom-nav {
             display: flex;
@@ -250,13 +321,14 @@
     <!-- Header -->
     <div class="dash-header">
         <div class="logo">PREMIUM</div>
+        <div class="brand">👑 PREMIUM ZONE 👑</div>
         <p class="welcome">مرحباً <strong id="userName">...</strong> 👋</p>
     </div>
     
     <!-- Balance -->
     <div class="balance-card">
         <div class="balance-label">💎 رصيدك</div>
-        <div class="balance-amount" id="solde">0</div>
+        <div class="balance-amount"><span class="currency">🪙</span><span id="solde">0</span></div>
         <div class="balance-label" style="margin-top:5px;">Crédit</div>
     </div>
     
@@ -272,6 +344,16 @@
             <div class="label">كود Netflix</div>
             <div class="sublabel">استخدم 1 crédit</div>
         </div>
+    </div>
+    
+    <!-- Contact Admin -->
+    <div class="contact-card">
+        <div class="contact-icon">⚠️</div>
+        <div class="contact-text">
+            <strong>هل تواجه مشكلة ؟</strong>
+            تواصل مع الإدارة للمساعدة
+        </div>
+        <a href="https://www.facebook.com/tonprofil" target="_blank" class="btn-contact">💬 تواصل</a>
     </div>
     
     <!-- Code Result -->
