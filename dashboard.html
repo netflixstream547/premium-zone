@@ -36,7 +36,6 @@
             max-width: 480px;
         }
         
-        /* Header */
         .dash-header {
             text-align: center;
             margin-bottom: 30px;
@@ -69,7 +68,6 @@
             font-size: 16px;
         }
         
-        /* Balance */
         .balance-card {
             background: var(--card);
             border: 1px solid var(--border);
@@ -129,7 +127,6 @@
             margin-left: 5px;
         }
         
-        /* Actions */
         .actions-grid {
             display: grid;
             grid-template-columns: 1fr 1fr;
@@ -190,7 +187,6 @@
             transform: translateY(-2px);
         }
         
-        /* Code result */
         .code-result {
             background: var(--card);
             border: 1px solid var(--green);
@@ -242,7 +238,6 @@
             font-size: 14px;
         }
         
-        /* Contact admin */
         .contact-card {
             background: var(--card);
             border: 1px solid #2a2a2a;
@@ -289,7 +284,6 @@
             white-space: nowrap;
         }
         
-        /* Bottom nav */
         .bottom-nav {
             display: flex;
             justify-content: center;
@@ -305,7 +299,6 @@
         }
         
         .bottom-nav a:hover { color: var(--red); }
-        
         .bottom-nav .separator { color: #333; }
         
         @media (max-width: 400px) {
@@ -318,21 +311,18 @@
 
 <div class="dashboard">
     
-    <!-- Header -->
     <div class="dash-header">
         <div class="logo">PREMIUM</div>
         <div class="brand">👑 PREMIUM ZONE 👑</div>
         <p class="welcome">مرحباً <strong id="userName">...</strong> 👋</p>
     </div>
     
-    <!-- Balance -->
     <div class="balance-card">
         <div class="balance-label">💎 رصيدك</div>
         <div class="balance-amount"><span class="currency">🪙</span><span id="solde">0</span></div>
-        <div class="balance-label" style="margin-top:5px;">Crédit</div>
+        <div class="balance-label" style="margin-top:5px;">Crédit | سعر الكود : <span id="codePriceDisplay">1</span> 🪙</div>
     </div>
     
-    <!-- Actions -->
     <div class="actions-grid">
         <a href="earn.html" class="action-btn">
             <div class="icon">🎁</div>
@@ -342,11 +332,10 @@
         <div class="action-btn" onclick="getCode()">
             <div class="icon">🎬</div>
             <div class="label">كود Netflix</div>
-            <div class="sublabel">استخدم 1 crédit</div>
+            <div class="sublabel">يستهلك <span id="btnCodePrice">1</span> 🪙</div>
         </div>
     </div>
     
-    <!-- Contact Admin -->
     <div class="contact-card">
         <div class="contact-icon">⚠️</div>
         <div class="contact-text">
@@ -356,10 +345,8 @@
         <a href="https://www.facebook.com/tonprofil" target="_blank" class="btn-contact">💬 تواصل</a>
     </div>
     
-    <!-- Code Result -->
     <div id="codeResult"></div>
     
-    <!-- Bottom Nav -->
     <div class="bottom-nav">
         <a href="index.html">الرئيسية</a>
         <span class="separator">|</span>
@@ -372,6 +359,7 @@
 
 <script>
 const API_URL = 'https://netflix-server-l0ci.onrender.com';
+let codePrice = 1;
 
 function loadDashboard() {
     const email = localStorage.getItem('currentUser');
@@ -383,7 +371,12 @@ function loadDashboard() {
     const user = users[email];
     if (!user) { window.location.href = 'login.html'; return; }
     
+    let config = JSON.parse(localStorage.getItem('siteConfig') || '{}');
+    codePrice = config.codePrice || 1;
+    
     document.getElementById('solde').textContent = user.credits || 0;
+    document.getElementById('codePriceDisplay').textContent = codePrice;
+    document.getElementById('btnCodePrice').textContent = codePrice;
 }
 
 async function getCode() {
@@ -391,9 +384,9 @@ async function getCode() {
     let users = JSON.parse(localStorage.getItem('users') || '{}');
     const user = users[email];
     
-    if (!user || user.credits < 1) {
+    if (!user || user.credits < codePrice) {
         document.getElementById('codeResult').innerHTML = 
-            '<p style="text-align:center; color:#e87c03; margin-top:15px;">❌ لا يوجد لديك crédits كافية. <a href="earn.html" style="color:#E50914;">اكسب المزيد</a></p>';
+            '<p style="text-align:center; color:#e87c03; margin-top:15px;">❌ لا يوجد لديك crédits كافية. تحتاج ' + codePrice + ' 🪙. <a href="earn.html" style="color:#E50914;">اكسب المزيد</a></p>';
         return;
     }
     
@@ -405,7 +398,7 @@ async function getCode() {
         const data = await resp.json();
         
         if (data.success) {
-            user.credits -= 1;
+            user.credits -= codePrice;
             user.history = user.history || [];
             user.history.push({ code: data.code, date: new Date().toISOString() });
             users[email] = user;
