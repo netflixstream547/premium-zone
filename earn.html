@@ -6,21 +6,36 @@
     <title>كسب crédits - Premium Zone</title>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Cairo:wght@400;500;600;700;800;900&display=swap');
-        :root { --bg: #000; --card: #0c0c0c; --border: #1a1a1a; --red: #E50914; --green: #46d369; --gold: #FFD700; --blue: #5865F2; --text: #fff; --text2: #888; }
+        
+        :root {
+            --bg: #000;
+            --card: #0c0c0c;
+            --border: #1a1a1a;
+            --red: #E50914;
+            --green: #46d369;
+            --gold: #FFD700;
+            --blue: #5865F2;
+            --text: #fff;
+            --text2: #888;
+        }
+        
         * { margin: 0; padding: 0; box-sizing: border-box; }
         body { background: var(--bg); font-family: 'Cairo', sans-serif; color: var(--text); min-height: 100vh; display: flex; justify-content: center; align-items: center; padding: 20px; }
         .earn-page { width: 100%; max-width: 480px; }
+        
         .page-header { text-align: center; margin-bottom: 30px; }
         .page-header .logo { font-size: 40px; font-weight: 900; color: var(--red); letter-spacing: 5px; }
         .page-header .brand { font-size: 12px; color: var(--gold); font-weight: 700; letter-spacing: 3px; margin-top: 2px; }
         .page-header h2 { font-size: 22px; margin-top: 10px; }
         .page-header p { color: var(--text2); font-size: 13px; margin-top: 3px; }
+        
         .daily-box { background: var(--card); border: 1px solid var(--gold); border-radius: 18px; padding: 25px; text-align: center; margin-bottom: 14px; }
         .daily-box .daily-icon { font-size: 55px; margin-bottom: 10px; }
         .daily-box .daily-title { font-size: 17px; font-weight: 700; margin-bottom: 5px; }
         .daily-box .daily-sub { font-size: 12px; color: var(--text2); margin-bottom: 15px; }
         .btn-daily { width: 100%; padding: 14px; background: var(--gold); color: #000; border: none; border-radius: 12px; font-size: 15px; font-weight: 700; cursor: pointer; font-family: 'Cairo', sans-serif; }
         .btn-daily:disabled { background: #333; color: #888; cursor: not-allowed; }
+        
         .earn-card { background: var(--card); border: 1px solid var(--border); border-radius: 18px; padding: 22px 20px; margin-bottom: 14px; display: flex; align-items: center; gap: 18px; cursor: pointer; transition: 0.2s; }
         .earn-card:hover { border-color: var(--red); transform: translateY(-3px); }
         .earn-card .card-sticker { font-size: 52px; flex-shrink: 0; width: 65px; text-align: center; }
@@ -30,6 +45,7 @@
         .card-badge { padding: 8px 16px; border-radius: 50px; font-size: 14px; font-weight: 700; white-space: nowrap; }
         .badge-green { background: var(--green); color: #000; }
         .badge-gold { background: var(--gold); color: #000; }
+        
         .buy-card { background: linear-gradient(135deg, #0c0c0c, #111); border: 1px solid #2a2a2a; border-radius: 18px; padding: 22px 20px; margin-bottom: 14px; display: flex; align-items: center; gap: 18px; text-decoration: none; color: var(--text); transition: 0.2s; }
         .buy-card:hover { border-color: var(--blue); transform: translateY(-3px); }
         .buy-card .card-sticker { font-size: 52px; flex-shrink: 0; width: 65px; text-align: center; }
@@ -37,24 +53,35 @@
         .buy-card .card-info h4 { font-size: 16px; margin-bottom: 4px; font-weight: 700; }
         .buy-card .card-info p { font-size: 12px; color: var(--text2); }
         .btn-buy { padding: 12px 24px; background: var(--blue); color: #fff; border-radius: 50px; font-size: 14px; font-weight: 700; white-space: nowrap; }
+        
         .ref-box { background: var(--card); border: 1px solid var(--border); border-radius: 16px; padding: 20px; margin-top: 15px; text-align: center; display:none; }
         .ref-box p { font-size: 13px; color: var(--text2); margin-bottom: 10px; }
         .ref-box .ref-link { background: #000; border: 1px solid var(--border); border-radius: 10px; padding: 12px; font-size: 11px; color: var(--text2); word-break: break-all; direction: ltr; margin-bottom: 10px; }
         .btn-copy { padding: 10px 20px; background: var(--blue); color: #fff; border: none; border-radius: 10px; font-size: 13px; font-weight: 700; cursor: pointer; font-family: 'Cairo', sans-serif; }
+        
         .success-popup { position: fixed; top: 20px; left: 50%; transform: translateX(-50%); background: var(--card); border: 2px solid var(--green); border-radius: 14px; padding: 18px 28px; text-align: center; z-index: 999; animation: slideDown 0.4s ease; box-shadow: 0 10px 40px rgba(0,0,0,0.6); }
         @keyframes slideDown { from { opacity: 0; transform: translateX(-50%) translateY(-30px); } to { opacity: 1; transform: translateX(-50%) translateY(0); } }
         .success-popup .popup-icon { font-size: 40px; margin-bottom: 5px; }
         .success-popup .popup-title { font-size: 17px; font-weight: 700; color: var(--green); }
         .success-popup .popup-sub { font-size: 12px; color: var(--text2); margin-top: 3px; }
+        
         .back-link { text-align: center; margin-top: 20px; }
         .back-link a { color: var(--text2); text-decoration: none; font-size: 12px; }
         .back-link a:hover { color: var(--red); }
+        
         @media (max-width: 400px) { .earn-card, .buy-card { flex-direction: column; text-align: center; } .earn-card .card-sticker, .buy-card .card-sticker { width: auto; } }
     </style>
 </head>
 <body>
+
 <div class="earn-page">
-    <div class="page-header"><div class="logo">PREMIUM</div><div class="brand">👑 PREMIUM ZONE</div><h2>🎁 كسب crédits</h2><p>اختر طريقة لكسب crédits</p></div>
+    
+    <div class="page-header">
+        <div class="logo">PREMIUM</div>
+        <div class="brand">👑 PREMIUM ZONE</div>
+        <h2>🎁 كسب crédits</h2>
+        <p>اختر طريقة لكسب crédits</p>
+    </div>
     
     <div class="daily-box">
         <div class="daily-icon">🪙</div>
@@ -63,12 +90,43 @@
         <button class="btn-daily" id="btnDaily" onclick="claimDaily()">🎁 الحصول على crédit مجاني</button>
     </div>
     
-    <div class="earn-card" onclick="watchExternalAd()"><div class="card-sticker">🔗</div><div class="card-info"><h4>مشاهدة إعلان خارجي</h4><p>افتح رابط خارجي واكسب</p></div><div class="card-badge badge-green">+1 🪙</div></div>
-    <div class="earn-card" onclick="showRef()"><div class="card-sticker">👥</div><div class="card-info"><h4>دعوة صديق</h4><p>ادعو أصدقائك واكسب</p></div><div class="card-badge badge-gold">+1 🪙</div></div>
-    <a href="https://www.facebook.com/tonprofil" target="_blank" class="buy-card"><div class="card-sticker">💳</div><div class="card-info"><h4>شراء crédits</h4><p>تواصل مع الإدارة على Facebook</p></div><span class="btn-buy">💬 شراء</span></a>
+    <div class="earn-card" onclick="watchExternalAd()">
+        <div class="card-sticker">🔗</div>
+        <div class="card-info">
+            <h4>مشاهدة إعلان خارجي</h4>
+            <p>افتح رابط خارجي واكسب</p>
+        </div>
+        <div class="card-badge badge-green">+1 🪙</div>
+    </div>
     
-    <div class="ref-box" id="refBox"><p>🔗 رابط الدعوة الخاص بك :</p><div class="ref-link" id="refLink"></div><button class="btn-copy" onclick="copyRef()">📋 نسخ الرابط</button></div>
-    <div class="back-link"><a href="dashboard.html">↩ العودة للوحة التحكم</a></div>
+    <div class="earn-card" onclick="showRef()">
+        <div class="card-sticker">👥</div>
+        <div class="card-info">
+            <h4>دعوة صديق</h4>
+            <p>ادعو أصدقائك واكسب</p>
+        </div>
+        <div class="card-badge badge-gold">+1 🪙</div>
+    </div>
+    
+    <a href="https://www.facebook.com/tonprofil" target="_blank" class="buy-card">
+        <div class="card-sticker">💳</div>
+        <div class="card-info">
+            <h4>شراء crédits</h4>
+            <p>تواصل مع الإدارة على Facebook</p>
+        </div>
+        <span class="btn-buy">💬 شراء</span>
+    </a>
+    
+    <div class="ref-box" id="refBox">
+        <p>🔗 رابط الدعوة الخاص بك :</p>
+        <div class="ref-link" id="refLink"></div>
+        <button class="btn-copy" onclick="copyRef()">📋 نسخ الرابط</button>
+    </div>
+    
+    <div class="back-link">
+        <a href="dashboard.html">↩ العودة للوحة التحكم</a>
+    </div>
+
 </div>
 
 <script>
@@ -98,3 +156,54 @@ function checkDaily() {
 function claimDaily() {
     const email = localStorage.getItem('currentUser');
     if (!email) return;
+    const lastClaim = localStorage.getItem('lastDaily_' + email);
+    const now = Date.now();
+    if (lastClaim && (now - parseInt(lastClaim)) < 86400000) { showPopup('⏳ انتظر', 'لقد حصلت على crédit اليوم'); return; }
+    
+    // Lire la config admin pour les jetons quotidiens
+    let config = JSON.parse(localStorage.getItem('siteConfig') || '{}');
+    let dailyCredits = config.dailyCredits || 1;
+    
+    addCredit(dailyCredits);
+    localStorage.setItem('lastDaily_' + email, now.toString());
+    checkDaily();
+}
+
+function watchExternalAd() {
+    const email = localStorage.getItem('currentUser');
+    if (!email) return;
+    window.open('https://link-hub.net/6758368/mejnQNKikL8O', '_blank');
+    setTimeout(() => { addCredit(1); }, 10000);
+}
+
+function showRef() { document.getElementById('refBox').style.display = 'block'; }
+
+function copyRef() {
+    navigator.clipboard.writeText(document.getElementById('refLink').textContent);
+    showPopup('مبروك ! 🎉', 'تم نسخ رابط الدعوة');
+}
+
+function addCredit(amount) {
+    const email = localStorage.getItem('currentUser');
+    if (!email) return;
+    let users = JSON.parse(localStorage.getItem('users') || '{}');
+    if (users[email]) {
+        users[email].credits = (users[email].credits || 0) + amount;
+        localStorage.setItem('users', JSON.stringify(users));
+        showPopup('مبروك ! 🎉', 'تمت إضافة ' + amount + ' crédit إلى رصيدك');
+    }
+}
+
+function showPopup(title, sub) {
+    const popup = document.createElement('div');
+    popup.className = 'success-popup';
+    popup.innerHTML = '<div class="popup-icon">🎉</div><div class="popup-title">' + title + '</div><div class="popup-sub">' + sub + '</div>';
+    document.body.appendChild(popup);
+    setTimeout(() => { popup.remove(); }, 3000);
+}
+
+loadEarn();
+</script>
+
+</body>
+</html>
