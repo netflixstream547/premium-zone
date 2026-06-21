@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>جاري التحقق...</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;900&display=swap');
+        body {
+            background: #000;
+            font-family: 'Cairo', sans-serif;
+            color: white;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            text-align: center;
+            padding: 20px;
+        }
+        .box {
+            background: #0c0c0c;
+            border: 1px solid #1a1a1a;
+            border-radius: 16px;
+            padding: 35px 25px;
+            max-width: 400px;
+            width: 100%;
+        }
+        .icon { font-size: 50px; margin-bottom: 15px; }
+        .success { color: #46d369; font-size: 18px; font-weight: 700; }
+        .sub { color: #888; font-size: 13px; margin-top: 8px; }
+    </style>
+</head>
+<body>
+    <div class="box">
+        <div class="icon" id="icon">⏳</div>
+        <div id="message">
+            <p style="color:#f0ad4e;">جاري التحقق...</p>
+            <p class="sub">سيتم إضافة 1 crédit إلى رصيدك</p>
+        </div>
+    </div>
+
+    <script>
+        setTimeout(() => {
+            // Récupérer l'utilisateur connecté
+            const email = localStorage.getItem('currentUser');
+            
+            if (email) {
+                let users = JSON.parse(localStorage.getItem('users') || '{}');
+                if (users[email]) {
+                    users[email].credits = (users[email].credits || 0) + 1;
+                    localStorage.setItem('users', JSON.stringify(users));
+                }
+            }
+            
+            document.getElementById('icon').textContent = '✅';
+            document.getElementById('message').innerHTML = `
+                <p class="success">🎉 مبروك !</p>
+                <p class="sub">تمت إضافة 1 crédit إلى رصيدك</p>
+                <a href="dashboard.html" style="display:inline-block; margin-top:15px; padding:12px 25px; background:#E50914; color:white; border-radius:10px; text-decoration:none; font-weight:700;">↩ العودة للوحة التحكم</a>
+            `;
+        }, 1500);
+    </script>
+</body>
+</html>
