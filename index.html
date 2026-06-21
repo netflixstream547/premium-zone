@@ -3,482 +3,81 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Panel Admin - Premium Zone</title>
-    <style>
-        @import url('https://fonts.googleapis.com/css2?family=Cairo:wght@400;500;600;700;800;900&display=swap');
-        
-        :root {
-            --bg: #060606;
-            --surface: #0c0c0c;
-            --card: #111;
-            --border: #1a1a1a;
-            --red: #E50914;
-            --green: #46d369;
-            --gold: #FFD700;
-            --text: #fff;
-            --text2: #888;
-        }
-        
-        * { margin: 0; padding: 0; box-sizing: border-box; }
-        
-        body {
-            background: var(--bg);
-            font-family: 'Cairo', sans-serif;
-            color: var(--text);
-            min-height: 100vh;
-        }
-        
-        .admin-container {
-            max-width: 900px;
-            margin: 0 auto;
-            padding: 30px 20px;
-        }
-        
-        .admin-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 35px;
-            flex-wrap: wrap;
-            gap: 15px;
-        }
-        
-        .admin-header h1 {
-            font-size: 28px;
-            font-weight: 900;
-            color: var(--red);
-            letter-spacing: 3px;
-        }
-        
-        .admin-header .logout-btn {
-            background: transparent;
-            border: 1px solid #333;
-            color: #aaa;
-            padding: 10px 22px;
-            border-radius: 50px;
-            cursor: pointer;
-            font-family: 'Cairo', sans-serif;
-            font-size: 13px;
-            transition: 0.2s;
-        }
-        
-        .admin-header .logout-btn:hover {
-            border-color: var(--red);
-            color: var(--red);
-        }
-        
-        .stats-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
-            gap: 15px;
-            margin-bottom: 30px;
-        }
-        
-        .stat-card {
-            background: var(--card);
-            border: 1px solid var(--border);
-            border-radius: 14px;
-            padding: 22px 18px;
-            text-align: center;
-        }
-        
-        .stat-card .stat-num {
-            font-size: 36px;
-            font-weight: 900;
-        }
-        
-        .stat-card .stat-label {
-            color: var(--text2);
-            font-size: 11px;
-            text-transform: uppercase;
-            letter-spacing: 2px;
-            margin-top: 5px;
-        }
-        
-        .stat-red .stat-num { color: var(--red); }
-        .stat-green .stat-num { color: var(--green); }
-        .stat-gold .stat-num { color: var(--gold); }
-        
-        .section-card {
-            background: var(--card);
-            border: 1px solid var(--border);
-            border-radius: 16px;
-            padding: 28px;
-            margin-bottom: 20px;
-        }
-        
-        .section-card h3 {
-            font-size: 18px;
-            margin-bottom: 18px;
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
-        
-        .form-row {
-            display: flex;
-            gap: 10px;
-            flex-wrap: wrap;
-        }
-        
-        .form-row input {
-            flex: 1;
-            min-width: 180px;
-            padding: 13px 16px;
-            background: #0a0a0a;
-            border: 1px solid var(--border);
-            border-radius: 10px;
-            color: var(--text);
-            font-size: 14px;
-            font-family: 'Cairo', sans-serif;
-        }
-        
-        .form-row input:focus {
-            border-color: var(--red);
-            outline: none;
-        }
-        
-        .btn {
-            padding: 13px 24px;
-            border: none;
-            border-radius: 10px;
-            font-size: 14px;
-            font-weight: 700;
-            cursor: pointer;
-            font-family: 'Cairo', sans-serif;
-            transition: 0.2s;
-            color: white;
-            white-space: nowrap;
-        }
-        
-        .btn-red { background: var(--red); }
-        .btn-red:hover { background: #b20710; }
-        .btn-green { background: var(--green); color: #000; }
-        .btn-green:hover { background: #3ab558; }
-        .btn-outline { background: transparent; border: 1px solid #333; color: #aaa; }
-        .btn-outline:hover { border-color: var(--red); color: var(--red); }
-        
-        .user-list {
-            max-height: 350px;
-            overflow-y: auto;
-        }
-        
-        .user-row {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 14px 16px;
-            background: #0a0a0a;
-            border: 1px solid var(--border);
-            border-radius: 10px;
-            margin-bottom: 8px;
-            gap: 10px;
-            flex-wrap: wrap;
-        }
-        
-        .user-row .user-email {
-            font-size: 14px;
-            word-break: break-all;
-        }
-        
-        .user-row .user-credits {
-            color: var(--green);
-            font-weight: 700;
-            font-size: 14px;
-        }
-        
-        .user-row .btn-sm {
-            padding: 8px 14px;
-            font-size: 11px;
-            border-radius: 6px;
-        }
-        
-        .msg {
-            text-align: center;
-            font-size: 13px;
-            margin-top: 12px;
-            font-weight: 500;
-        }
-        
-        .msg-success { color: var(--green); }
-        .msg-error { color: #e87c03; }
-        
-        /* Login */
-        .login-box {
-            max-width: 440px;
-            margin: 80px auto;
-            background: var(--card);
-            border: 1px solid var(--border);
-            border-radius: 16px;
-            padding: 35px 30px;
-            text-align: center;
-        }
-        
-        .login-box h2 {
-            color: var(--red);
-            margin-bottom: 5px;
-            font-size: 24px;
-        }
-        
-        .login-box .subtitle {
-            color: var(--text2);
-            font-size: 13px;
-            margin-bottom: 25px;
-        }
-        
-        .login-box input {
-            width: 100%;
-            padding: 14px;
-            background: #0a0a0a;
-            border: 1px solid var(--border);
-            border-radius: 10px;
-            color: var(--text);
-            font-size: 15px;
-            font-family: 'Cairo', sans-serif;
-            margin-bottom: 12px;
-            text-align: right;
-        }
-        
-        .login-box input:focus {
-            border-color: var(--red);
-            outline: none;
-        }
-        
-        .login-box .btn {
-            width: 100%;
-        }
-        
-        .login-box .forgot-link {
-            display: block;
-            margin-top: 12px;
-            color: var(--text2);
-            font-size: 12px;
-            cursor: pointer;
-            text-decoration: underline;
-        }
-        
-        @media (max-width: 600px) {
-            .form-row { flex-direction: column; }
-            .form-row input { min-width: auto; }
-            .user-row { flex-direction: column; text-align: center; }
-        }
-    </style>
+    <meta name="description" content="Netflix Extension - Premium Zone">
+    <title>Premium Zone | Netflix Access</title>
+    <link rel="stylesheet" href="style.css">
 </head>
 <body>
 
-<!-- LOGIN -->
-<div class="login-box" id="loginBox">
-    <h2>🔐 Admin Login</h2>
-    <p class="subtitle">Panel réservé à l'administration</p>
-    <input type="email" id="adminEmail" placeholder="Email">
-    <input type="password" id="adminPass" placeholder="Mot de passe">
-    <button class="btn btn-red" onclick="adminLogin()">Connexion</button>
-    <span class="forgot-link" onclick="forgotPassword()">Mot de passe oublié ?</span>
-    <p id="loginMsg" class="msg"></p>
-</div>
+<div class="container">
 
-<!-- PANEL -->
-<div class="admin-container" id="panelBox" style="display:none;">
-    <div class="admin-header">
-        <h1>⚙️ Panel Admin</h1>
-        <button class="logout-btn" onclick="logout()">🚪 Déconnexion</button>
+    <div class="logo">
+        <h1>PREMIUM</h1>
     </div>
 
-    <div class="stats-grid">
-        <div class="stat-card stat-red">
-            <div class="stat-num" id="statUsers">0</div>
-            <div class="stat-label">Utilisateurs</div>
+    <div class="card" style="text-align:center;">
+        <h2>👑 Netflix en un clic</h2>
+        <p class="subtitle">أسرع طريقة للوصول إلى Netflix</p>
+        
+        <div style="margin-top:20px;">
+            <a href="signup.html" class="btn">📝 إنشاء حساب مجاني</a>
         </div>
-        <div class="stat-card stat-green">
-            <div class="stat-num" id="statCodes">0</div>
-            <div class="stat-label">Codes générés</div>
-        </div>
-        <div class="stat-card stat-gold">
-            <div class="stat-num" id="statCookies">0</div>
-            <div class="stat-label">Comptes Netflix</div>
+        <div style="margin-top:10px;">
+            <a href="login.html" class="btn btn-outline">🔑 تسجيل الدخول</a>
         </div>
     </div>
 
-    <div class="section-card">
-        <h3>💰 Ajouter des crédits</h3>
-        <div class="form-row">
-            <input type="email" id="userEmail" placeholder="Email de l'utilisateur">
-            <input type="number" id="credits" value="30" min="1" placeholder="Crédits">
-            <button class="btn btn-green" onclick="addCredits()">✅ Ajouter</button>
-        </div>
-        <p id="addMsg" class="msg"></p>
+    <div class="nav-bottom">
+        <a href="#">الرئيسية</a>
+        <a href="signup.html">حساب جديد</a>
+        <a href="login.html">دخول</a>
+        <a href="#download">تحميل الإضافة</a>
     </div>
 
-    <div class="section-card">
-        <h3>👥 Utilisateurs</h3>
-        <div class="user-list" id="userList">
-            <p style="color:var(--text2); text-align:center;">Aucun utilisateur</p>
+    <!-- DOWNLOAD -->
+    <div class="card" id="download" style="margin-top:20px;">
+        <h2>📥 تحميل الإضافة</h2>
+        <p class="subtitle">للمتصفح Chrome أو Edge</p>
+        <a href="https://drive.google.com/file/d/1JAqgRaHh-zNMrs-SOYu-zjc6arDPYZc6/view?usp=sharing" class="btn">🔵 Chrome / Edge (ZIP)</a>
+        
+        <div style="margin-top:20px; text-align:right;">
+            <div class="feature-row">
+                <div class="icon">📂</div>
+                <div class="info"><h4>فك ضغط الملف</h4><p>اضغط بزر الفأرة الأيمن واختر Extract All</p></div>
+            </div>
+            <div class="feature-row">
+                <div class="icon">🌐</div>
+                <div class="info"><h4>افتح chrome://extensions</h4><p>في شريط عنوان المتصفح</p></div>
+            </div>
+            <div class="feature-row">
+                <div class="icon">🛠️</div>
+                <div class="info"><h4>فعّل Developer mode</h4><p>المفتاح أعلى اليمين</p></div>
+            </div>
+            <div class="feature-row">
+                <div class="icon">📦</div>
+                <div class="info"><h4>Load unpacked</h4><p>اختر المجلد المفكوك</p></div>
+            </div>
         </div>
-    </div>
-
-    <div class="section-card">
-        <h3>📦 Comptes Netflix (cookies)</h3>
-        <p style="color:var(--text2); font-size:13px; margin-bottom:12px;">
-            Pour ajouter des cookies, dépose un fichier .json dans le salon admin Discord.<br>
-            Ou utilise la commande <code>/addcookies</code> sur Discord.
+        
+        <p style="text-align:center; margin-top:15px;">
+            <a href="#video" style="color:#E50914; text-decoration:none; font-weight:600;">🎬 شاهد الفيديو التوضيحي</a>
         </p>
-        <button class="btn btn-outline" onclick="window.open('https://netflix-server-l0ci.onrender.com/')">🔍 Voir état API</button>
     </div>
+
+    <!-- VIDEO -->
+    <div class="card" id="video" style="margin-top:20px;">
+        <h2>🎬 فيديو تعليمي</h2>
+        <p class="subtitle">شاهد كيف يعمل كل شيء</p>
+        <div style="border-radius:10px; overflow:hidden; background:#000; aspect-ratio:16/9;">
+            <iframe src="https://www.youtube-nocookie.com/embed/JpNjwYUi43E?rel=0" frameborder="0" allow="autoplay; encrypted-media; picture-in-picture" allowfullscreen style="width:100%;height:100%;border:none;"></iframe>
+        </div>
+    </div>
+
+    <p style="text-align:center; color:#444; font-size:11px; margin-top:30px;">
+        © 2026 <strong style="color:#E50914;">Premium Zone</strong> — OnyxDev
+    </p>
+
 </div>
-
-<script>
-const ADMIN_EMAIL = "beyassine789@gmail.com";
-const ADMIN_PASS = "yassine1919";
-const RECOVERY_CODE = "premium2026";
-
-// ========== LOGIN ==========
-function adminLogin() {
-    const email = document.getElementById('adminEmail').value.trim();
-    const pass = document.getElementById('adminPass').value.trim();
-    const msg = document.getElementById('loginMsg');
-    
-    if (email === ADMIN_EMAIL && pass === ADMIN_PASS) {
-        localStorage.setItem('adminLoggedIn', 'true');
-        document.getElementById('loginBox').style.display = 'none';
-        document.getElementById('panelBox').style.display = 'block';
-        loadAll();
-    } else {
-        msg.className = 'msg msg-error';
-        msg.textContent = '❌ Email ou mot de passe incorrect';
-    }
-}
-
-// ========== MOT DE PASSE OUBLIÉ ==========
-function forgotPassword() {
-    const email = document.getElementById('adminEmail').value.trim();
-    const msg = document.getElementById('loginMsg');
-    
-    if (!email) {
-        msg.className = 'msg msg-error';
-        msg.textContent = '❌ Entre d\'abord ton email';
-        return;
-    }
-    
-    if (email !== ADMIN_EMAIL) {
-        msg.className = 'msg msg-error';
-        msg.textContent = '❌ Email non reconnu';
-        return;
-    }
-    
-    const code = prompt('🔑 Entre le code de récupération :');
-    
-    if (code === RECOVERY_CODE) {
-        alert('✅ Mot de passe : ' + ADMIN_PASS);
-        msg.className = 'msg msg-success';
-        msg.textContent = '✅ Mot de passe affiché dans la boîte de dialogue';
-    } else {
-        msg.className = 'msg msg-error';
-        msg.textContent = '❌ Code de récupération incorrect';
-    }
-}
-
-// ========== LOGOUT ==========
-function logout() {
-    localStorage.removeItem('adminLoggedIn');
-    location.reload();
-}
-
-// ========== AJOUTER CREDITS ==========
-function addCredits() {
-    const email = document.getElementById('userEmail').value.trim();
-    const credits = parseInt(document.getElementById('credits').value);
-    const msg = document.getElementById('addMsg');
-    
-    if (!email || !credits) {
-        msg.className = 'msg msg-error';
-        msg.textContent = '❌ Remplis tous les champs';
-        return;
-    }
-    
-    if (!email.includes('@') || !email.includes('.')) {
-        msg.className = 'msg msg-error';
-        msg.textContent = '❌ Email invalide';
-        return;
-    }
-    
-    let users = JSON.parse(localStorage.getItem('users') || '{}');
-    
-    if (!users[email]) {
-        msg.className = 'msg msg-error';
-        msg.textContent = '❌ Utilisateur introuvable. Vérifie l\'email.';
-        return;
-    }
-    
-    users[email].credits = (users[email].credits || 0) + credits;
-    localStorage.setItem('users', JSON.stringify(users));
-    
-    msg.className = 'msg msg-success';
-    msg.textContent = `✅ ${credits} crédits ajoutés à ${email}`;
-    
-    document.getElementById('userEmail').value = '';
-    document.getElementById('credits').value = '30';
-    
-    loadAll();
-}
-
-// ========== SUPPRIMER UTILISATEUR ==========
-function deleteUser(email) {
-    if (!confirm(`Supprimer définitivement ${email} ?`)) return;
-    
-    let users = JSON.parse(localStorage.getItem('users') || '{}');
-    delete users[email];
-    localStorage.setItem('users', JSON.stringify(users));
-    
-    loadAll();
-}
-
-// ========== CHARGER TOUT ==========
-function loadAll() {
-    let users = JSON.parse(localStorage.getItem('users') || '{}');
-    let userEmails = Object.keys(users);
-    
-    document.getElementById('statUsers').textContent = userEmails.length;
-    
-    let totalCodes = 0;
-    userEmails.forEach(email => {
-        totalCodes += (users[email].history || []).length;
-    });
-    document.getElementById('statCodes').textContent = totalCodes;
-    
-    let html = '';
-    if (userEmails.length === 0) {
-        html = '<p style="color:var(--text2); text-align:center;">Aucun utilisateur</p>';
-    } else {
-        userEmails.forEach(email => {
-            const user = users[email];
-            html += `
-                <div class="user-row">
-                    <span class="user-email">${email}</span>
-                    <span class="user-credits">🪙 ${user.credits || 0}</span>
-                    <button class="btn btn-red btn-sm" onclick="deleteUser('${email}')">🗑️</button>
-                </div>
-            `;
-        });
-    }
-    document.getElementById('userList').innerHTML = html;
-    
-    fetch('https://netflix-server-l0ci.onrender.com/')
-        .then(r => r.json())
-        .then(data => {
-            document.getElementById('statCookies').textContent = data.comptes || 0;
-        })
-        .catch(() => {
-            document.getElementById('statCookies').textContent = '?';
-        });
-}
-
-// ========== INIT ==========
-if (localStorage.getItem('adminLoggedIn') === 'true') {
-    document.getElementById('loginBox').style.display = 'none';
-    document.getElementById('panelBox').style.display = 'block';
-    loadAll();
-}
-</script>
 
 </body>
 </html>
