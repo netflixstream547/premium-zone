@@ -65,8 +65,29 @@
         .btn-facebook {
             background: #1877F2;
             color: white;
+            opacity: 0.6;
         }
-        .btn-facebook:hover { background: #166fe5; transform: translateY(-2px); }
+        .btn-facebook:hover { opacity: 0.8; }
+        .btn-email {
+            background: transparent;
+            border: 2px solid #333;
+            color: #ccc;
+        }
+        .btn-email:hover { border-color: #E50914; color: white; }
+        .divider {
+            display: flex;
+            align-items: center;
+            margin: 20px 0;
+            color: #555;
+            font-size: 12px;
+        }
+        .divider::before, .divider::after {
+            content: '';
+            flex: 1;
+            height: 1px;
+            background: #222;
+        }
+        .divider span { padding: 0 15px; }
         #msg { margin-top: 15px; font-size: 13px; min-height: 20px; }
         .footer-text { color: #555; font-size: 11px; margin-top: 25px; }
     </style>
@@ -81,12 +102,18 @@
         <span style="font-size:20px;">G</span> المتابعة باستخدام Google
     </button>
     
-    <button class="btn-social btn-facebook" onclick="loginFacebook()">
-        <span style="font-size:20px;">f</span> المتابعة باستخدام Facebook
+    <button class="btn-social btn-facebook" onclick="facebookSoon()">
+        <span style="font-size:20px;">f</span> المتابعة باستخدام Facebook (قريباً)
+    </button>
+    
+    <div class="divider"><span>أو</span></div>
+    
+    <button class="btn-social btn-email" onclick="window.location.href='login-email.html'">
+        ✉️ تسجيل الدخول بالبريد الإلكتروني
     </button>
     
     <p id="msg"></p>
-    <p class="footer-text">يتم تسجيل الدخول عن طريق Google أو Facebook</p>
+    <p class="footer-text">Facebook Login sera disponible prochainement</p>
 </div>
 
 <script src="https://www.gstatic.com/firebasejs/10.1.0/firebase-app-compat.js"></script>
@@ -133,22 +160,10 @@ function loginGoogle() {
         });
 }
 
-function loginFacebook() {
-    const provider = new firebase.auth.FacebookAuthProvider();
+function facebookSoon() {
     const msg = document.getElementById('msg');
     msg.style.color = '#f0ad4e';
-    msg.textContent = '⏳ جاري تسجيل الدخول...';
-    
-    auth.signInWithPopup(provider)
-        .then((result) => {
-            const email = result.user.email;
-            saveUser(email);
-            window.location.href = 'dashboard.html';
-        })
-        .catch((error) => {
-            msg.style.color = '#e87c03';
-            msg.textContent = '❌ ' + error.message;
-        });
+    msg.textContent = '🚧 Facebook Login en cours de développement. Utilise Google ou Email.';
 }
 </script>
 
