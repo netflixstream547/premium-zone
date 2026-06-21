@@ -21,130 +21,33 @@
         }
         
         * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { background: var(--bg); font-family: 'Cairo', sans-serif; color: var(--text); min-height: 100vh; }
         
-        body {
-            background: var(--bg);
-            font-family: 'Cairo', sans-serif;
-            color: var(--text);
-            min-height: 100vh;
-        }
-        
-        .admin-container {
-            max-width: 1000px;
-            margin: 0 auto;
-            padding: 30px 20px;
-        }
-        
-        .admin-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 30px;
-            flex-wrap: wrap;
-            gap: 15px;
-        }
-        
-        .admin-header h1 {
-            font-size: 26px;
-            font-weight: 900;
-            color: var(--text);
-        }
-        
+        .admin-container { max-width: 1000px; margin: 0 auto; padding: 30px 20px; }
+        .admin-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 30px; flex-wrap: wrap; gap: 15px; }
+        .admin-header h1 { font-size: 26px; font-weight: 900; color: var(--text); }
         .admin-header h1 span { color: var(--red); }
-        
-        .logout-btn {
-            background: transparent;
-            border: 1px solid #333;
-            color: #aaa;
-            padding: 10px 22px;
-            border-radius: 50px;
-            cursor: pointer;
-            font-family: 'Cairo', sans-serif;
-            font-size: 13px;
-            transition: 0.2s;
-        }
-        
+        .logout-btn { background: transparent; border: 1px solid #333; color: #aaa; padding: 10px 22px; border-radius: 50px; cursor: pointer; font-family: 'Cairo', sans-serif; font-size: 13px; }
         .logout-btn:hover { border-color: var(--red); color: var(--red); }
         
-        /* Stats */
-        .stats-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
-            gap: 12px;
-            margin-bottom: 25px;
-        }
-        
-        .stat-card {
-            background: var(--card);
-            border: 1px solid var(--border);
-            border-radius: 14px;
-            padding: 20px 16px;
-            text-align: center;
-            transition: 0.2s;
-        }
-        
+        .stats-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: 12px; margin-bottom: 25px; }
+        .stat-card { background: var(--card); border: 1px solid var(--border); border-radius: 14px; padding: 20px 16px; text-align: center; }
         .stat-card:hover { border-color: var(--red); }
-        
         .stat-card .stat-icon { font-size: 28px; margin-bottom: 8px; }
         .stat-card .stat-num { font-size: 32px; font-weight: 900; }
         .stat-card .stat-label { color: var(--text2); font-size: 11px; margin-top: 4px; }
         
-        /* Sections */
-        .section-card {
-            background: var(--card);
-            border: 1px solid var(--border);
-            border-radius: 16px;
-            padding: 25px;
-            margin-bottom: 18px;
-        }
-        
-        .section-card h3 {
-            font-size: 17px;
-            margin-bottom: 18px;
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
-        
+        .section-card { background: var(--card); border: 1px solid var(--border); border-radius: 16px; padding: 25px; margin-bottom: 18px; }
+        .section-card h3 { font-size: 17px; margin-bottom: 18px; display: flex; align-items: center; gap: 10px; }
         .section-card h3 .icon { font-size: 20px; }
         
-        /* Form */
-        .form-row {
-            display: flex;
-            gap: 10px;
-            flex-wrap: wrap;
-        }
+        .form-row { display: flex; gap: 10px; flex-wrap: wrap; align-items: flex-end; }
+        .form-row input, .form-row select { flex: 1; min-width: 140px; padding: 13px 16px; background: #0a0a0a; border: 1px solid var(--border); border-radius: 10px; color: var(--text); font-size: 14px; font-family: 'Cairo', sans-serif; }
+        .form-row input:focus, .form-row select:focus { border-color: var(--red); outline: none; }
+        .form-group { flex: 1; min-width: 140px; }
+        .form-group label { display: block; color: #aaa; font-size: 12px; margin-bottom: 5px; }
         
-        .form-row input, .form-row select {
-            flex: 1;
-            min-width: 140px;
-            padding: 13px 16px;
-            background: #0a0a0a;
-            border: 1px solid var(--border);
-            border-radius: 10px;
-            color: var(--text);
-            font-size: 14px;
-            font-family: 'Cairo', sans-serif;
-        }
-        
-        .form-row input:focus, .form-row select:focus {
-            border-color: var(--red);
-            outline: none;
-        }
-        
-        .btn {
-            padding: 13px 22px;
-            border: none;
-            border-radius: 10px;
-            font-size: 14px;
-            font-weight: 700;
-            cursor: pointer;
-            font-family: 'Cairo', sans-serif;
-            transition: 0.2s;
-            color: white;
-            white-space: nowrap;
-        }
-        
+        .btn { padding: 13px 22px; border: none; border-radius: 10px; font-size: 14px; font-weight: 700; cursor: pointer; font-family: 'Cairo', sans-serif; transition: 0.2s; color: white; white-space: nowrap; }
         .btn-red { background: var(--red); }
         .btn-red:hover { background: #b20710; }
         .btn-green { background: var(--green); color: #000; }
@@ -155,25 +58,9 @@
         .btn-outline:hover { border-color: var(--red); color: var(--red); }
         .btn-sm { padding: 8px 14px; font-size: 11px; border-radius: 6px; }
         
-        /* User list */
         .user-list { max-height: 400px; overflow-y: auto; }
-        
-        .user-row {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 14px 16px;
-            background: #0a0a0a;
-            border: 1px solid var(--border);
-            border-radius: 10px;
-            margin-bottom: 8px;
-            gap: 10px;
-            flex-wrap: wrap;
-            transition: 0.2s;
-        }
-        
+        .user-row { display: flex; justify-content: space-between; align-items: center; padding: 14px 16px; background: #0a0a0a; border: 1px solid var(--border); border-radius: 10px; margin-bottom: 8px; gap: 10px; flex-wrap: wrap; }
         .user-row:hover { border-color: #333; }
-        
         .user-info { flex: 1; min-width: 150px; }
         .user-email { font-size: 14px; word-break: break-all; font-weight: 600; }
         .user-date { font-size: 11px; color: var(--text2); margin-top: 2px; }
@@ -186,57 +73,21 @@
         .msg-success { color: var(--green); }
         .msg-error { color: #e87c03; }
         
-        /* Login */
-        .login-box {
-            max-width: 440px;
-            margin: 80px auto;
-            background: var(--card);
-            border: 1px solid var(--border);
-            border-radius: 16px;
-            padding: 40px 30px;
-            text-align: center;
-        }
-        
+        .login-box { max-width: 440px; margin: 80px auto; background: var(--card); border: 1px solid var(--border); border-radius: 16px; padding: 40px 30px; text-align: center; }
         .login-box h2 { color: var(--text); margin-bottom: 5px; font-size: 24px; }
         .login-box h2 span { color: var(--red); }
         .login-box .subtitle { color: var(--text2); font-size: 13px; margin-bottom: 25px; }
-        
-        .login-box input {
-            width: 100%;
-            padding: 14px;
-            background: #0a0a0a;
-            border: 1px solid var(--border);
-            border-radius: 10px;
-            color: var(--text);
-            font-size: 15px;
-            font-family: 'Cairo', sans-serif;
-            margin-bottom: 12px;
-            text-align: right;
-        }
-        
+        .login-box input { width: 100%; padding: 14px; background: #0a0a0a; border: 1px solid var(--border); border-radius: 10px; color: var(--text); font-size: 15px; font-family: 'Cairo', sans-serif; margin-bottom: 12px; text-align: right; }
         .login-box input:focus { border-color: var(--red); outline: none; }
         .login-box .btn { width: 100%; }
-        
-        .login-box .forgot-link {
-            display: block;
-            margin-top: 12px;
-            color: var(--text2);
-            font-size: 12px;
-            cursor: pointer;
-        }
-        
+        .login-box .forgot-link { display: block; margin-top: 12px; color: var(--text2); font-size: 12px; cursor: pointer; }
         .login-box .forgot-link:hover { color: var(--red); }
         
-        @media (max-width: 600px) {
-            .form-row { flex-direction: column; }
-            .form-row input { min-width: auto; }
-            .user-row { flex-direction: column; text-align: center; }
-        }
+        @media (max-width: 600px) { .form-row { flex-direction: column; } .form-row input, .form-group { min-width: auto; } .user-row { flex-direction: column; text-align: center; } }
     </style>
 </head>
 <body>
 
-<!-- LOGIN -->
 <div class="login-box" id="loginBox">
     <h2>🔐 <span>Admin</span> Panel</h2>
     <p class="subtitle">لوحة التحكم</p>
@@ -247,7 +98,6 @@
     <p id="loginMsg" class="msg"></p>
 </div>
 
-<!-- PANEL -->
 <div class="admin-container" id="panelBox" style="display:none;">
     <div class="admin-header">
         <h1>⚙️ <span>Premium Zone</span> Panel</h1>
@@ -255,62 +105,38 @@
     </div>
 
     <div class="stats-grid">
-        <div class="stat-card">
-            <div class="stat-icon">👥</div>
-            <div class="stat-num" id="statUsers" style="color:var(--red);">0</div>
-            <div class="stat-label">مستخدم</div>
-        </div>
-        <div class="stat-card">
-            <div class="stat-icon">🎬</div>
-            <div class="stat-num" id="statCodes" style="color:var(--green);">0</div>
-            <div class="stat-label">كود مستخدم</div>
-        </div>
-        <div class="stat-card">
-            <div class="stat-icon">📦</div>
-            <div class="stat-num" id="statCookies" style="color:var(--gold);">0</div>
-            <div class="stat-label">حساب Netflix</div>
-        </div>
-        <div class="stat-card">
-            <div class="stat-icon">🚫</div>
-            <div class="stat-num" id="statBlocked" style="color:#e87c03;">0</div>
-            <div class="stat-label">محظور</div>
-        </div>
+        <div class="stat-card"><div class="stat-icon">👥</div><div class="stat-num" id="statUsers" style="color:var(--red);">0</div><div class="stat-label">مستخدم</div></div>
+        <div class="stat-card"><div class="stat-icon">🎬</div><div class="stat-num" id="statCodes" style="color:var(--green);">0</div><div class="stat-label">كود مستخدم</div></div>
+        <div class="stat-card"><div class="stat-icon">🚫</div><div class="stat-num" id="statBlocked" style="color:#e87c03;">0</div><div class="stat-label">محظور</div></div>
     </div>
 
+    <!-- Configuration -->
     <div class="section-card">
-        <h3><span class="icon">💰</span> إضافة crédits</h3>
+        <h3><span class="icon">⚙️</span> Configuration du site</h3>
         <div class="form-row">
-            <input type="email" id="userEmail" placeholder="Email المستخدم">
-            <input type="number" id="credits" value="30" min="1" placeholder="Crédits">
-            <button class="btn btn-green" onclick="addCredits()">✅ إضافة</button>
+            <div class="form-group"><label>💎 Prix d'un code (jetons)</label><input type="number" id="configCodePrice" value="1" min="1"></div>
+            <div class="form-group"><label>🎁 Jetons quotidiens gratuits</label><input type="number" id="configDaily" value="1" min="0"></div>
+            <div class="form-group"><label>🎉 Jetons de bienvenue</label><input type="number" id="configWelcome" value="0" min="0"></div>
+        </div>
+        <button class="btn btn-green" onclick="saveConfig()" style="margin-top:15px;">💾 Sauvegarder</button>
+        <p id="configMsg" class="msg"></p>
+    </div>
+
+    <!-- Ajouter crédits -->
+    <div class="section-card">
+        <h3><span class="icon">💰</span> Ajouter des jetons</h3>
+        <div class="form-row">
+            <input type="email" id="userEmail" placeholder="Email utilisateur">
+            <input type="number" id="credits" value="30" min="1" placeholder="Jetons">
+            <button class="btn btn-green" onclick="addCredits()">✅ Ajouter</button>
         </div>
         <p id="addMsg" class="msg"></p>
     </div>
 
+    <!-- Utilisateurs -->
     <div class="section-card">
-        <h3><span class="icon">🔍</span> فحص مستخدم</h3>
-        <div class="form-row">
-            <input type="email" id="checkEmail" placeholder="Email للفحص">
-            <button class="btn btn-blue" onclick="checkEmail()">🔍 فحص</button>
-            <button class="btn btn-red" onclick="banUser()">🚫 حظر</button>
-        </div>
-        <p id="checkMsg" class="msg"></p>
-    </div>
-
-    <div class="section-card">
-        <h3><span class="icon">👥</span> قائمة المستخدمين</h3>
-        <div class="user-list" id="userList">
-            <p style="color:var(--text2); text-align:center;">لا يوجد مستخدمين</p>
-        </div>
-    </div>
-
-    <div class="section-card">
-        <h3><span class="icon">📦</span> حسابات Netflix</h3>
-        <p style="color:var(--text2); font-size:13px; margin-bottom:12px;">
-            لإضافة كوكيز جديد، ضع ملف JSON في روم admin على Discord.
-        </p>
-        <button class="btn btn-outline" onclick="window.open('https://netflix-server-l0ci.onrender.com/')">🔍 فحص حالة API</button>
-        <button class="btn btn-outline" onclick="window.open('https://discord.com/channels/')" style="margin-right:8px;">💬 Discord Admin</button>
+        <h3><span class="icon">👥</span> Liste des utilisateurs</h3>
+        <div class="user-list" id="userList"><p style="color:var(--text2); text-align:center;">Aucun utilisateur</p></div>
     </div>
 </div>
 
@@ -323,93 +149,56 @@ function adminLogin() {
     const email = document.getElementById('adminEmail').value.trim();
     const pass = document.getElementById('adminPass').value.trim();
     const msg = document.getElementById('loginMsg');
-    
     if (email === ADMIN_EMAIL && pass === ADMIN_PASS) {
         localStorage.setItem('adminLoggedIn', 'true');
         document.getElementById('loginBox').style.display = 'none';
         document.getElementById('panelBox').style.display = 'block';
         loadAll();
-    } else {
-        msg.className = 'msg msg-error';
-        msg.textContent = '❌ Email ou mot de passe incorrect';
-    }
+    } else { msg.className = 'msg msg-error'; msg.textContent = '❌ Email ou mot de passe incorrect'; }
 }
 
 function forgotPassword() {
     const email = document.getElementById('adminEmail').value.trim();
     const msg = document.getElementById('loginMsg');
-    
     if (!email) { msg.textContent = '❌ Entre ton email'; return; }
     if (email !== ADMIN_EMAIL) { msg.textContent = '❌ Email non reconnu'; return; }
-    
     const code = prompt('🔑 Code de récupération :');
-    if (code === RECOVERY_CODE) {
-        alert('✅ Mot de passe : ' + ADMIN_PASS);
-        msg.className = 'msg msg-success';
-        msg.textContent = '✅ Mot de passe affiché';
-    } else {
-        msg.className = 'msg msg-error';
-        msg.textContent = '❌ Code incorrect';
-    }
+    if (code === RECOVERY_CODE) { alert('✅ Mot de passe : ' + ADMIN_PASS); msg.className = 'msg msg-success'; msg.textContent = '✅ Mot de passe affiché'; }
+    else { msg.className = 'msg msg-error'; msg.textContent = '❌ Code incorrect'; }
 }
 
 function logout() { localStorage.removeItem('adminLoggedIn'); location.reload(); }
+
+function saveConfig() {
+    const config = {
+        codePrice: parseInt(document.getElementById('configCodePrice').value) || 1,
+        dailyCredits: parseInt(document.getElementById('configDaily').value) || 1,
+        welcomeCredits: parseInt(document.getElementById('configWelcome').value) || 0
+    };
+    localStorage.setItem('siteConfig', JSON.stringify(config));
+    document.getElementById('configMsg').className = 'msg msg-success';
+    document.getElementById('configMsg').textContent = '✅ Configuration sauvegardée !';
+}
+
+function loadConfig() {
+    let config = JSON.parse(localStorage.getItem('siteConfig') || '{}');
+    document.getElementById('configCodePrice').value = config.codePrice || 1;
+    document.getElementById('configDaily').value = config.dailyCredits || 1;
+    document.getElementById('configWelcome').value = config.welcomeCredits || 0;
+}
 
 function addCredits() {
     const email = document.getElementById('userEmail').value.trim();
     const credits = parseInt(document.getElementById('credits').value);
     const msg = document.getElementById('addMsg');
-    
     if (!email || !credits) { msg.className = 'msg msg-error'; msg.textContent = '❌ Remplis tous les champs'; return; }
-    
     let users = JSON.parse(localStorage.getItem('users') || '{}');
     if (!users[email]) { msg.className = 'msg msg-error'; msg.textContent = '❌ Utilisateur introuvable'; return; }
-    
     users[email].credits = (users[email].credits || 0) + credits;
     localStorage.setItem('users', JSON.stringify(users));
-    
     msg.className = 'msg msg-success';
-    msg.textContent = `✅ ${credits} crédits ajoutés à ${email}`;
+    msg.textContent = `✅ ${credits} jetons ajoutés à ${email}`;
     document.getElementById('userEmail').value = '';
-    loadAll();
-}
-
-function checkEmail() {
-    const email = document.getElementById('checkEmail').value.trim();
-    const msg = document.getElementById('checkMsg');
-    if (!email) { msg.className = 'msg msg-error'; msg.textContent = '❌ Entre un email'; return; }
-    
-    let blocked = JSON.parse(localStorage.getItem('blockedUsers') || '[]');
-    if (blocked.includes(email)) { msg.className = 'msg msg-error'; msg.textContent = '🚫 هذا المستخدم محظور'; return; }
-    
-    let users = JSON.parse(localStorage.getItem('users') || '{}');
-    if (users[email]) {
-        msg.className = 'msg msg-success';
-        msg.textContent = `✅ مسجل | 🪙 ${users[email].credits || 0} crédits | 📅 ${(users[email].history || []).length} codes`;
-    } else {
-        msg.className = 'msg';
-        msg.textContent = '⚠️ غير مسجل';
-    }
-}
-
-function banUser() {
-    const email = document.getElementById('checkEmail').value.trim();
-    const msg = document.getElementById('checkMsg');
-    if (!email) { msg.className = 'msg msg-error'; msg.textContent = '❌ Entre un email'; return; }
-    
-    let blocked = JSON.parse(localStorage.getItem('blockedUsers') || '[]');
-    if (blocked.includes(email)) { msg.className = 'msg msg-error'; msg.textContent = '❌ محظور بالفعل'; return; }
-    
-    blocked.push(email);
-    localStorage.setItem('blockedUsers', JSON.stringify(blocked));
-    
-    let users = JSON.parse(localStorage.getItem('users') || '{}');
-    delete users[email];
-    localStorage.setItem('users', JSON.stringify(users));
-    
-    msg.className = 'msg msg-success';
-    msg.textContent = `🚫 ${email} محظور`;
-    document.getElementById('checkEmail').value = '';
     loadAll();
 }
 
@@ -425,39 +214,22 @@ function loadAll() {
     let users = JSON.parse(localStorage.getItem('users') || '{}');
     let blocked = JSON.parse(localStorage.getItem('blockedUsers') || '[]');
     let emails = Object.keys(users);
-    
     document.getElementById('statUsers').textContent = emails.length;
     document.getElementById('statBlocked').textContent = blocked.length;
-    
     let totalCodes = 0;
     emails.forEach(e => { totalCodes += (users[e].history || []).length; });
     document.getElementById('statCodes').textContent = totalCodes;
     
     let html = '';
-    if (emails.length === 0) {
-        html = '<p style="color:var(--text2); text-align:center;">لا يوجد مستخدمين</p>';
-    } else {
+    if (emails.length === 0) { html = '<p style="color:var(--text2); text-align:center;">Aucun utilisateur</p>'; }
+    else {
         emails.forEach(email => {
             const u = users[email];
-            const isBlocked = blocked.includes(email);
-            html += `
-                <div class="user-row">
-                    <div class="user-info">
-                        <div class="user-email">${email}</div>
-                        <div class="user-date">🪙 ${u.credits || 0} crédits | 📅 ${(u.history || []).length} codes</div>
-                    </div>
-                    <span class="user-status ${isBlocked ? 'status-blocked' : 'status-active'}">${isBlocked ? '🚫 محظور' : '✅ نشط'}</span>
-                    <button class="btn btn-red btn-sm" onclick="deleteUser('${email}')">🗑️</button>
-                </div>
-            `;
+            html += `<div class="user-row"><div class="user-info"><div class="user-email">${email}</div><div class="user-date">🪙 ${u.credits || 0} jetons | 📅 ${(u.history || []).length} codes</div></div><span class="user-status status-active">✅ Actif</span><button class="btn btn-red btn-sm" onclick="deleteUser('${email}')">🗑️</button></div>`;
         });
     }
     document.getElementById('userList').innerHTML = html;
-    
-    fetch('https://netflix-server-l0ci.onrender.com/')
-        .then(r => r.json())
-        .then(data => { document.getElementById('statCookies').textContent = data.comptes || 0; })
-        .catch(() => { document.getElementById('statCookies').textContent = '?'; });
+    loadConfig();
 }
 
 if (localStorage.getItem('adminLoggedIn') === 'true') {
@@ -466,6 +238,5 @@ if (localStorage.getItem('adminLoggedIn') === 'true') {
     loadAll();
 }
 </script>
-
 </body>
 </html>
