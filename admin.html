@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>كسب crédits - Premium Zone</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<div class="dashboard">
+    <h2>🎁 كسب crédits</h2>
+    
+    <p style="color:#aaa; text-align:center; margin-bottom:25px;">اختر طريقة لكسب crédits</p>
+    
+    <div class="feature" style="margin-bottom:15px;">
+        <div class="feature-icon">📺</div>
+        <h3>مشاهدة إعلان</h3>
+        <p>شاهد إعلان قصير واكسب 1 crédit</p>
+        <button class="btn btn-green" onclick="watchAd()" style="margin-top:10px;">▶ مشاهدة الإعلان</button>
+    </div>
+    
+    <div class="feature" style="margin-bottom:15px;">
+        <div class="feature-icon">👥</div>
+        <h3>دعوة صديق</h3>
+        <p>ادعو صديق واكسب 1 crédit</p>
+        <p style="color:#E50914; margin-top:10px;">رابط الدعوة الخاص بك :</p>
+        <code id="refLink" style="background:#1a1a1a; padding:10px; border-radius:8px; display:block; margin-top:5px; word-break:break-all; direction:ltr;"></code>
+        <button class="btn btn-outline" onclick="copyRef()" style="margin-top:10px;">📋 نسخ الرابط</button>
+    </div>
+    
+    <div class="feature">
+        <div class="feature-icon">💬</div>
+        <h3>شراء crédits</h3>
+        <p>تواصل مع الإدارة على Facebook للشراء</p>
+        <a href="https://facebook.com/tonprofil" target="_blank" class="btn btn-red" style="margin-top:10px;">💬 تواصل مع الإدارة</a>
+    </div>
+    
+    <p style="text-align:center; margin-top:20px;">
+        <a href="dashboard.html" style="color:#E50914; text-decoration:none;">← الرجوع للوحة التحكم</a>
+    </p>
+</div>
+
+<script>
+function loadEarn() {
+    const email = localStorage.getItem('currentUser');
+    if (!email) {
+        window.location.href = 'login.html';
+        return;
+    }
+    
+    document.getElementById('refLink').textContent = 
+        `https://netflixstream547.github.io/premium-zone/signup.html?ref=${btoa(email)}`;
+}
+
+function watchAd() {
+    // Simuler une publicité (rediriger vers une vraie pub plus tard)
+    alert('📺 شاهد هذا الإعلان القصير ثم اضغط موافق');
+    
+    const email = localStorage.getItem('currentUser');
+    let users = JSON.parse(localStorage.getItem('users') || '{}');
+    users[email].credits = (users[email].credits || 0) + 1;
+    localStorage.setItem('users', JSON.stringify(users));
+    
+    alert('✅ تم إضافة 1 crédit !');
+    window.location.reload();
+}
+
+function copyRef() {
+    const link = document.getElementById('refLink').textContent;
+    navigator.clipboard.writeText(link);
+    alert('✅ تم نسخ الرابط !');
+}
+
+// Vérifier si inscription par parrainage
+const urlParams = new URLSearchParams(window.location.search);
+const ref = urlParams.get('ref');
+if (ref && !localStorage.getItem('currentUser')) {
+    localStorage.setItem('pendingRef', ref);
+}
+
+loadEarn();
+</script>
+
+</body>
+</html>
