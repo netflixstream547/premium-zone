@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Créer un compte - Premium Zone</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<div class="form-container">
+    <h2>📝 Créer un compte</h2>
+    <p>Inscription gratuite en 30 secondes</p>
+    
+    <div class="form-group">
+        <label>البريد الإلكتروني</label>
+        <input type="email" id="email" placeholder="exemple@gmail.com">
+    </div>
+    
+    <div class="form-group">
+        <label>كلمة المرور</label>
+        <input type="password" id="password" placeholder="كلمة المرور">
+    </div>
+    
+    <button class="btn btn-red" onclick="signup()">إنشاء الحساب</button>
+    
+    <p id="msg" style="margin-top:15px; font-size:14px;"></p>
+    
+    <div class="form-footer">
+        عندك حساب ؟ <a href="login.html">سجل الدخول</a>
+    </div>
+</div>
+
+<script>
+function signup() {
+    const email = document.getElementById('email').value.trim();
+    const password = document.getElementById('password').value.trim();
+    const msg = document.getElementById('msg');
+    
+    if (!email || !password) {
+        msg.style.color = '#e87c03';
+        msg.textContent = '❌ أكمل جميع الحقول';
+        return;
+    }
+    
+    // Stocker dans localStorage (simple, sans backend)
+    let users = JSON.parse(localStorage.getItem('users') || '{}');
+    
+    if (users[email]) {
+        msg.style.color = '#e87c03';
+        msg.textContent = '❌ هذا البريد مسجل بالفعل';
+        return;
+    }
+    
+    users[email] = {
+        password: password,
+        credits: 1, // 1 crédit gratuit au début
+        history: []
+    };
+    
+    localStorage.setItem('users', JSON.stringify(users));
+    
+    msg.style.color = '#46d369';
+    msg.textContent = '✅ تم إنشاء الحساب ! جاري التحويل...';
+    
+    // Connecter automatiquement
+    localStorage.setItem('currentUser', email);
+    
+    setTimeout(() => {
+        window.location.href = 'dashboard.html';
+    }, 1500);
+}
+</script>
+
+</body>
+</html>
