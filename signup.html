@@ -3,32 +3,65 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Créer un compte - Premium Zone</title>
-    <link rel="stylesheet" href="style.css">
+    <title>إنشاء حساب - Premium Zone</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;900&display=swap');
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            background: #0a0a0a;
+            font-family: 'Cairo', sans-serif;
+            color: white;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            padding: 20px;
+        }
+        .form-box {
+            background: #111;
+            border: 1px solid #222;
+            border-radius: 12px;
+            padding: 35px 30px;
+            width: 100%;
+            max-width: 420px;
+            text-align: center;
+        }
+        h2 { color: #E50914; margin-bottom: 5px; font-size: 24px; }
+        p { color: #888; margin-bottom: 20px; font-size: 13px; }
+        label { display: block; color: #ccc; margin-bottom: 5px; text-align: right; font-size: 13px; }
+        input {
+            width: 100%; padding: 14px; background: #1a1a1a; border: 1px solid #333;
+            border-radius: 8px; color: white; font-size: 15px; font-family: 'Cairo', sans-serif;
+            margin-bottom: 12px; text-align: right;
+        }
+        input:focus { border-color: #E50914; outline: none; }
+        .btn {
+            width: 100%; padding: 14px; background: #E50914; color: white;
+            border: none; border-radius: 8px; font-size: 16px; font-weight: 700;
+            cursor: pointer; font-family: 'Cairo', sans-serif; margin-top: 5px;
+        }
+        .btn:hover { background: #b20710; }
+        #msg { margin-top: 12px; font-size: 13px; }
+        .link { margin-top: 18px; color: #888; font-size: 13px; }
+        .link a { color: #E50914; text-decoration: none; font-weight: 600; }
+    </style>
 </head>
 <body>
 
-<div class="form-container">
-    <h2>📝 Créer un compte</h2>
-    <p>Inscription gratuite en 30 secondes</p>
+<div class="form-box">
+    <h2>📝 إنشاء حساب</h2>
+    <p>سجل مجاناً وابدأ</p>
     
-    <div class="form-group">
-        <label>البريد الإلكتروني</label>
-        <input type="email" id="email" placeholder="exemple@gmail.com">
-    </div>
+    <label>البريد الإلكتروني</label>
+    <input type="email" id="email" placeholder="exemple@gmail.com">
     
-    <div class="form-group">
-        <label>كلمة المرور</label>
-        <input type="password" id="password" placeholder="كلمة المرور">
-    </div>
+    <label>كلمة المرور</label>
+    <input type="password" id="password" placeholder="كلمة المرور">
     
-    <button class="btn btn-red" onclick="signup()">إنشاء الحساب</button>
+    <button class="btn" onclick="signup()">إنشاء الحساب</button>
+    <p id="msg"></p>
     
-    <p id="msg" style="margin-top:15px; font-size:14px;"></p>
-    
-    <div class="form-footer">
-        عندك حساب ؟ <a href="login.html">سجل الدخول</a>
-    </div>
+    <p class="link">عندك حساب ؟ <a href="login.html">سجل الدخول</a></p>
 </div>
 
 <script>
@@ -43,7 +76,6 @@ function signup() {
         return;
     }
     
-    // Stocker dans localStorage (simple, sans backend)
     let users = JSON.parse(localStorage.getItem('users') || '{}');
     
     if (users[email]) {
@@ -52,23 +84,13 @@ function signup() {
         return;
     }
     
-    users[email] = {
-        password: password,
-        credits: 1, // 1 crédit gratuit au début
-        history: []
-    };
-    
+    users[email] = { password: password, credits: 1, history: [] };
     localStorage.setItem('users', JSON.stringify(users));
-    
-    msg.style.color = '#46d369';
-    msg.textContent = '✅ تم إنشاء الحساب ! جاري التحويل...';
-    
-    // Connecter automatiquement
     localStorage.setItem('currentUser', email);
     
-    setTimeout(() => {
-        window.location.href = 'dashboard.html';
-    }, 1500);
+    msg.style.color = '#46d369';
+    msg.textContent = '✅ تم ! جاري التحويل...';
+    setTimeout(() => { window.location.href = 'dashboard.html'; }, 1500);
 }
 </script>
 
