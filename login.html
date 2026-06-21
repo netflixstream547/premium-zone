@@ -17,77 +17,173 @@
             min-height: 100vh;
             padding: 20px;
         }
-        .form-box {
+        .login-card {
             background: #111;
             border: 1px solid #222;
-            border-radius: 12px;
-            padding: 35px 30px;
+            border-radius: 20px;
+            padding: 45px 35px;
             width: 100%;
-            max-width: 420px;
+            max-width: 400px;
             text-align: center;
         }
-        h2 { color: #E50914; margin-bottom: 5px; font-size: 24px; }
-        p { color: #888; margin-bottom: 20px; font-size: 13px; }
-        label { display: block; color: #ccc; margin-bottom: 5px; text-align: right; font-size: 13px; }
-        input {
-            width: 100%; padding: 14px; background: #1a1a1a; border: 1px solid #333;
-            border-radius: 8px; color: white; font-size: 15px; font-family: 'Cairo', sans-serif;
-            margin-bottom: 12px; text-align: right;
+        .logo {
+            font-size: 42px;
+            font-weight: 900;
+            color: #E50914;
+            letter-spacing: 5px;
+            margin-bottom: 5px;
         }
-        input:focus { border-color: #E50914; outline: none; }
-        .btn {
-            width: 100%; padding: 14px; background: #E50914; color: white;
-            border: none; border-radius: 8px; font-size: 16px; font-weight: 700;
-            cursor: pointer; font-family: 'Cairo', sans-serif; margin-top: 5px;
+        .brand {
+            color: #FFD700;
+            font-size: 13px;
+            font-weight: 700;
+            letter-spacing: 3px;
+            margin-bottom: 30px;
         }
-        .btn:hover { background: #b20710; }
-        #msg { margin-top: 12px; font-size: 13px; }
-        .link { margin-top: 18px; color: #888; font-size: 13px; }
-        .link a { color: #E50914; text-decoration: none; font-weight: 600; }
+        .btn-social {
+            width: 100%;
+            padding: 15px;
+            border: none;
+            border-radius: 12px;
+            font-size: 15px;
+            font-weight: 700;
+            cursor: pointer;
+            font-family: 'Cairo', sans-serif;
+            margin-bottom: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 12px;
+            transition: 0.2s;
+        }
+        .btn-google {
+            background: white;
+            color: #333;
+            border: 1px solid #ddd;
+        }
+        .btn-google:hover { background: #f5f5f5; transform: translateY(-2px); }
+        .btn-facebook {
+            background: #1877F2;
+            color: white;
+        }
+        .btn-facebook:hover { background: #166fe5; transform: translateY(-2px); }
+        .divider {
+            display: flex;
+            align-items: center;
+            margin: 20px 0;
+            color: #555;
+            font-size: 12px;
+        }
+        .divider::before, .divider::after {
+            content: '';
+            flex: 1;
+            height: 1px;
+            background: #222;
+        }
+        .divider span { padding: 0 15px; }
+        .btn-email {
+            width: 100%;
+            padding: 15px;
+            background: transparent;
+            border: 2px solid #333;
+            color: #ccc;
+            border-radius: 12px;
+            font-size: 15px;
+            font-weight: 700;
+            cursor: pointer;
+            font-family: 'Cairo', sans-serif;
+            transition: 0.2s;
+        }
+        .btn-email:hover { border-color: #E50914; color: white; }
+        #msg { margin-top: 15px; font-size: 13px; min-height: 20px; }
+        .footer-text { color: #555; font-size: 11px; margin-top: 25px; }
     </style>
 </head>
 <body>
 
-<div class="form-box">
-    <h2>🔑 تسجيل الدخول</h2>
-    <p>مرحباً بعودتك</p>
+<div class="login-card">
+    <div class="logo">PREMIUM</div>
+    <div class="brand">👑 PREMIUM ZONE</div>
     
-    <label>البريد الإلكتروني</label>
-    <input type="email" id="email" placeholder="exemple@gmail.com">
+    <button class="btn-social btn-google" onclick="loginGoogle()">
+        <span style="font-size:20px;">G</span> المتابعة باستخدام Google
+    </button>
     
-    <label>كلمة المرور</label>
-    <input type="password" id="password" placeholder="كلمة المرور">
+    <button class="btn-social btn-facebook" onclick="loginFacebook()">
+        <span style="font-size:20px;">f</span> المتابعة باستخدام Facebook
+    </button>
     
-    <button class="btn" onclick="login()">دخول</button>
+    <div class="divider"><span>أو</span></div>
+    
+    <button class="btn-email" onclick="window.location.href='login-email.html'">
+        ✉️ تسجيل الدخول بالبريد الإلكتروني
+    </button>
+    
     <p id="msg"></p>
-    
-    <p class="link">ما عندك حساب ؟ <a href="signup.html">أنشئ حساب</a></p>
+    <p class="footer-text">ما عندك حساب ؟ <a href="signup.html" style="color:#E50914;">أنشئ حساب</a></p>
 </div>
 
+<!-- Firebase -->
+<script src="https://www.gstatic.com/firebasejs/10.1.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.1.0/firebase-auth-compat.js"></script>
+
 <script>
-function login() {
-    const email = document.getElementById('email').value.trim();
-    const password = document.getElementById('password').value.trim();
-    const msg = document.getElementById('msg');
-    
-    if (!email || !password) {
-        msg.style.color = '#e87c03';
-        msg.textContent = '❌ أكمل جميع الحقول';
-        return;
-    }
-    
-    let users = JSON.parse(localStorage.getItem('users') || '{}');
-    
-    if (!users[email] || users[email].password !== password) {
-        msg.style.color = '#e87c03';
-        msg.textContent = '❌ بريد أو كلمة مرور خطأ';
-        return;
-    }
-    
+// ⚠️ REMPLACE ICI avec TA config Firebase
+const firebaseConfig = {
+    apiKey: "TON_API_KEY",
+    authDomain: "TON_PROJET.firebaseapp.com",
+    projectId: "TON_PROJET_ID",
+    storageBucket: "TON_PROJET.appspot.com",
+    messagingSenderId: "TON_SENDER_ID",
+    appId: "TON_APP_ID"
+};
+
+firebase.initializeApp(firebaseConfig);
+const auth = firebase.auth();
+
+function saveUser(email) {
     localStorage.setItem('currentUser', email);
-    msg.style.color = '#46d369';
-    msg.textContent = '✅ تم ! جاري التحويل...';
-    setTimeout(() => { window.location.href = 'dashboard.html'; }, 1500);
+    let users = JSON.parse(localStorage.getItem('users') || '{}');
+    if (!users[email]) {
+        users[email] = { password: '', credits: 0, history: [] };
+        localStorage.setItem('users', JSON.stringify(users));
+    }
+}
+
+function loginGoogle() {
+    const provider = new firebase.auth.GoogleAuthProvider();
+    const msg = document.getElementById('msg');
+    msg.style.color = '#f0ad4e';
+    msg.textContent = '⏳ جاري تسجيل الدخول...';
+    
+    auth.signInWithPopup(provider)
+        .then((result) => {
+            const email = result.user.email;
+            saveUser(email);
+            window.location.href = 'dashboard.html';
+        })
+        .catch((error) => {
+            msg.style.color = '#e87c03';
+            msg.textContent = '❌ ' + error.message;
+        });
+}
+
+function loginFacebook() {
+    const provider = new firebase.auth.FacebookAuthProvider();
+    const msg = document.getElementById('msg');
+    msg.style.color = '#f0ad4e';
+    msg.textContent = '⏳ جاري تسجيل الدخول...';
+    
+    auth.signInWithPopup(provider)
+        .then((result) => {
+            const email = result.user.email;
+            saveUser(email);
+            window.location.href = 'dashboard.html';
+        })
+        .catch((error) => {
+            msg.style.color = '#e87c03';
+            msg.textContent = '❌ ' + error.message;
+        });
 }
 </script>
 
