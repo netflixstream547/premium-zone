@@ -69,6 +69,10 @@
         .back-link a { color: var(--text2); text-decoration: none; font-size: 12px; }
         .back-link a:hover { color: var(--red); }
         
+        /* Bannière pub */
+        .ad-box { background: var(--card); border: 1px solid var(--border); border-radius: 14px; padding: 15px; text-align: center; margin-bottom: 14px; }
+        .ad-box .ad-label { color: var(--text2); font-size: 11px; margin-bottom: 8px; }
+        
         @media (max-width: 400px) { .earn-card, .buy-card { flex-direction: column; text-align: center; } .earn-card .card-sticker, .buy-card .card-sticker { width: auto; } }
     </style>
 </head>
@@ -81,6 +85,21 @@
         <div class="brand">👑 PREMIUM ZONE</div>
         <h2>🎁 كسب crédits</h2>
         <p>اختر طريقة لكسب crédits</p>
+    </div>
+    
+    <!-- Bannière pub -->
+    <div class="ad-box">
+        <div class="ad-label">📢 Publicité</div>
+        <script type="text/javascript">
+            atOptions = {
+                'key' : '05465015283265c1417592a008fdb083',
+                'format' : 'iframe',
+                'height' : 250,
+                'width' : 300,
+                'params' : {}
+            };
+        </script>
+        <script type="text/javascript" src="//www.highperformancedisplayformat.com/05465015283265c1417592a008fdb083/invoke.js"></script>
     </div>
     
     <div class="daily-box">
@@ -158,9 +177,8 @@ function claimDaily() {
     if (!email) return;
     const lastClaim = localStorage.getItem('lastDaily_' + email);
     const now = Date.now();
-    if (lastClaim && (now - parseInt(lastClaim)) < 86400000) { showPopup('⏳ انتظر', 'لقد حصلت على crédit اليوم'); return; }
+    if (lastClaim && (now - parseInt(lastClaim)) < 86400000) { showPopup('⏳ انتظر', 'لقد حصلت على crédit aujourd\'hui'); return; }
     
-    // Lire la config admin pour les jetons quotidiens
     let config = JSON.parse(localStorage.getItem('siteConfig') || '{}');
     let dailyCredits = config.dailyCredits || 1;
     
