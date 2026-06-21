@@ -15,6 +15,7 @@
             --green: #46d369;
             --gold: #FFD700;
             --blue: #5865F2;
+            --orange: #f0ad4e;
             --text: #fff;
             --text2: #888;
         }
@@ -49,9 +50,17 @@
             letter-spacing: 4px;
         }
         
+        .page-header .brand {
+            font-size: 12px;
+            color: var(--gold);
+            font-weight: 700;
+            letter-spacing: 3px;
+            margin-top: 2px;
+        }
+        
         .page-header h2 {
             font-size: 22px;
-            margin-top: 5px;
+            margin-top: 8px;
         }
         
         .page-header p {
@@ -65,7 +74,7 @@
             background: var(--card);
             border: 1px solid var(--border);
             border-radius: 16px;
-            padding: 22px 20px;
+            padding: 20px 18px;
             margin-bottom: 12px;
             display: flex;
             align-items: center;
@@ -100,26 +109,77 @@
             color: var(--text2);
         }
         
-        .earn-card .earn-badge {
-            background: var(--green);
-            color: #000;
-            padding: 6px 14px;
+        .earn-badge {
+            padding: 8px 16px;
             border-radius: 50px;
             font-size: 13px;
             font-weight: 700;
             white-space: nowrap;
+            background: var(--green);
+            color: #000;
         }
         
-        .earn-card .earn-badge.gold {
-            background: var(--gold);
+        /* Buy card */
+        .buy-card {
+            background: var(--card);
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            padding: 22px 18px;
+            margin-bottom: 12px;
+            display: flex;
+            align-items: center;
+            gap: 18px;
+            text-decoration: none;
+            color: var(--text);
+            transition: 0.2s;
         }
         
-        .earn-card .earn-badge.blue {
+        .buy-card:hover {
+            border-color: var(--blue);
+            transform: translateY(-2px);
+        }
+        
+        .buy-card .buy-icon {
+            font-size: 38px;
+            flex-shrink: 0;
+            width: 55px;
+            text-align: center;
+        }
+        
+        .buy-card .buy-info {
+            flex: 1;
+        }
+        
+        .buy-card .buy-info h4 {
+            font-size: 15px;
+            margin-bottom: 3px;
+        }
+        
+        .buy-card .buy-info p {
+            font-size: 12px;
+            color: var(--text2);
+        }
+        
+        .btn-buy {
+            padding: 10px 20px;
             background: var(--blue);
             color: #fff;
+            border: none;
+            border-radius: 50px;
+            font-size: 13px;
+            font-weight: 700;
+            cursor: pointer;
+            font-family: 'Cairo', sans-serif;
+            white-space: nowrap;
+            transition: 0.2s;
         }
         
-        /* Ref link */
+        .btn-buy:hover {
+            background: #4752c4;
+            transform: scale(1.05);
+        }
+        
+        /* Ref box */
         .ref-box {
             background: var(--card);
             border: 1px solid var(--border);
@@ -127,6 +187,12 @@
             padding: 20px;
             margin-top: 15px;
             text-align: center;
+            animation: fadeIn 0.3s;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
         }
         
         .ref-box p {
@@ -147,7 +213,7 @@
             margin-bottom: 10px;
         }
         
-        .ref-box .btn-copy {
+        .btn-copy {
             padding: 10px 20px;
             background: var(--blue);
             color: #fff;
@@ -159,19 +225,45 @@
             font-family: 'Cairo', sans-serif;
         }
         
-        .ref-box .btn-copy:hover {
-            background: #4752c4;
-        }
+        .btn-copy:hover { background: #4752c4; }
         
-        /* Message */
-        .msg {
+        /* Success popup */
+        .success-popup {
+            position: fixed;
+            top: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: var(--card);
+            border: 1px solid var(--green);
+            border-radius: 14px;
+            padding: 16px 24px;
             text-align: center;
-            font-size: 13px;
-            margin-top: 10px;
-            font-weight: 500;
+            z-index: 999;
+            animation: slideDown 0.4s ease;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
         }
         
-        .msg-success { color: var(--green); }
+        @keyframes slideDown {
+            from { opacity: 0; transform: translateX(-50%) translateY(-30px); }
+            to { opacity: 1; transform: translateX(-50%) translateY(0); }
+        }
+        
+        .success-popup .popup-icon {
+            font-size: 36px;
+            margin-bottom: 5px;
+        }
+        
+        .success-popup .popup-title {
+            font-size: 16px;
+            font-weight: 700;
+            color: var(--green);
+        }
+        
+        .success-popup .popup-sub {
+            font-size: 12px;
+            color: var(--text2);
+            margin-top: 2px;
+        }
         
         /* Back */
         .back-link {
@@ -187,28 +279,8 @@
         
         .back-link a:hover { color: var(--red); }
         
-        /* Social */
-        .social-card {
-            background: var(--card);
-            border: 1px solid var(--border);
-            border-radius: 16px;
-            padding: 22px 20px;
-            margin-bottom: 12px;
-            display: flex;
-            align-items: center;
-            gap: 18px;
-            text-decoration: none;
-            color: var(--text);
-            transition: 0.2s;
-        }
-        
-        .social-card:hover {
-            border-color: var(--blue);
-            transform: translateY(-2px);
-        }
-        
         @media (max-width: 400px) {
-            .earn-card { flex-direction: column; text-align: center; }
+            .earn-card, .buy-card { flex-direction: column; text-align: center; }
         }
     </style>
 </head>
@@ -218,6 +290,7 @@
     
     <div class="page-header">
         <div class="logo">PREMIUM</div>
+        <div class="brand">👑 PREMIUM ZONE</div>
         <h2>🎁 كسب crédits</h2>
         <p>اختر طريقة لكسب crédits</p>
     </div>
@@ -229,7 +302,7 @@
             <h4>مشاهدة إعلان</h4>
             <p>شاهد إعلان قصير واكسب</p>
         </div>
-        <div class="earn-badge">+1</div>
+        <div class="earn-badge">+1 🪙</div>
     </div>
     
     <!-- Parrainage -->
@@ -239,18 +312,18 @@
             <h4>دعوة صديق</h4>
             <p>ادعو أصدقائك واكسب</p>
         </div>
-        <div class="earn-badge gold">+1</div>
+        <div class="earn-badge" style="background:var(--gold);">+1 🪙</div>
     </div>
     
     <!-- Achat -->
-    <a href="https://www.facebook.com/tonprofil" target="_blank" class="social-card">
-        <div class="earn-icon">💬</div>
-        <div class="earn-info">
+    <div class="buy-card">
+        <div class="buy-icon">💬</div>
+        <div class="buy-info">
             <h4>شراء crédits</h4>
             <p>تواصل مع الإدارة على Facebook</p>
         </div>
-        <div class="earn-badge blue">💬</div>
-    </a>
+        <a href="https://www.facebook.com/tonprofil" target="_blank" class="btn-buy">💬 شراء</a>
+    </div>
     
     <!-- Ref Box -->
     <div id="refBox" class="ref-box" style="display:none;">
@@ -258,8 +331,6 @@
         <div class="ref-link" id="refLink"></div>
         <button class="btn-copy" onclick="copyRef()">📋 نسخ الرابط</button>
     </div>
-    
-    <p id="earnMsg" class="msg"></p>
     
     <div class="back-link">
         <a href="dashboard.html">↩ العودة للوحة التحكم</a>
@@ -275,6 +346,18 @@ function loadEarn() {
         `https://netflixstream547.github.io/premium-zone/signup.html?ref=${btoa(email)}`;
 }
 
+function showPopup(title, sub) {
+    const popup = document.createElement('div');
+    popup.className = 'success-popup';
+    popup.innerHTML = `
+        <div class="popup-icon">🎉</div>
+        <div class="popup-title">${title}</div>
+        <div class="popup-sub">${sub}</div>
+    `;
+    document.body.appendChild(popup);
+    setTimeout(() => { popup.remove(); }, 3000);
+}
+
 function watchAd() {
     alert('📺 شاهد هذا الإعلان القصير ثم اضغط موافق');
     const email = localStorage.getItem('currentUser');
@@ -282,11 +365,7 @@ function watchAd() {
     let users = JSON.parse(localStorage.getItem('users') || '{}');
     users[email].credits = (users[email].credits || 0) + 1;
     localStorage.setItem('users', JSON.stringify(users));
-    
-    const msg = document.getElementById('earnMsg');
-    msg.className = 'msg msg-success';
-    msg.textContent = '✅ تم إضافة 1 crédit !';
-    setTimeout(() => { msg.textContent = ''; }, 3000);
+    showPopup('مبروك ! 🎉', 'تمت إضافة 1 crédit إلى رصيدك');
 }
 
 function showRef() {
@@ -296,10 +375,7 @@ function showRef() {
 function copyRef() {
     const link = document.getElementById('refLink').textContent;
     navigator.clipboard.writeText(link);
-    const msg = document.getElementById('earnMsg');
-    msg.className = 'msg msg-success';
-    msg.textContent = '✅ تم نسخ الرابط !';
-    setTimeout(() => { msg.textContent = ''; }, 3000);
+    showPopup('مبروك ! 🎉', 'تم نسخ رابط الدعوة');
 }
 
 loadEarn();
