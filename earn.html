@@ -4,79 +4,302 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>كسب crédits - Premium Zone</title>
-    <link rel="stylesheet" href="style.css">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Cairo:wght@400;500;600;700;800;900&display=swap');
+        
+        :root {
+            --bg: #000;
+            --card: #0c0c0c;
+            --border: #1a1a1a;
+            --red: #E50914;
+            --green: #46d369;
+            --gold: #FFD700;
+            --blue: #5865F2;
+            --text: #fff;
+            --text2: #888;
+        }
+        
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        
+        body {
+            background: var(--bg);
+            font-family: 'Cairo', sans-serif;
+            color: var(--text);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+        
+        .earn-page {
+            width: 100%;
+            max-width: 480px;
+        }
+        
+        .page-header {
+            text-align: center;
+            margin-bottom: 25px;
+        }
+        
+        .page-header .logo {
+            font-size: 36px;
+            font-weight: 900;
+            color: var(--red);
+            letter-spacing: 4px;
+        }
+        
+        .page-header h2 {
+            font-size: 22px;
+            margin-top: 5px;
+        }
+        
+        .page-header p {
+            color: var(--text2);
+            font-size: 13px;
+            margin-top: 3px;
+        }
+        
+        /* Earn cards */
+        .earn-card {
+            background: var(--card);
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            padding: 22px 20px;
+            margin-bottom: 12px;
+            display: flex;
+            align-items: center;
+            gap: 18px;
+            cursor: pointer;
+            transition: 0.2s;
+        }
+        
+        .earn-card:hover {
+            border-color: var(--red);
+            transform: translateY(-2px);
+        }
+        
+        .earn-card .earn-icon {
+            font-size: 38px;
+            flex-shrink: 0;
+            width: 55px;
+            text-align: center;
+        }
+        
+        .earn-card .earn-info {
+            flex: 1;
+        }
+        
+        .earn-card .earn-info h4 {
+            font-size: 15px;
+            margin-bottom: 3px;
+        }
+        
+        .earn-card .earn-info p {
+            font-size: 12px;
+            color: var(--text2);
+        }
+        
+        .earn-card .earn-badge {
+            background: var(--green);
+            color: #000;
+            padding: 6px 14px;
+            border-radius: 50px;
+            font-size: 13px;
+            font-weight: 700;
+            white-space: nowrap;
+        }
+        
+        .earn-card .earn-badge.gold {
+            background: var(--gold);
+        }
+        
+        .earn-card .earn-badge.blue {
+            background: var(--blue);
+            color: #fff;
+        }
+        
+        /* Ref link */
+        .ref-box {
+            background: var(--card);
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            padding: 20px;
+            margin-top: 15px;
+            text-align: center;
+        }
+        
+        .ref-box p {
+            font-size: 13px;
+            color: var(--text2);
+            margin-bottom: 10px;
+        }
+        
+        .ref-box .ref-link {
+            background: #000;
+            border: 1px solid var(--border);
+            border-radius: 10px;
+            padding: 12px;
+            font-size: 11px;
+            color: var(--text2);
+            word-break: break-all;
+            direction: ltr;
+            margin-bottom: 10px;
+        }
+        
+        .ref-box .btn-copy {
+            padding: 10px 20px;
+            background: var(--blue);
+            color: #fff;
+            border: none;
+            border-radius: 10px;
+            font-size: 13px;
+            font-weight: 700;
+            cursor: pointer;
+            font-family: 'Cairo', sans-serif;
+        }
+        
+        .ref-box .btn-copy:hover {
+            background: #4752c4;
+        }
+        
+        /* Message */
+        .msg {
+            text-align: center;
+            font-size: 13px;
+            margin-top: 10px;
+            font-weight: 500;
+        }
+        
+        .msg-success { color: var(--green); }
+        
+        /* Back */
+        .back-link {
+            text-align: center;
+            margin-top: 20px;
+        }
+        
+        .back-link a {
+            color: var(--text2);
+            text-decoration: none;
+            font-size: 12px;
+        }
+        
+        .back-link a:hover { color: var(--red); }
+        
+        /* Social */
+        .social-card {
+            background: var(--card);
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            padding: 22px 20px;
+            margin-bottom: 12px;
+            display: flex;
+            align-items: center;
+            gap: 18px;
+            text-decoration: none;
+            color: var(--text);
+            transition: 0.2s;
+        }
+        
+        .social-card:hover {
+            border-color: var(--blue);
+            transform: translateY(-2px);
+        }
+        
+        @media (max-width: 400px) {
+            .earn-card { flex-direction: column; text-align: center; }
+        }
+    </style>
 </head>
 <body>
 
-<div class="dashboard">
-    <h2>🎁 كسب crédits</h2>
+<div class="earn-page">
     
-    <p style="color:#aaa; text-align:center; margin-bottom:25px;">اختر طريقة لكسب crédits</p>
-    
-    <div class="feature" style="margin-bottom:15px;">
-        <div class="feature-icon">📺</div>
-        <h3>مشاهدة إعلان</h3>
-        <p>شاهد إعلان قصير واكسب 1 crédit</p>
-        <button class="btn btn-green" onclick="watchAd()" style="margin-top:10px;">▶ مشاهدة الإعلان</button>
+    <div class="page-header">
+        <div class="logo">PREMIUM</div>
+        <h2>🎁 كسب crédits</h2>
+        <p>اختر طريقة لكسب crédits</p>
     </div>
     
-    <div class="feature" style="margin-bottom:15px;">
-        <div class="feature-icon">👥</div>
-        <h3>دعوة صديق</h3>
-        <p>ادعو صديق واكسب 1 crédit</p>
-        <p style="color:#E50914; margin-top:10px;">رابط الدعوة الخاص بك :</p>
-        <code id="refLink" style="background:#1a1a1a; padding:10px; border-radius:8px; display:block; margin-top:5px; word-break:break-all; direction:ltr;"></code>
-        <button class="btn btn-outline" onclick="copyRef()" style="margin-top:10px;">📋 نسخ الرابط</button>
+    <!-- Pub -->
+    <div class="earn-card" onclick="watchAd()">
+        <div class="earn-icon">📺</div>
+        <div class="earn-info">
+            <h4>مشاهدة إعلان</h4>
+            <p>شاهد إعلان قصير واكسب</p>
+        </div>
+        <div class="earn-badge">+1</div>
     </div>
     
-    <div class="feature">
-        <div class="feature-icon">💬</div>
-        <h3>شراء crédits</h3>
-        <p>تواصل مع الإدارة على Facebook للشراء</p>
-        <a href="https://facebook.com/tonprofil" target="_blank" class="btn btn-red" style="margin-top:10px;">💬 تواصل مع الإدارة</a>
+    <!-- Parrainage -->
+    <div class="earn-card" onclick="showRef()">
+        <div class="earn-icon">👥</div>
+        <div class="earn-info">
+            <h4>دعوة صديق</h4>
+            <p>ادعو أصدقائك واكسب</p>
+        </div>
+        <div class="earn-badge gold">+1</div>
     </div>
     
-    <p style="text-align:center; margin-top:20px;">
-        <a href="dashboard.html" style="color:#E50914; text-decoration:none;">← الرجوع للوحة التحكم</a>
-    </p>
+    <!-- Achat -->
+    <a href="https://www.facebook.com/tonprofil" target="_blank" class="social-card">
+        <div class="earn-icon">💬</div>
+        <div class="earn-info">
+            <h4>شراء crédits</h4>
+            <p>تواصل مع الإدارة على Facebook</p>
+        </div>
+        <div class="earn-badge blue">💬</div>
+    </a>
+    
+    <!-- Ref Box -->
+    <div id="refBox" class="ref-box" style="display:none;">
+        <p>🔗 رابط الدعوة الخاص بك :</p>
+        <div class="ref-link" id="refLink"></div>
+        <button class="btn-copy" onclick="copyRef()">📋 نسخ الرابط</button>
+    </div>
+    
+    <p id="earnMsg" class="msg"></p>
+    
+    <div class="back-link">
+        <a href="dashboard.html">↩ العودة للوحة التحكم</a>
+    </div>
+
 </div>
 
 <script>
 function loadEarn() {
     const email = localStorage.getItem('currentUser');
-    if (!email) {
-        window.location.href = 'login.html';
-        return;
-    }
-    
+    if (!email) { window.location.href = 'login.html'; return; }
     document.getElementById('refLink').textContent = 
         `https://netflixstream547.github.io/premium-zone/signup.html?ref=${btoa(email)}`;
 }
 
 function watchAd() {
-    // Simuler une publicité (rediriger vers une vraie pub plus tard)
     alert('📺 شاهد هذا الإعلان القصير ثم اضغط موافق');
-    
     const email = localStorage.getItem('currentUser');
+    if (!email) return;
     let users = JSON.parse(localStorage.getItem('users') || '{}');
     users[email].credits = (users[email].credits || 0) + 1;
     localStorage.setItem('users', JSON.stringify(users));
     
-    alert('✅ تم إضافة 1 crédit !');
-    window.location.reload();
+    const msg = document.getElementById('earnMsg');
+    msg.className = 'msg msg-success';
+    msg.textContent = '✅ تم إضافة 1 crédit !';
+    setTimeout(() => { msg.textContent = ''; }, 3000);
+}
+
+function showRef() {
+    document.getElementById('refBox').style.display = 'block';
 }
 
 function copyRef() {
     const link = document.getElementById('refLink').textContent;
     navigator.clipboard.writeText(link);
-    alert('✅ تم نسخ الرابط !');
-}
-
-// Vérifier si inscription par parrainage
-const urlParams = new URLSearchParams(window.location.search);
-const ref = urlParams.get('ref');
-if (ref && !localStorage.getItem('currentUser')) {
-    localStorage.setItem('pendingRef', ref);
+    const msg = document.getElementById('earnMsg');
+    msg.className = 'msg msg-success';
+    msg.textContent = '✅ تم نسخ الرابط !';
+    setTimeout(() => { msg.textContent = ''; }, 3000);
 }
 
 loadEarn();
