@@ -67,7 +67,6 @@
             color: var(--red);
         }
         
-        /* Stats */
         .stats-grid {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
@@ -100,7 +99,6 @@
         .stat-green .stat-num { color: var(--green); }
         .stat-gold .stat-num { color: var(--gold); }
         
-        /* Sections */
         .section-card {
             background: var(--card);
             border: 1px solid var(--border);
@@ -117,7 +115,6 @@
             gap: 10px;
         }
         
-        /* Form */
         .form-row {
             display: flex;
             gap: 10px;
@@ -161,7 +158,6 @@
         .btn-outline { background: transparent; border: 1px solid #333; color: #aaa; }
         .btn-outline:hover { border-color: var(--red); color: var(--red); }
         
-        /* Users table */
         .user-list {
             max-height: 350px;
             overflow-y: auto;
@@ -197,7 +193,6 @@
             border-radius: 6px;
         }
         
-        /* Message */
         .msg {
             text-align: center;
             font-size: 13px;
@@ -210,7 +205,7 @@
         
         /* Login */
         .login-box {
-            max-width: 420px;
+            max-width: 440px;
             margin: 80px auto;
             background: var(--card);
             border: 1px solid var(--border);
@@ -253,7 +248,15 @@
             width: 100%;
         }
         
-        /* Responsive */
+        .login-box .forgot-link {
+            display: block;
+            margin-top: 12px;
+            color: var(--text2);
+            font-size: 12px;
+            cursor: pointer;
+            text-decoration: underline;
+        }
+        
         @media (max-width: 600px) {
             .form-row { flex-direction: column; }
             .form-row input { min-width: auto; }
@@ -267,22 +270,20 @@
 <div class="login-box" id="loginBox">
     <h2>🔐 Admin Login</h2>
     <p class="subtitle">Panel réservé à l'administration</p>
-    <input type="email" id="adminEmail" placeholder="Email" value="beyassine789@gmail.com">
-    <input type="password" id="adminPass" placeholder="Mot de passe" value="yassine1919">
+    <input type="email" id="adminEmail" placeholder="Email">
+    <input type="password" id="adminPass" placeholder="Mot de passe">
     <button class="btn btn-red" onclick="adminLogin()">Connexion</button>
+    <span class="forgot-link" onclick="forgotPassword()">Mot de passe oublié ?</span>
     <p id="loginMsg" class="msg"></p>
 </div>
 
 <!-- PANEL -->
 <div class="admin-container" id="panelBox" style="display:none;">
-
-    <!-- Header -->
     <div class="admin-header">
         <h1>⚙️ Panel Admin</h1>
         <button class="logout-btn" onclick="logout()">🚪 Déconnexion</button>
     </div>
 
-    <!-- Stats -->
     <div class="stats-grid">
         <div class="stat-card stat-red">
             <div class="stat-num" id="statUsers">0</div>
@@ -298,7 +299,6 @@
         </div>
     </div>
 
-    <!-- Ajouter crédits -->
     <div class="section-card">
         <h3>💰 Ajouter des crédits</h3>
         <div class="form-row">
@@ -309,7 +309,6 @@
         <p id="addMsg" class="msg"></p>
     </div>
 
-    <!-- Liste utilisateurs -->
     <div class="section-card">
         <h3>👥 Utilisateurs</h3>
         <div class="user-list" id="userList">
@@ -317,7 +316,6 @@
         </div>
     </div>
 
-    <!-- Gestion comptes -->
     <div class="section-card">
         <h3>📦 Comptes Netflix (cookies)</h3>
         <p style="color:var(--text2); font-size:13px; margin-bottom:12px;">
@@ -326,12 +324,12 @@
         </p>
         <button class="btn btn-outline" onclick="window.open('https://netflix-server-l0ci.onrender.com/')">🔍 Voir état API</button>
     </div>
-
 </div>
 
 <script>
 const ADMIN_EMAIL = "beyassine789@gmail.com";
 const ADMIN_PASS = "yassine1919";
+const RECOVERY_CODE = "premium2026";
 
 // ========== LOGIN ==========
 function adminLogin() {
@@ -347,6 +345,35 @@ function adminLogin() {
     } else {
         msg.className = 'msg msg-error';
         msg.textContent = '❌ Email ou mot de passe incorrect';
+    }
+}
+
+// ========== MOT DE PASSE OUBLIÉ ==========
+function forgotPassword() {
+    const email = document.getElementById('adminEmail').value.trim();
+    const msg = document.getElementById('loginMsg');
+    
+    if (!email) {
+        msg.className = 'msg msg-error';
+        msg.textContent = '❌ Entre d\'abord ton email';
+        return;
+    }
+    
+    if (email !== ADMIN_EMAIL) {
+        msg.className = 'msg msg-error';
+        msg.textContent = '❌ Email non reconnu';
+        return;
+    }
+    
+    const code = prompt('🔑 Entre le code de récupération :');
+    
+    if (code === RECOVERY_CODE) {
+        alert('✅ Mot de passe : ' + ADMIN_PASS);
+        msg.className = 'msg msg-success';
+        msg.textContent = '✅ Mot de passe affiché dans la boîte de dialogue';
+    } else {
+        msg.className = 'msg msg-error';
+        msg.textContent = '❌ Code de récupération incorrect';
     }
 }
 
@@ -368,11 +395,17 @@ function addCredits() {
         return;
     }
     
+    if (!email.includes('@') || !email.includes('.')) {
+        msg.className = 'msg msg-error';
+        msg.textContent = '❌ Email invalide';
+        return;
+    }
+    
     let users = JSON.parse(localStorage.getItem('users') || '{}');
     
     if (!users[email]) {
         msg.className = 'msg msg-error';
-        msg.textContent = '❌ Utilisateur introuvable';
+        msg.textContent = '❌ Utilisateur introuvable. Vérifie l\'email.';
         return;
     }
     
@@ -404,7 +437,6 @@ function loadAll() {
     let users = JSON.parse(localStorage.getItem('users') || '{}');
     let userEmails = Object.keys(users);
     
-    // Stats
     document.getElementById('statUsers').textContent = userEmails.length;
     
     let totalCodes = 0;
@@ -413,7 +445,6 @@ function loadAll() {
     });
     document.getElementById('statCodes').textContent = totalCodes;
     
-    // Liste utilisateurs
     let html = '';
     if (userEmails.length === 0) {
         html = '<p style="color:var(--text2); text-align:center;">Aucun utilisateur</p>';
@@ -431,7 +462,6 @@ function loadAll() {
     }
     document.getElementById('userList').innerHTML = html;
     
-    // Comptes cookies (via API)
     fetch('https://netflix-server-l0ci.onrender.com/')
         .then(r => r.json())
         .then(data => {
