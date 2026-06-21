@@ -67,34 +67,6 @@
             color: white;
         }
         .btn-facebook:hover { background: #166fe5; transform: translateY(-2px); }
-        .divider {
-            display: flex;
-            align-items: center;
-            margin: 20px 0;
-            color: #555;
-            font-size: 12px;
-        }
-        .divider::before, .divider::after {
-            content: '';
-            flex: 1;
-            height: 1px;
-            background: #222;
-        }
-        .divider span { padding: 0 15px; }
-        .btn-email {
-            width: 100%;
-            padding: 15px;
-            background: transparent;
-            border: 2px solid #333;
-            color: #ccc;
-            border-radius: 12px;
-            font-size: 15px;
-            font-weight: 700;
-            cursor: pointer;
-            font-family: 'Cairo', sans-serif;
-            transition: 0.2s;
-        }
-        .btn-email:hover { border-color: #E50914; color: white; }
         #msg { margin-top: 15px; font-size: 13px; min-height: 20px; }
         .footer-text { color: #555; font-size: 11px; margin-top: 25px; }
     </style>
@@ -113,17 +85,10 @@
         <span style="font-size:20px;">f</span> المتابعة باستخدام Facebook
     </button>
     
-    <div class="divider"><span>أو</span></div>
-    
-    <button class="btn-email" onclick="window.location.href='login-email.html'">
-        ✉️ تسجيل الدخول بالبريد الإلكتروني
-    </button>
-    
     <p id="msg"></p>
-    <p class="footer-text">ما عندك حساب ؟ <a href="signup.html" style="color:#E50914;">أنشئ حساب</a></p>
+    <p class="footer-text">يتم تسجيل الدخول عن طريق Google أو Facebook</p>
 </div>
 
-<!-- Firebase -->
 <script src="https://www.gstatic.com/firebasejs/10.1.0/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.1.0/firebase-auth-compat.js"></script>
 
