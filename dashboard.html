@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>لوحة التحكم - Premium Zone</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<div class="dashboard">
+    <h2>👑 لوحة التحكم</h2>
+    
+    <div class="solde-box">
+        <div class="solde-label">رصيدك</div>
+        <div class="solde-amount" id="solde">0</div>
+        <div class="solde-label">Crédits</div>
+    </div>
+    
+    <div class="actions">
+        <a href="earn.html" class="btn btn-green">🎁 كسب crédits</a>
+        <button class="btn btn-red" onclick="getCode()">🍿 الحصول على كود</button>
+    </div>
+    
+    <div id="codeResult"></div>
+    
+    <p style="text-align:center; margin-top:20px;">
+        <a href="index.html" style="color:#E50914; text-decoration:none;">← الرجوع للرئيسية</a>
+    </p>
+</div>
+
+<script>
+const API_URL = 'https://netflix-server-l0ci.onrender.com';
+
+// Charger le solde
+function loadDashboard() {
+    const email = localStorage.getItem('currentUser');
+    if (!email) {
+        window.location.href = 'login.html';
+        return;
+    }
+    
+    let users = JSON.parse(localStorage.getItem('users') || '{}');
+    const user = users[email];
+    
+    if (!user) {
+        window.location.href = 'login.html';
+        return;
+    }
+    
+    document.getElementById('solde').textContent = user.credits || 0;
+}
+
+async function getCode() {
+    const email = localStorage.getItem('currentUser');
+    if (!email) return;
+    
+    let users = JSON.parse(localStorage.getItem('users') || '{}');
+    const user = users[email];
+    
+    if (!user || user.credits < 1) {
+        document.getElementById('codeResult').innerHTML = 
+            '<p style="color:#e87c03; text-align:center; margin-top:15px;">❌ لا يوجد لديك crédits كافية. اكسب المزيد.</p>';
+        return;
+    }
+    
+    document.getElementById('codeResult').innerHTML = 
+        '<p style="text-align:center; margin-top:15px; color:#f0ad4e;">⏳ جاري توليد الكود...</p>';
+    
+    try {
+        const resp = await fetch(`${API_URL}/api/generate-code?secret=monpassword123&user_id=${email}`);
+        const data = await resp.json();
+        
+        if (data.success) {
+            // Déduire 1 crédit
+            user.credits -= 1;
+            user.history = user.history || [];
+            user.history.push({
+                code: data.code,
+                date: new Date().toISOString(),
+                type: 'used'
+            });
+            
+            users[email] = user;
+            localStorage.setItem('users', JSON.stringify(users));
+            
+            document.getElementById('codeResult').innerHTML = `
+                <div class="code-display">
+                    <h3>✅ تم إنشاء الكود !</h3>
+                    <div class="code-value">${data.code}</div>
+                    <p style="color:#aaa; margin-top:10px;">⏰ صالح لمدة 10 دقائق | ⚠️ يستخدم مرة واحدة</p>
+                    <a href="https://www.netflix.com/?code=${data.code}" target="_blank" class="btn btn-red" style="margin-top:15px;">🎬 فتح Netflix</a>
+                </div>
+            `;
+            
+            loadDashboard();
+        } else {
+            document.getElementById('codeResult').innerHTML = 
+                '<p style="color:#e87c03; text-align:center; margin-top:15px;">❌ خطأ: ' + data.error + '</p>';
+        }
+    } catch(e) {
+        document.getElementById('codeResult').innerHTML = 
+            '<p style="color:#e87c03; text-align:center; margin-top:15px;">❌ خطأ في الاتصال</p>';
+    }
+}
+
+loadDashboard();
+</script>
+
+</body>
+</html>
