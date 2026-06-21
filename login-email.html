@@ -41,45 +41,30 @@
             cursor: pointer; font-family: 'Cairo', sans-serif; margin-top: 5px;
         }
         .btn:hover { background: #b20710; }
-        .btn-outline { background: #333; }
+        .btn-outline { background: #333; margin-top: 8px; }
         #msg { margin-top: 12px; font-size: 13px; }
         .link { margin-top: 18px; color: #888; font-size: 13px; }
         .link a { color: #E50914; text-decoration: none; font-weight: 600; }
         .hidden { display: none; }
-        .tabs { display: flex; gap: 10px; margin-bottom: 20px; }
-        .tab {
-            flex: 1; padding: 10px; background: #1a1a1a; border: 1px solid #333;
-            border-radius: 8px; cursor: pointer; font-size: 13px; font-weight: 600;
-            transition: 0.2s;
+        .info-box {
+            background: #1a1a1a; border: 1px solid #333; border-radius: 8px;
+            padding: 12px; margin-bottom: 15px; text-align: right; font-size: 12px; color: #aaa;
         }
-        .tab.active { background: #E50914; border-color: #E50914; color: white; }
+        .info-box strong { color: #E50914; }
     </style>
 </head>
 <body>
 
 <div class="form-box">
-    <h2>✉️ تسجيل الدخول</h2>
-    <p>بالبريد الإلكتروني</p>
-    
-    <div class="tabs">
-        <div class="tab active" id="tabLogin" onclick="switchTab('login')">دخول</div>
-        <div class="tab" id="tabSignup" onclick="switchTab('signup')">إنشاء حساب</div>
-    </div>
+    <h2>✉️ حساب جديد</h2>
+    <p>أنشئ حساب بالبريد الإلكتروني</p>
 
-    <!-- LOGIN -->
-    <div id="formLogin">
-        <label>البريد الإلكتروني</label>
-        <input type="email" id="loginEmail" placeholder="exemple@gmail.com">
+    <!-- SIGN UP -->
+    <div id="signupForm">
+        <div class="info-box">
+            <strong>📧 مسموح فقط :</strong> Gmail, Outlook, Hotmail, Yahoo
+        </div>
         
-        <label>كلمة المرور</label>
-        <input type="password" id="loginPassword" placeholder="كلمة المرور">
-        
-        <button class="btn" onclick="login()">دخول</button>
-        <p id="loginMsg"></p>
-    </div>
-
-    <!-- SIGNUP -->
-    <div id="formSignup" class="hidden">
         <label>البريد الإلكتروني</label>
         <input type="email" id="signupEmail" placeholder="exemple@gmail.com">
         
@@ -88,9 +73,27 @@
         
         <button class="btn" onclick="signup()">إنشاء حساب</button>
         <p id="signupMsg"></p>
+        
+        <p style="color:#888; font-size:12px; margin-top:15px;">عندك حساب ؟</p>
+        <button class="btn btn-outline" onclick="showLogin()">🔑 تسجيل الدخول</button>
+    </div>
+
+    <!-- LOGIN -->
+    <div id="loginForm" class="hidden">
+        <label>البريد الإلكتروني</label>
+        <input type="email" id="loginEmail" placeholder="exemple@gmail.com">
+        
+        <label>كلمة المرور</label>
+        <input type="password" id="loginPassword" placeholder="كلمة المرور">
+        
+        <button class="btn" onclick="login()">دخول</button>
+        <p id="loginMsg"></p>
+        
+        <p style="color:#888; font-size:12px; margin-top:15px;">ما عندك حساب ؟</p>
+        <button class="btn btn-outline" onclick="showSignup()">📝 إنشاء حساب جديد</button>
     </div>
     
-    <p class="link"><a href="login.html">↩ الرجوع</a></p>
+    <p class="link"><a href="login.html">↩ الرجوع للرئيسية</a></p>
 </div>
 
 <script src="https://www.gstatic.com/firebasejs/10.1.0/firebase-app-compat.js"></script>
@@ -110,37 +113,20 @@ const firebaseConfig = {
 firebase.initializeApp(firebaseConfig);
 const auth = firebase.auth();
 
-// Domaines bloqués
-const BLOCKED_DOMAINS = [
-    'mohmal.com', 'mohmal.fr', 'temp-mail.org', 'tempmail.com',
-    '10minutemail.com', 'guerrillamail.com', 'mailinator.com',
-    'yopmail.com', 'throwaway.email', 'trashmail.com',
-    'sharklasers.com', 'spam4.me', 'tempr.email',
-    'discard.email', 'disposable.com', 'maildrop.cc',
-    'emailinbo.live', 'emailnax.com', 'emailtemp.com',
-    'tempmail.net', 'tmpmail.org', 'dispostable.com',
-    'fakeinbox.com', 'mailnesia.com', 'spambox.us',
-    'getnada.com', 'inboxalias.com', 'moakt.com',
-    'dropmail.me', '0wnd.net', '0wnd.org'
-];
+// Domaines autorisés
+const ALLOWED_DOMAINS = ['gmail.com', 'outlook.com', 'hotmail.com', 'yahoo.com', 'yahoo.fr', 'live.com', 'msn.com', 'icloud.com', 'proton.me', 'protonmail.com', 'mail.com', 'aol.com'];
 
-function isBlockedDomain(email) {
+// Domaines bloqués
+const BLOCKED_DOMAINS = ['mohmal.com', 'mohmal.fr', 'temp-mail.org', 'tempmail.com', '10minutemail.com', 'guerrillamail.com', 'mailinator.com', 'yopmail.com', 'throwaway.email', 'trashmail.com', 'sharklasers.com', 'spam4.me', 'tempr.email', 'discard.email', 'disposable.com', 'maildrop.cc', 'emailinbo.live', 'emailnax.com', 'emailtemp.com', 'tempmail.net', 'tmpmail.org', 'dispostable.com', 'fakeinbox.com', 'mailnesia.com', 'spambox.us', 'getnada.com', 'inboxalias.com', 'moakt.com', 'dropmail.me', '0wnd.net', '0wnd.org'];
+
+function isBlocked(email) {
     const domain = email.split('@')[1]?.toLowerCase();
     return BLOCKED_DOMAINS.some(d => domain?.includes(d));
 }
 
-function switchTab(tab) {
-    if (tab === 'login') {
-        document.getElementById('formLogin').classList.remove('hidden');
-        document.getElementById('formSignup').classList.add('hidden');
-        document.getElementById('tabLogin').classList.add('active');
-        document.getElementById('tabSignup').classList.remove('active');
-    } else {
-        document.getElementById('formLogin').classList.add('hidden');
-        document.getElementById('formSignup').classList.remove('hidden');
-        document.getElementById('tabLogin').classList.remove('active');
-        document.getElementById('tabSignup').classList.add('active');
-    }
+function isAllowed(email) {
+    const domain = email.split('@')[1]?.toLowerCase();
+    return ALLOWED_DOMAINS.includes(domain);
 }
 
 function saveUser(email) {
@@ -150,6 +136,67 @@ function saveUser(email) {
         users[email] = { password: '', credits: 0, history: [] };
         localStorage.setItem('users', JSON.stringify(users));
     }
+}
+
+function showLogin() {
+    document.getElementById('signupForm').classList.add('hidden');
+    document.getElementById('loginForm').classList.remove('hidden');
+    document.getElementById('signupMsg').textContent = '';
+    document.getElementById('loginMsg').textContent = '';
+}
+
+function showSignup() {
+    document.getElementById('loginForm').classList.add('hidden');
+    document.getElementById('signupForm').classList.remove('hidden');
+    document.getElementById('signupMsg').textContent = '';
+    document.getElementById('loginMsg').textContent = '';
+}
+
+function signup() {
+    const email = document.getElementById('signupEmail').value.trim();
+    const password = document.getElementById('signupPassword').value.trim();
+    const msg = document.getElementById('signupMsg');
+    
+    if (!email || !password) {
+        msg.style.color = '#e87c03';
+        msg.textContent = '❌ أكمل جميع الحقول';
+        return;
+    }
+    
+    if (password.length < 6) {
+        msg.style.color = '#e87c03';
+        msg.textContent = '❌ كلمة المرور قصيرة (6 أحرف على الأقل)';
+        return;
+    }
+    
+    if (isBlocked(email)) {
+        msg.style.color = '#e87c03';
+        msg.textContent = '❌ البريد المؤقت غير مسموح به';
+        return;
+    }
+    
+    if (!isAllowed(email)) {
+        msg.style.color = '#e87c03';
+        msg.textContent = '❌ يجب استخدام Gmail, Outlook, Hotmail ou Yahoo';
+        return;
+    }
+    
+    msg.style.color = '#f0ad4e';
+    msg.textContent = '⏳ جاري إنشاء الحساب...';
+    
+    auth.createUserWithEmailAndPassword(email, password)
+        .then((result) => {
+            saveUser(email);
+            window.location.href = 'dashboard.html';
+        })
+        .catch((error) => {
+            msg.style.color = '#e87c03';
+            if (error.code === 'auth/email-already-in-use') {
+                msg.textContent = '❌ هذا البريد مسجل بالفعل';
+            } else {
+                msg.textContent = '❌ ' + error.message;
+            }
+        });
 }
 
 function login() {
@@ -174,50 +221,9 @@ function login() {
         .catch((error) => {
             msg.style.color = '#e87c03';
             if (error.code === 'auth/user-not-found') {
-                msg.textContent = '❌ لا يوجد حساب بهذا البريد';
+                msg.textContent = '❌ لا يوجد حساب. أنشئ حساب أولاً.';
             } else if (error.code === 'auth/wrong-password') {
                 msg.textContent = '❌ كلمة المرور خطأ';
-            } else {
-                msg.textContent = '❌ ' + error.message;
-            }
-        });
-}
-
-function signup() {
-    const email = document.getElementById('signupEmail').value.trim();
-    const password = document.getElementById('signupPassword').value.trim();
-    const msg = document.getElementById('signupMsg');
-    
-    if (!email || !password) {
-        msg.style.color = '#e87c03';
-        msg.textContent = '❌ أكمل جميع الحقول';
-        return;
-    }
-    
-    if (password.length < 6) {
-        msg.style.color = '#e87c03';
-        msg.textContent = '❌ كلمة المرور قصيرة (6 أحرف على الأقل)';
-        return;
-    }
-    
-    if (isBlockedDomain(email)) {
-        msg.style.color = '#e87c03';
-        msg.textContent = '❌ البريد المؤقت غير مسموح به';
-        return;
-    }
-    
-    msg.style.color = '#f0ad4e';
-    msg.textContent = '⏳ جاري إنشاء الحساب...';
-    
-    auth.createUserWithEmailAndPassword(email, password)
-        .then((result) => {
-            saveUser(email);
-            window.location.href = 'dashboard.html';
-        })
-        .catch((error) => {
-            msg.style.color = '#e87c03';
-            if (error.code === 'auth/email-already-in-use') {
-                msg.textContent = '❌ هذا البريد مسجل بالفعل';
             } else {
                 msg.textContent = '❌ ' + error.message;
             }
