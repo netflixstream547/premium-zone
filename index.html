@@ -3,80 +3,128 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Premium Zone</title>
+    <meta name="description" content="Premium Zone - Netflix Access">
+    <title>Premium Zone | Netflix Access</title>
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
 
-<div class="container">
-
-    <div class="logo">
-        <h1>PREMIUM</h1>
-    </div>
-
-    <div class="card" style="text-align:center;">
-        <h2>👑 Netflix en un clic</h2>
-        <p class="subtitle">أسرع طريقة للوصول إلى Netflix</p>
-        
-        <div style="margin-top:20px;">
-            <a href="signup.html" class="btn">📝 إنشاء حساب مجاني</a>
-        </div>
-        <div style="margin-top:10px;">
-            <a href="login.html" class="btn btn-outline">🔑 تسجيل الدخول</a>
-        </div>
-    </div>
-
-    <div class="nav-bottom">
+<!-- NAVBAR -->
+<nav class="navbar">
+    <div class="nav-logo">PREMIUM</div>
+    <div class="nav-links">
         <a href="#">الرئيسية</a>
-        <a href="signup.html">حساب جديد</a>
-        <a href="login.html">دخول</a>
-        <a href="#download">تحميل الإضافة</a>
+        <a href="#download">تحميل</a>
+        <a href="#videoSection">فيديو</a>
+        <a href="signup.html" class="btn-nav">إنشاء حساب</a>
     </div>
+</nav>
 
-    <!-- DOWNLOAD -->
-    <div class="card" id="download" style="margin-top:20px;">
+<!-- HERO -->
+<header class="hero">
+    <div class="hero-content">
+        <div class="hero-badge">👑 Premium Zone</div>
+        <h1>نتفليكس بضغطة زر</h1>
+        <p>أسرع وأسهل طريقة للوصول إلى Netflix. حمّل الإضافة مرة واحدة واستمتع.</p>
+        <div class="hero-buttons">
+            <a href="#download" class="btn btn-primary">📥 تحميل الإضافة</a>
+            <a href="signup.html" class="btn btn-secondary">إنشاء حساب مجاني</a>
+            <a href="login.html" class="btn btn-outline">تسجيل الدخول</a>
+        </div>
+    </div>
+</header>
+
+<!-- FEATURES -->
+<section class="section">
+    <div class="section-title">
+        <h2>🎬 كيف تبدأ</h2>
+        <p>ثلاث خطوات بسيطة</p>
+    </div>
+    <div class="features-grid">
+        <div class="feature-card">
+            <span class="feature-icon">📥</span>
+            <h3>حمّل الإضافة</h3>
+            <p>ثبت الإضافة على Chrome أو Edge بنقرتين</p>
+        </div>
+        <div class="feature-card">
+            <span class="feature-icon">📝</span>
+            <h3>أنشئ حسابك</h3>
+            <p>سجل مجاناً واكسب crédits</p>
+        </div>
+        <div class="feature-card">
+            <span class="feature-icon">🍿</span>
+            <h3>شاهد Netflix</h3>
+            <p>استخدم الكود واستمتع بالمشاهدة</p>
+        </div>
+    </div>
+</section>
+
+<!-- DOWNLOAD -->
+<section class="section" id="download">
+    <div class="section-title">
         <h2>📥 تحميل الإضافة</h2>
-        <p class="subtitle">للمتصفح Chrome أو Edge</p>
-        <a href="https://drive.google.com/file/d/1JAqgRaHh-zNMrs-SOYu-zjc6arDPYZc6/view?usp=sharing" class="btn">🔵 Chrome / Edge (ZIP)</a>
+        <p>للمتصفح Chrome أو Edge</p>
+    </div>
+    <div class="download-card">
+        <h3>Netflix Auto Connect</h3>
+        <a href="https://drive.google.com/file/d/1JAqgRaHh-zNMrs-SOYu-zjc6arDPYZc6/view?usp=sharing" class="btn btn-primary" style="margin-bottom:25px;">🔵 تحميل Chrome / Edge (ZIP)</a>
         
-        <div style="margin-top:20px; text-align:right;">
-            <div class="feature-row">
-                <div class="icon">📂</div>
-                <div class="info"><h4>فك ضغط الملف</h4><p>اضغط بزر الفأرة الأيمن واختر Extract All</p></div>
+        <div class="install-steps">
+            <h4 style="color:white; font-size:17px; margin:20px 0 18px; text-align:center;">🔧 خطوات التثبيت</h4>
+            <div class="install-step">
+                <div class="install-num">1</div>
+                <div class="install-text"><strong>فك ضغط الملف</strong><p>اضغط بزر الفأرة الأيمن واختر "Extract All"</p></div>
             </div>
-            <div class="feature-row">
-                <div class="icon">🌐</div>
-                <div class="info"><h4>افتح chrome://extensions</h4><p>في شريط عنوان المتصفح</p></div>
+            <div class="install-step">
+                <div class="install-num">2</div>
+                <div class="install-text"><strong>افتح صفحة الإضافات</strong><p>اكتب <code>chrome://extensions</code> في المتصفح</p></div>
             </div>
-            <div class="feature-row">
-                <div class="icon">🛠️</div>
-                <div class="info"><h4>فعّل Developer mode</h4><p>المفتاح أعلى اليمين</p></div>
+            <div class="install-step">
+                <div class="install-num">3</div>
+                <div class="install-text"><strong>فعّل وضع المطور</strong><p>شغّل "Developer mode"</p></div>
             </div>
-            <div class="feature-row">
-                <div class="icon">📦</div>
-                <div class="info"><h4>Load unpacked</h4><p>اختر المجلد المفكوك</p></div>
+            <div class="install-step">
+                <div class="install-num">4</div>
+                <div class="install-text"><strong>حمّل الإضافة</strong><p>اضغط "Load unpacked" واختر المجلد</p></div>
+            </div>
+            <div class="install-step">
+                <div class="install-num">5</div>
+                <div class="install-text"><strong>✅ تم!</strong><p>الإضافة جاهزة للاستخدام</p></div>
             </div>
         </div>
-        
-        <p style="text-align:center; margin-top:15px;">
-            <a href="#video" style="color:#E50914; text-decoration:none; font-weight:600;">🎬 شاهد الفيديو التوضيحي</a>
-        </p>
     </div>
+</section>
 
-    <!-- VIDEO -->
-    <div class="card" id="video" style="margin-top:20px;">
-        <h2>🎬 فيديو تعليمي</h2>
-        <p class="subtitle">شاهد كيف يعمل كل شيء</p>
-        <div style="border-radius:10px; overflow:hidden; background:#000; aspect-ratio:16/9;">
-            <iframe src="https://www.youtube-nocookie.com/embed/JpNjwYUi43E?rel=0" frameborder="0" allow="autoplay; encrypted-media; picture-in-picture" allowfullscreen style="width:100%;height:100%;border:none;"></iframe>
+<!-- VIDEO -->
+<section class="section" id="videoSection">
+    <div class="section-title">
+        <h2>🎬 شاهد الشرح</h2>
+        <p>فيديو قصير يشرح كل شيء</p>
+    </div>
+    <div class="video-card">
+        <div class="video-wrapper">
+            <div class="video-overlay" id="videoOverlay" onclick="playVideo()">
+                <div class="play-btn">
+                    <svg viewBox="0 0 24 24" fill="white"><path d="M8 5v14l11-7z"/></svg>
+                </div>
+                <span>▶ اضغط للمشاهدة</span>
+            </div>
+            <iframe id="tutoVideo" src="" data-src="https://www.youtube-nocookie.com/embed/JpNjwYUi43E?autoplay=1&rel=0" frameborder="0" allow="autoplay; encrypted-media; picture-in-picture" allowfullscreen></iframe>
         </div>
     </div>
+</section>
 
-    <p style="text-align:center; color:#444; font-size:11px; margin-top:30px;">
-        © 2026 <strong style="color:#E50914;">Premium Zone</strong> — OnyxDev
-    </p>
+<footer>
+    <p>© 2026 <strong>Premium Zone</strong> — Développé par <strong>OnyxDev</strong></p>
+</footer>
 
-</div>
+<script>
+function playVideo() {
+    document.getElementById('videoOverlay').style.display = 'none';
+    const iframe = document.getElementById('tutoVideo');
+    iframe.src = iframe.getAttribute('data-src');
+}
+</script>
 
 </body>
 </html>
