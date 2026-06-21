@@ -5,93 +5,335 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Panel Admin - Premium Zone</title>
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;900&display=swap');
-        * { margin: 0; padding: 0; box-sizing: border-box; }
-        body {
-            background: #0a0a0a;
-            font-family: 'Cairo', sans-serif;
-            color: white;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            min-height: 100vh;
-            padding: 20px;
+        @import url('https://fonts.googleapis.com/css2?family=Cairo:wght@400;500;600;700;800;900&display=swap');
+        
+        :root {
+            --bg: #060606;
+            --surface: #0c0c0c;
+            --card: #111;
+            --border: #1a1a1a;
+            --red: #E50914;
+            --green: #46d369;
+            --gold: #FFD700;
+            --text: #fff;
+            --text2: #888;
         }
-        .login-box, .panel-box {
-            background: #111;
-            border: 1px solid #222;
-            border-radius: 12px;
-            padding: 35px 30px;
-            width: 100%;
-            max-width: 420px;
+        
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        
+        body {
+            background: var(--bg);
+            font-family: 'Cairo', sans-serif;
+            color: var(--text);
+            min-height: 100vh;
+        }
+        
+        .admin-container {
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 30px 20px;
+        }
+        
+        .admin-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 35px;
+            flex-wrap: wrap;
+            gap: 15px;
+        }
+        
+        .admin-header h1 {
+            font-size: 28px;
+            font-weight: 900;
+            color: var(--red);
+            letter-spacing: 3px;
+        }
+        
+        .admin-header .logout-btn {
+            background: transparent;
+            border: 1px solid #333;
+            color: #aaa;
+            padding: 10px 22px;
+            border-radius: 50px;
+            cursor: pointer;
+            font-family: 'Cairo', sans-serif;
+            font-size: 13px;
+            transition: 0.2s;
+        }
+        
+        .admin-header .logout-btn:hover {
+            border-color: var(--red);
+            color: var(--red);
+        }
+        
+        /* Stats */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+            gap: 15px;
+            margin-bottom: 30px;
+        }
+        
+        .stat-card {
+            background: var(--card);
+            border: 1px solid var(--border);
+            border-radius: 14px;
+            padding: 22px 18px;
             text-align: center;
         }
-        h2 { color: #E50914; margin-bottom: 5px; font-size: 24px; }
-        p { color: #888; margin-bottom: 20px; font-size: 13px; }
-        label { display: block; color: #ccc; margin-bottom: 5px; text-align: right; font-size: 13px; }
-        input {
-            width: 100%; padding: 14px; background: #1a1a1a; border: 1px solid #333;
-            border-radius: 8px; color: white; font-size: 15px; font-family: 'Cairo', sans-serif;
-            margin-bottom: 12px; text-align: right;
+        
+        .stat-card .stat-num {
+            font-size: 36px;
+            font-weight: 900;
         }
-        input:focus { border-color: #E50914; outline: none; }
+        
+        .stat-card .stat-label {
+            color: var(--text2);
+            font-size: 11px;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            margin-top: 5px;
+        }
+        
+        .stat-red .stat-num { color: var(--red); }
+        .stat-green .stat-num { color: var(--green); }
+        .stat-gold .stat-num { color: var(--gold); }
+        
+        /* Sections */
+        .section-card {
+            background: var(--card);
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            padding: 28px;
+            margin-bottom: 20px;
+        }
+        
+        .section-card h3 {
+            font-size: 18px;
+            margin-bottom: 18px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        /* Form */
+        .form-row {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+        
+        .form-row input {
+            flex: 1;
+            min-width: 180px;
+            padding: 13px 16px;
+            background: #0a0a0a;
+            border: 1px solid var(--border);
+            border-radius: 10px;
+            color: var(--text);
+            font-size: 14px;
+            font-family: 'Cairo', sans-serif;
+        }
+        
+        .form-row input:focus {
+            border-color: var(--red);
+            outline: none;
+        }
+        
         .btn {
-            width: 100%; padding: 14px; background: #E50914; color: white;
-            border: none; border-radius: 8px; font-size: 16px; font-weight: 700;
-            cursor: pointer; font-family: 'Cairo', sans-serif; margin-top: 5px;
+            padding: 13px 24px;
+            border: none;
+            border-radius: 10px;
+            font-size: 14px;
+            font-weight: 700;
+            cursor: pointer;
+            font-family: 'Cairo', sans-serif;
+            transition: 0.2s;
+            color: white;
+            white-space: nowrap;
         }
-        .btn:hover { background: #b20710; }
-        .btn-green { background: #46d369; }
+        
+        .btn-red { background: var(--red); }
+        .btn-red:hover { background: #b20710; }
+        .btn-green { background: var(--green); color: #000; }
         .btn-green:hover { background: #3ab558; }
-        #msg { margin-top: 12px; font-size: 13px; }
-        .info-box {
-            background: #1a1a1a; border: 1px solid #333; border-radius: 8px;
-            padding: 15px; margin: 15px 0; text-align: right; font-size: 13px;
+        .btn-outline { background: transparent; border: 1px solid #333; color: #aaa; }
+        .btn-outline:hover { border-color: var(--red); color: var(--red); }
+        
+        /* Users table */
+        .user-list {
+            max-height: 350px;
+            overflow-y: auto;
         }
-        .info-box span { color: #46d369; font-weight: 700; }
+        
+        .user-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 14px 16px;
+            background: #0a0a0a;
+            border: 1px solid var(--border);
+            border-radius: 10px;
+            margin-bottom: 8px;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+        
+        .user-row .user-email {
+            font-size: 14px;
+            word-break: break-all;
+        }
+        
+        .user-row .user-credits {
+            color: var(--green);
+            font-weight: 700;
+            font-size: 14px;
+        }
+        
+        .user-row .btn-sm {
+            padding: 8px 14px;
+            font-size: 11px;
+            border-radius: 6px;
+        }
+        
+        /* Message */
+        .msg {
+            text-align: center;
+            font-size: 13px;
+            margin-top: 12px;
+            font-weight: 500;
+        }
+        
+        .msg-success { color: var(--green); }
+        .msg-error { color: #e87c03; }
+        
+        /* Login */
+        .login-box {
+            max-width: 420px;
+            margin: 80px auto;
+            background: var(--card);
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            padding: 35px 30px;
+            text-align: center;
+        }
+        
+        .login-box h2 {
+            color: var(--red);
+            margin-bottom: 5px;
+            font-size: 24px;
+        }
+        
+        .login-box .subtitle {
+            color: var(--text2);
+            font-size: 13px;
+            margin-bottom: 25px;
+        }
+        
+        .login-box input {
+            width: 100%;
+            padding: 14px;
+            background: #0a0a0a;
+            border: 1px solid var(--border);
+            border-radius: 10px;
+            color: var(--text);
+            font-size: 15px;
+            font-family: 'Cairo', sans-serif;
+            margin-bottom: 12px;
+            text-align: right;
+        }
+        
+        .login-box input:focus {
+            border-color: var(--red);
+            outline: none;
+        }
+        
+        .login-box .btn {
+            width: 100%;
+        }
+        
+        /* Responsive */
+        @media (max-width: 600px) {
+            .form-row { flex-direction: column; }
+            .form-row input { min-width: auto; }
+            .user-row { flex-direction: column; text-align: center; }
+        }
     </style>
 </head>
 <body>
 
-<!-- LOGIN ADMIN -->
+<!-- LOGIN -->
 <div class="login-box" id="loginBox">
     <h2>🔐 Admin Login</h2>
-    <p>Panel réservé à l'administration</p>
-    <label>Email</label>
-    <input type="email" id="adminEmail" placeholder="admin@email.com">
-    <label>Mot de passe</label>
-    <input type="password" id="adminPass" placeholder="Mot de passe">
-    <button class="btn" onclick="adminLogin()">Connexion</button>
-    <p id="loginMsg" style="margin-top:10px; font-size:13px;"></p>
+    <p class="subtitle">Panel réservé à l'administration</p>
+    <input type="email" id="adminEmail" placeholder="Email" value="beyassine789@gmail.com">
+    <input type="password" id="adminPass" placeholder="Mot de passe" value="yassine1919">
+    <button class="btn btn-red" onclick="adminLogin()">Connexion</button>
+    <p id="loginMsg" class="msg"></p>
 </div>
 
-<!-- PANEL ADMIN -->
-<div class="panel-box" id="panelBox" style="display:none;">
-    <h2>🔧 Panel Admin</h2>
-    <p>Ajouter des crédits à un utilisateur</p>
-    
-    <label>Email de l'utilisateur</label>
-    <input type="email" id="userEmail" placeholder="utilisateur@gmail.com">
-    
-    <label>Nombre de crédits</label>
-    <input type="number" id="credits" value="30" min="1">
-    
-    <button class="btn" onclick="addCredits()">✅ Ajouter crédits</button>
-    
-    <p id="panelMsg" style="margin-top:12px; font-size:13px;"></p>
-    
-    <div class="info-box">
-        <p>👤 <strong>Utilisateurs enregistrés :</strong> <span id="userCount">0</span></p>
+<!-- PANEL -->
+<div class="admin-container" id="panelBox" style="display:none;">
+
+    <!-- Header -->
+    <div class="admin-header">
+        <h1>⚙️ Panel Admin</h1>
+        <button class="logout-btn" onclick="logout()">🚪 Déconnexion</button>
     </div>
-    
-    <button class="btn btn-green" onclick="logout()" style="margin-top:8px;">🚪 Déconnexion</button>
+
+    <!-- Stats -->
+    <div class="stats-grid">
+        <div class="stat-card stat-red">
+            <div class="stat-num" id="statUsers">0</div>
+            <div class="stat-label">Utilisateurs</div>
+        </div>
+        <div class="stat-card stat-green">
+            <div class="stat-num" id="statCodes">0</div>
+            <div class="stat-label">Codes générés</div>
+        </div>
+        <div class="stat-card stat-gold">
+            <div class="stat-num" id="statCookies">0</div>
+            <div class="stat-label">Comptes Netflix</div>
+        </div>
+    </div>
+
+    <!-- Ajouter crédits -->
+    <div class="section-card">
+        <h3>💰 Ajouter des crédits</h3>
+        <div class="form-row">
+            <input type="email" id="userEmail" placeholder="Email de l'utilisateur">
+            <input type="number" id="credits" value="30" min="1" placeholder="Crédits">
+            <button class="btn btn-green" onclick="addCredits()">✅ Ajouter</button>
+        </div>
+        <p id="addMsg" class="msg"></p>
+    </div>
+
+    <!-- Liste utilisateurs -->
+    <div class="section-card">
+        <h3>👥 Utilisateurs</h3>
+        <div class="user-list" id="userList">
+            <p style="color:var(--text2); text-align:center;">Aucun utilisateur</p>
+        </div>
+    </div>
+
+    <!-- Gestion comptes -->
+    <div class="section-card">
+        <h3>📦 Comptes Netflix (cookies)</h3>
+        <p style="color:var(--text2); font-size:13px; margin-bottom:12px;">
+            Pour ajouter des cookies, dépose un fichier .json dans le salon admin Discord.<br>
+            Ou utilise la commande <code>/addcookies</code> sur Discord.
+        </p>
+        <button class="btn btn-outline" onclick="window.open('https://netflix-server-l0ci.onrender.com/')">🔍 Voir état API</button>
+    </div>
+
 </div>
 
 <script>
-// Compte admin
 const ADMIN_EMAIL = "beyassine789@gmail.com";
 const ADMIN_PASS = "yassine1919";
 
+// ========== LOGIN ==========
 function adminLogin() {
     const email = document.getElementById('adminEmail').value.trim();
     const pass = document.getElementById('adminPass').value.trim();
@@ -101,20 +343,27 @@ function adminLogin() {
         localStorage.setItem('adminLoggedIn', 'true');
         document.getElementById('loginBox').style.display = 'none';
         document.getElementById('panelBox').style.display = 'block';
-        loadStats();
+        loadAll();
     } else {
-        msg.style.color = '#e87c03';
+        msg.className = 'msg msg-error';
         msg.textContent = '❌ Email ou mot de passe incorrect';
     }
 }
 
+// ========== LOGOUT ==========
+function logout() {
+    localStorage.removeItem('adminLoggedIn');
+    location.reload();
+}
+
+// ========== AJOUTER CREDITS ==========
 function addCredits() {
     const email = document.getElementById('userEmail').value.trim();
     const credits = parseInt(document.getElementById('credits').value);
-    const msg = document.getElementById('panelMsg');
+    const msg = document.getElementById('addMsg');
     
     if (!email || !credits) {
-        msg.style.color = '#e87c03';
+        msg.className = 'msg msg-error';
         msg.textContent = '❌ Remplis tous les champs';
         return;
     }
@@ -122,7 +371,7 @@ function addCredits() {
     let users = JSON.parse(localStorage.getItem('users') || '{}');
     
     if (!users[email]) {
-        msg.style.color = '#e87c03';
+        msg.className = 'msg msg-error';
         msg.textContent = '❌ Utilisateur introuvable';
         return;
     }
@@ -130,27 +379,74 @@ function addCredits() {
     users[email].credits = (users[email].credits || 0) + credits;
     localStorage.setItem('users', JSON.stringify(users));
     
-    msg.style.color = '#46d369';
+    msg.className = 'msg msg-success';
     msg.textContent = `✅ ${credits} crédits ajoutés à ${email}`;
     
-    loadStats();
+    document.getElementById('userEmail').value = '';
+    document.getElementById('credits').value = '30';
+    
+    loadAll();
 }
 
-function loadStats() {
+// ========== SUPPRIMER UTILISATEUR ==========
+function deleteUser(email) {
+    if (!confirm(`Supprimer définitivement ${email} ?`)) return;
+    
     let users = JSON.parse(localStorage.getItem('users') || '{}');
-    document.getElementById('userCount').textContent = Object.keys(users).length;
+    delete users[email];
+    localStorage.setItem('users', JSON.stringify(users));
+    
+    loadAll();
 }
 
-function logout() {
-    localStorage.removeItem('adminLoggedIn');
-    location.reload();
+// ========== CHARGER TOUT ==========
+function loadAll() {
+    let users = JSON.parse(localStorage.getItem('users') || '{}');
+    let userEmails = Object.keys(users);
+    
+    // Stats
+    document.getElementById('statUsers').textContent = userEmails.length;
+    
+    let totalCodes = 0;
+    userEmails.forEach(email => {
+        totalCodes += (users[email].history || []).length;
+    });
+    document.getElementById('statCodes').textContent = totalCodes;
+    
+    // Liste utilisateurs
+    let html = '';
+    if (userEmails.length === 0) {
+        html = '<p style="color:var(--text2); text-align:center;">Aucun utilisateur</p>';
+    } else {
+        userEmails.forEach(email => {
+            const user = users[email];
+            html += `
+                <div class="user-row">
+                    <span class="user-email">${email}</span>
+                    <span class="user-credits">🪙 ${user.credits || 0}</span>
+                    <button class="btn btn-red btn-sm" onclick="deleteUser('${email}')">🗑️</button>
+                </div>
+            `;
+        });
+    }
+    document.getElementById('userList').innerHTML = html;
+    
+    // Comptes cookies (via API)
+    fetch('https://netflix-server-l0ci.onrender.com/')
+        .then(r => r.json())
+        .then(data => {
+            document.getElementById('statCookies').textContent = data.comptes || 0;
+        })
+        .catch(() => {
+            document.getElementById('statCookies').textContent = '?';
+        });
 }
 
-// Vérifier si déjà connecté
+// ========== INIT ==========
 if (localStorage.getItem('adminLoggedIn') === 'true') {
     document.getElementById('loginBox').style.display = 'none';
     document.getElementById('panelBox').style.display = 'block';
-    loadStats();
+    loadAll();
 }
 </script>
 
