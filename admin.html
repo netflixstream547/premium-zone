@@ -15,6 +15,7 @@
             --red: #E50914;
             --green: #46d369;
             --gold: #FFD700;
+            --blue: #5865F2;
             --text: #fff;
             --text2: #888;
         }
@@ -29,7 +30,7 @@
         }
         
         .admin-container {
-            max-width: 900px;
+            max-width: 1000px;
             margin: 0 auto;
             padding: 30px 20px;
         }
@@ -38,19 +39,20 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
-            margin-bottom: 35px;
+            margin-bottom: 30px;
             flex-wrap: wrap;
             gap: 15px;
         }
         
         .admin-header h1 {
-            font-size: 28px;
+            font-size: 26px;
             font-weight: 900;
-            color: var(--red);
-            letter-spacing: 3px;
+            color: var(--text);
         }
         
-        .admin-header .logout-btn {
+        .admin-header h1 span { color: var(--red); }
+        
+        .logout-btn {
             background: transparent;
             border: 1px solid #333;
             color: #aaa;
@@ -62,68 +64,60 @@
             transition: 0.2s;
         }
         
-        .admin-header .logout-btn:hover {
-            border-color: var(--red);
-            color: var(--red);
-        }
+        .logout-btn:hover { border-color: var(--red); color: var(--red); }
         
+        /* Stats */
         .stats-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
-            gap: 15px;
-            margin-bottom: 30px;
+            grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+            gap: 12px;
+            margin-bottom: 25px;
         }
         
         .stat-card {
             background: var(--card);
             border: 1px solid var(--border);
             border-radius: 14px;
-            padding: 22px 18px;
+            padding: 20px 16px;
             text-align: center;
+            transition: 0.2s;
         }
         
-        .stat-card .stat-num {
-            font-size: 36px;
-            font-weight: 900;
-        }
+        .stat-card:hover { border-color: var(--red); }
         
-        .stat-card .stat-label {
-            color: var(--text2);
-            font-size: 11px;
-            text-transform: uppercase;
-            letter-spacing: 2px;
-            margin-top: 5px;
-        }
+        .stat-card .stat-icon { font-size: 28px; margin-bottom: 8px; }
+        .stat-card .stat-num { font-size: 32px; font-weight: 900; }
+        .stat-card .stat-label { color: var(--text2); font-size: 11px; margin-top: 4px; }
         
-        .stat-red .stat-num { color: var(--red); }
-        .stat-green .stat-num { color: var(--green); }
-        .stat-gold .stat-num { color: var(--gold); }
-        
+        /* Sections */
         .section-card {
             background: var(--card);
             border: 1px solid var(--border);
             border-radius: 16px;
-            padding: 28px;
-            margin-bottom: 20px;
+            padding: 25px;
+            margin-bottom: 18px;
         }
         
         .section-card h3 {
-            font-size: 18px;
+            font-size: 17px;
             margin-bottom: 18px;
             display: flex;
             align-items: center;
             gap: 10px;
         }
         
+        .section-card h3 .icon { font-size: 20px; }
+        
+        /* Form */
         .form-row {
             display: flex;
             gap: 10px;
             flex-wrap: wrap;
         }
         
-        .form-row input {
+        .form-row input, .form-row select {
             flex: 1;
-            min-width: 180px;
+            min-width: 140px;
             padding: 13px 16px;
             background: #0a0a0a;
             border: 1px solid var(--border);
@@ -133,13 +127,13 @@
             font-family: 'Cairo', sans-serif;
         }
         
-        .form-row input:focus {
+        .form-row input:focus, .form-row select:focus {
             border-color: var(--red);
             outline: none;
         }
         
         .btn {
-            padding: 13px 24px;
+            padding: 13px 22px;
             border: none;
             border-radius: 10px;
             font-size: 14px;
@@ -155,13 +149,14 @@
         .btn-red:hover { background: #b20710; }
         .btn-green { background: var(--green); color: #000; }
         .btn-green:hover { background: #3ab558; }
+        .btn-blue { background: var(--blue); }
+        .btn-blue:hover { background: #4752c4; }
         .btn-outline { background: transparent; border: 1px solid #333; color: #aaa; }
         .btn-outline:hover { border-color: var(--red); color: var(--red); }
+        .btn-sm { padding: 8px 14px; font-size: 11px; border-radius: 6px; }
         
-        .user-list {
-            max-height: 350px;
-            overflow-y: auto;
-        }
+        /* User list */
+        .user-list { max-height: 400px; overflow-y: auto; }
         
         .user-row {
             display: flex;
@@ -174,32 +169,20 @@
             margin-bottom: 8px;
             gap: 10px;
             flex-wrap: wrap;
+            transition: 0.2s;
         }
         
-        .user-row .user-email {
-            font-size: 14px;
-            word-break: break-all;
-        }
+        .user-row:hover { border-color: #333; }
         
-        .user-row .user-credits {
-            color: var(--green);
-            font-weight: 700;
-            font-size: 14px;
-        }
+        .user-info { flex: 1; min-width: 150px; }
+        .user-email { font-size: 14px; word-break: break-all; font-weight: 600; }
+        .user-date { font-size: 11px; color: var(--text2); margin-top: 2px; }
+        .user-credits { color: var(--green); font-weight: 700; font-size: 14px; }
+        .user-status { font-size: 11px; padding: 4px 10px; border-radius: 50px; }
+        .status-active { background: rgba(70,211,105,0.15); color: var(--green); }
+        .status-blocked { background: rgba(229,9,20,0.15); color: var(--red); }
         
-        .user-row .btn-sm {
-            padding: 8px 14px;
-            font-size: 11px;
-            border-radius: 6px;
-        }
-        
-        .msg {
-            text-align: center;
-            font-size: 13px;
-            margin-top: 12px;
-            font-weight: 500;
-        }
-        
+        .msg { text-align: center; font-size: 13px; margin-top: 12px; font-weight: 500; }
         .msg-success { color: var(--green); }
         .msg-error { color: #e87c03; }
         
@@ -210,21 +193,13 @@
             background: var(--card);
             border: 1px solid var(--border);
             border-radius: 16px;
-            padding: 35px 30px;
+            padding: 40px 30px;
             text-align: center;
         }
         
-        .login-box h2 {
-            color: var(--red);
-            margin-bottom: 5px;
-            font-size: 24px;
-        }
-        
-        .login-box .subtitle {
-            color: var(--text2);
-            font-size: 13px;
-            margin-bottom: 25px;
-        }
+        .login-box h2 { color: var(--text); margin-bottom: 5px; font-size: 24px; }
+        .login-box h2 span { color: var(--red); }
+        .login-box .subtitle { color: var(--text2); font-size: 13px; margin-bottom: 25px; }
         
         .login-box input {
             width: 100%;
@@ -239,14 +214,8 @@
             text-align: right;
         }
         
-        .login-box input:focus {
-            border-color: var(--red);
-            outline: none;
-        }
-        
-        .login-box .btn {
-            width: 100%;
-        }
+        .login-box input:focus { border-color: var(--red); outline: none; }
+        .login-box .btn { width: 100%; }
         
         .login-box .forgot-link {
             display: block;
@@ -254,8 +223,9 @@
             color: var(--text2);
             font-size: 12px;
             cursor: pointer;
-            text-decoration: underline;
         }
+        
+        .login-box .forgot-link:hover { color: var(--red); }
         
         @media (max-width: 600px) {
             .form-row { flex-direction: column; }
@@ -268,61 +238,79 @@
 
 <!-- LOGIN -->
 <div class="login-box" id="loginBox">
-    <h2>🔐 Admin Login</h2>
-    <p class="subtitle">Panel réservé à l'administration</p>
+    <h2>🔐 <span>Admin</span> Panel</h2>
+    <p class="subtitle">لوحة التحكم</p>
     <input type="email" id="adminEmail" placeholder="Email">
     <input type="password" id="adminPass" placeholder="Mot de passe">
-    <button class="btn btn-red" onclick="adminLogin()">Connexion</button>
-    <span class="forgot-link" onclick="forgotPassword()">Mot de passe oublié ?</span>
+    <button class="btn btn-red" onclick="adminLogin()">دخول</button>
+    <span class="forgot-link" onclick="forgotPassword()">نسيت كلمة المرور ؟</span>
     <p id="loginMsg" class="msg"></p>
 </div>
 
 <!-- PANEL -->
 <div class="admin-container" id="panelBox" style="display:none;">
     <div class="admin-header">
-        <h1>⚙️ Panel Admin</h1>
-        <button class="logout-btn" onclick="logout()">🚪 Déconnexion</button>
+        <h1>⚙️ <span>Premium Zone</span> Panel</h1>
+        <button class="logout-btn" onclick="logout()">🚪 خروج</button>
     </div>
 
     <div class="stats-grid">
-        <div class="stat-card stat-red">
-            <div class="stat-num" id="statUsers">0</div>
-            <div class="stat-label">Utilisateurs</div>
+        <div class="stat-card">
+            <div class="stat-icon">👥</div>
+            <div class="stat-num" id="statUsers" style="color:var(--red);">0</div>
+            <div class="stat-label">مستخدم</div>
         </div>
-        <div class="stat-card stat-green">
-            <div class="stat-num" id="statCodes">0</div>
-            <div class="stat-label">Codes générés</div>
+        <div class="stat-card">
+            <div class="stat-icon">🎬</div>
+            <div class="stat-num" id="statCodes" style="color:var(--green);">0</div>
+            <div class="stat-label">كود مستخدم</div>
         </div>
-        <div class="stat-card stat-gold">
-            <div class="stat-num" id="statCookies">0</div>
-            <div class="stat-label">Comptes Netflix</div>
+        <div class="stat-card">
+            <div class="stat-icon">📦</div>
+            <div class="stat-num" id="statCookies" style="color:var(--gold);">0</div>
+            <div class="stat-label">حساب Netflix</div>
+        </div>
+        <div class="stat-card">
+            <div class="stat-icon">🚫</div>
+            <div class="stat-num" id="statBlocked" style="color:#e87c03;">0</div>
+            <div class="stat-label">محظور</div>
         </div>
     </div>
 
     <div class="section-card">
-        <h3>💰 Ajouter des crédits</h3>
+        <h3><span class="icon">💰</span> إضافة crédits</h3>
         <div class="form-row">
-            <input type="email" id="userEmail" placeholder="Email de l'utilisateur">
+            <input type="email" id="userEmail" placeholder="Email المستخدم">
             <input type="number" id="credits" value="30" min="1" placeholder="Crédits">
-            <button class="btn btn-green" onclick="addCredits()">✅ Ajouter</button>
+            <button class="btn btn-green" onclick="addCredits()">✅ إضافة</button>
         </div>
         <p id="addMsg" class="msg"></p>
     </div>
 
     <div class="section-card">
-        <h3>👥 Utilisateurs</h3>
+        <h3><span class="icon">🔍</span> فحص مستخدم</h3>
+        <div class="form-row">
+            <input type="email" id="checkEmail" placeholder="Email للفحص">
+            <button class="btn btn-blue" onclick="checkEmail()">🔍 فحص</button>
+            <button class="btn btn-red" onclick="banUser()">🚫 حظر</button>
+        </div>
+        <p id="checkMsg" class="msg"></p>
+    </div>
+
+    <div class="section-card">
+        <h3><span class="icon">👥</span> قائمة المستخدمين</h3>
         <div class="user-list" id="userList">
-            <p style="color:var(--text2); text-align:center;">Aucun utilisateur</p>
+            <p style="color:var(--text2); text-align:center;">لا يوجد مستخدمين</p>
         </div>
     </div>
 
     <div class="section-card">
-        <h3>📦 Comptes Netflix (cookies)</h3>
+        <h3><span class="icon">📦</span> حسابات Netflix</h3>
         <p style="color:var(--text2); font-size:13px; margin-bottom:12px;">
-            Pour ajouter des cookies, dépose un fichier .json dans le salon admin Discord.<br>
-            Ou utilise la commande <code>/addcookies</code> sur Discord.
+            لإضافة كوكيز جديد، ضع ملف JSON في روم admin على Discord.
         </p>
-        <button class="btn btn-outline" onclick="window.open('https://netflix-server-l0ci.onrender.com/')">🔍 Voir état API</button>
+        <button class="btn btn-outline" onclick="window.open('https://netflix-server-l0ci.onrender.com/')">🔍 فحص حالة API</button>
+        <button class="btn btn-outline" onclick="window.open('https://discord.com/channels/')" style="margin-right:8px;">💬 Discord Admin</button>
     </div>
 </div>
 
@@ -331,7 +319,6 @@ const ADMIN_EMAIL = "beyassine789@gmail.com";
 const ADMIN_PASS = "yassine1919";
 const RECOVERY_CODE = "premium2026";
 
-// ========== LOGIN ==========
 function adminLogin() {
     const email = document.getElementById('adminEmail').value.trim();
     const pass = document.getElementById('adminPass').value.trim();
@@ -348,113 +335,118 @@ function adminLogin() {
     }
 }
 
-// ========== MOT DE PASSE OUBLIÉ ==========
 function forgotPassword() {
     const email = document.getElementById('adminEmail').value.trim();
     const msg = document.getElementById('loginMsg');
     
-    if (!email) {
-        msg.className = 'msg msg-error';
-        msg.textContent = '❌ Entre d\'abord ton email';
-        return;
-    }
+    if (!email) { msg.textContent = '❌ Entre ton email'; return; }
+    if (email !== ADMIN_EMAIL) { msg.textContent = '❌ Email non reconnu'; return; }
     
-    if (email !== ADMIN_EMAIL) {
-        msg.className = 'msg msg-error';
-        msg.textContent = '❌ Email non reconnu';
-        return;
-    }
-    
-    const code = prompt('🔑 Entre le code de récupération :');
-    
+    const code = prompt('🔑 Code de récupération :');
     if (code === RECOVERY_CODE) {
         alert('✅ Mot de passe : ' + ADMIN_PASS);
         msg.className = 'msg msg-success';
-        msg.textContent = '✅ Mot de passe affiché dans la boîte de dialogue';
+        msg.textContent = '✅ Mot de passe affiché';
     } else {
         msg.className = 'msg msg-error';
-        msg.textContent = '❌ Code de récupération incorrect';
+        msg.textContent = '❌ Code incorrect';
     }
 }
 
-// ========== LOGOUT ==========
-function logout() {
-    localStorage.removeItem('adminLoggedIn');
-    location.reload();
-}
+function logout() { localStorage.removeItem('adminLoggedIn'); location.reload(); }
 
-// ========== AJOUTER CREDITS ==========
 function addCredits() {
     const email = document.getElementById('userEmail').value.trim();
     const credits = parseInt(document.getElementById('credits').value);
     const msg = document.getElementById('addMsg');
     
-    if (!email || !credits) {
-        msg.className = 'msg msg-error';
-        msg.textContent = '❌ Remplis tous les champs';
-        return;
-    }
-    
-    if (!email.includes('@') || !email.includes('.')) {
-        msg.className = 'msg msg-error';
-        msg.textContent = '❌ Email invalide';
-        return;
-    }
+    if (!email || !credits) { msg.className = 'msg msg-error'; msg.textContent = '❌ Remplis tous les champs'; return; }
     
     let users = JSON.parse(localStorage.getItem('users') || '{}');
-    
-    if (!users[email]) {
-        msg.className = 'msg msg-error';
-        msg.textContent = '❌ Utilisateur introuvable. Vérifie l\'email.';
-        return;
-    }
+    if (!users[email]) { msg.className = 'msg msg-error'; msg.textContent = '❌ Utilisateur introuvable'; return; }
     
     users[email].credits = (users[email].credits || 0) + credits;
     localStorage.setItem('users', JSON.stringify(users));
     
     msg.className = 'msg msg-success';
     msg.textContent = `✅ ${credits} crédits ajoutés à ${email}`;
-    
     document.getElementById('userEmail').value = '';
-    document.getElementById('credits').value = '30';
-    
     loadAll();
 }
 
-// ========== SUPPRIMER UTILISATEUR ==========
-function deleteUser(email) {
-    if (!confirm(`Supprimer définitivement ${email} ?`)) return;
+function checkEmail() {
+    const email = document.getElementById('checkEmail').value.trim();
+    const msg = document.getElementById('checkMsg');
+    if (!email) { msg.className = 'msg msg-error'; msg.textContent = '❌ Entre un email'; return; }
+    
+    let blocked = JSON.parse(localStorage.getItem('blockedUsers') || '[]');
+    if (blocked.includes(email)) { msg.className = 'msg msg-error'; msg.textContent = '🚫 هذا المستخدم محظور'; return; }
+    
+    let users = JSON.parse(localStorage.getItem('users') || '{}');
+    if (users[email]) {
+        msg.className = 'msg msg-success';
+        msg.textContent = `✅ مسجل | 🪙 ${users[email].credits || 0} crédits | 📅 ${(users[email].history || []).length} codes`;
+    } else {
+        msg.className = 'msg';
+        msg.textContent = '⚠️ غير مسجل';
+    }
+}
+
+function banUser() {
+    const email = document.getElementById('checkEmail').value.trim();
+    const msg = document.getElementById('checkMsg');
+    if (!email) { msg.className = 'msg msg-error'; msg.textContent = '❌ Entre un email'; return; }
+    
+    let blocked = JSON.parse(localStorage.getItem('blockedUsers') || '[]');
+    if (blocked.includes(email)) { msg.className = 'msg msg-error'; msg.textContent = '❌ محظور بالفعل'; return; }
+    
+    blocked.push(email);
+    localStorage.setItem('blockedUsers', JSON.stringify(blocked));
     
     let users = JSON.parse(localStorage.getItem('users') || '{}');
     delete users[email];
     localStorage.setItem('users', JSON.stringify(users));
     
+    msg.className = 'msg msg-success';
+    msg.textContent = `🚫 ${email} محظور`;
+    document.getElementById('checkEmail').value = '';
     loadAll();
 }
 
-// ========== CHARGER TOUT ==========
+function deleteUser(email) {
+    if (!confirm(`Supprimer ${email} ?`)) return;
+    let users = JSON.parse(localStorage.getItem('users') || '{}');
+    delete users[email];
+    localStorage.setItem('users', JSON.stringify(users));
+    loadAll();
+}
+
 function loadAll() {
     let users = JSON.parse(localStorage.getItem('users') || '{}');
-    let userEmails = Object.keys(users);
+    let blocked = JSON.parse(localStorage.getItem('blockedUsers') || '[]');
+    let emails = Object.keys(users);
     
-    document.getElementById('statUsers').textContent = userEmails.length;
+    document.getElementById('statUsers').textContent = emails.length;
+    document.getElementById('statBlocked').textContent = blocked.length;
     
     let totalCodes = 0;
-    userEmails.forEach(email => {
-        totalCodes += (users[email].history || []).length;
-    });
+    emails.forEach(e => { totalCodes += (users[e].history || []).length; });
     document.getElementById('statCodes').textContent = totalCodes;
     
     let html = '';
-    if (userEmails.length === 0) {
-        html = '<p style="color:var(--text2); text-align:center;">Aucun utilisateur</p>';
+    if (emails.length === 0) {
+        html = '<p style="color:var(--text2); text-align:center;">لا يوجد مستخدمين</p>';
     } else {
-        userEmails.forEach(email => {
-            const user = users[email];
+        emails.forEach(email => {
+            const u = users[email];
+            const isBlocked = blocked.includes(email);
             html += `
                 <div class="user-row">
-                    <span class="user-email">${email}</span>
-                    <span class="user-credits">🪙 ${user.credits || 0}</span>
+                    <div class="user-info">
+                        <div class="user-email">${email}</div>
+                        <div class="user-date">🪙 ${u.credits || 0} crédits | 📅 ${(u.history || []).length} codes</div>
+                    </div>
+                    <span class="user-status ${isBlocked ? 'status-blocked' : 'status-active'}">${isBlocked ? '🚫 محظور' : '✅ نشط'}</span>
                     <button class="btn btn-red btn-sm" onclick="deleteUser('${email}')">🗑️</button>
                 </div>
             `;
@@ -464,15 +456,10 @@ function loadAll() {
     
     fetch('https://netflix-server-l0ci.onrender.com/')
         .then(r => r.json())
-        .then(data => {
-            document.getElementById('statCookies').textContent = data.comptes || 0;
-        })
-        .catch(() => {
-            document.getElementById('statCookies').textContent = '?';
-        });
+        .then(data => { document.getElementById('statCookies').textContent = data.comptes || 0; })
+        .catch(() => { document.getElementById('statCookies').textContent = '?'; });
 }
 
-// ========== INIT ==========
 if (localStorage.getItem('adminLoggedIn') === 'true') {
     document.getElementById('loginBox').style.display = 'none';
     document.getElementById('panelBox').style.display = 'block';
