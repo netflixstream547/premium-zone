@@ -4,104 +4,353 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>لوحة التحكم - Premium Zone</title>
-    <link rel="stylesheet" href="style.css">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Cairo:wght@400;500;600;700;800;900&display=swap');
+        
+        :root {
+            --bg: #000;
+            --card: #0c0c0c;
+            --border: #1a1a1a;
+            --red: #E50914;
+            --green: #46d369;
+            --gold: #FFD700;
+            --text: #fff;
+            --text2: #888;
+        }
+        
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        
+        body {
+            background: var(--bg);
+            font-family: 'Cairo', sans-serif;
+            color: var(--text);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+        
+        .dashboard {
+            width: 100%;
+            max-width: 480px;
+        }
+        
+        /* Header */
+        .dash-header {
+            text-align: center;
+            margin-bottom: 25px;
+        }
+        
+        .dash-header .logo {
+            font-size: 36px;
+            font-weight: 900;
+            color: var(--red);
+            letter-spacing: 4px;
+        }
+        
+        .dash-header .welcome {
+            color: var(--text2);
+            font-size: 13px;
+            margin-top: 5px;
+        }
+        
+        .dash-header .welcome strong {
+            color: var(--text);
+        }
+        
+        /* Balance */
+        .balance-card {
+            background: var(--card);
+            border: 1px solid var(--border);
+            border-radius: 20px;
+            padding: 35px 25px;
+            text-align: center;
+            margin-bottom: 20px;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .balance-card::before {
+            content: '';
+            position: absolute;
+            top: -30px;
+            right: -30px;
+            width: 100px;
+            height: 100px;
+            background: var(--red);
+            opacity: 0.1;
+            border-radius: 50%;
+        }
+        
+        .balance-label {
+            font-size: 12px;
+            color: var(--text2);
+            text-transform: uppercase;
+            letter-spacing: 3px;
+            margin-bottom: 10px;
+        }
+        
+        .balance-amount {
+            font-size: 64px;
+            font-weight: 900;
+            color: var(--green);
+            line-height: 1;
+        }
+        
+        .balance-amount span {
+            font-size: 18px;
+            color: var(--text2);
+            font-weight: 400;
+            margin-right: 5px;
+        }
+        
+        /* Actions */
+        .actions-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+        
+        .action-btn {
+            background: var(--card);
+            border: 1px solid var(--border);
+            border-radius: 14px;
+            padding: 20px 15px;
+            text-align: center;
+            cursor: pointer;
+            transition: 0.2s;
+            text-decoration: none;
+            color: var(--text);
+        }
+        
+        .action-btn:hover {
+            border-color: var(--red);
+            transform: translateY(-2px);
+        }
+        
+        .action-btn .icon {
+            font-size: 30px;
+            margin-bottom: 8px;
+        }
+        
+        .action-btn .label {
+            font-size: 13px;
+            font-weight: 600;
+        }
+        
+        .action-btn .sublabel {
+            font-size: 10px;
+            color: var(--text2);
+            margin-top: 2px;
+        }
+        
+        .btn-getcode {
+            width: 100%;
+            padding: 16px;
+            background: var(--red);
+            color: white;
+            border: none;
+            border-radius: 14px;
+            font-size: 17px;
+            font-weight: 700;
+            cursor: pointer;
+            font-family: 'Cairo', sans-serif;
+            transition: 0.2s;
+            margin-bottom: 12px;
+        }
+        
+        .btn-getcode:hover {
+            background: #b20710;
+            transform: translateY(-2px);
+        }
+        
+        /* Code result */
+        .code-result {
+            background: var(--card);
+            border: 1px solid var(--green);
+            border-radius: 16px;
+            padding: 25px;
+            text-align: center;
+            margin-bottom: 15px;
+            animation: fadeIn 0.3s;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        .code-result .title {
+            color: var(--green);
+            font-weight: 700;
+            margin-bottom: 12px;
+            font-size: 15px;
+        }
+        
+        .code-result .code {
+            font-size: 30px;
+            font-weight: 900;
+            letter-spacing: 6px;
+            background: #000;
+            padding: 14px;
+            border-radius: 10px;
+            font-family: monospace;
+            color: var(--gold);
+            margin-bottom: 10px;
+        }
+        
+        .code-result .info {
+            font-size: 11px;
+            color: var(--text2);
+            margin-bottom: 12px;
+        }
+        
+        .code-result .btn-open {
+            display: inline-block;
+            padding: 12px 25px;
+            background: var(--green);
+            color: #000;
+            border-radius: 10px;
+            text-decoration: none;
+            font-weight: 700;
+            font-size: 14px;
+        }
+        
+        /* Bottom nav */
+        .bottom-nav {
+            display: flex;
+            justify-content: center;
+            gap: 12px;
+            margin-top: 15px;
+        }
+        
+        .bottom-nav a {
+            color: var(--text2);
+            text-decoration: none;
+            font-size: 12px;
+            transition: 0.2s;
+        }
+        
+        .bottom-nav a:hover { color: var(--red); }
+        
+        .bottom-nav .separator { color: #333; }
+        
+        @media (max-width: 400px) {
+            .actions-grid { grid-template-columns: 1fr; }
+            .balance-amount { font-size: 48px; }
+        }
+    </style>
 </head>
 <body>
 
 <div class="dashboard">
-    <h2>👑 لوحة التحكم</h2>
     
-    <div class="solde-box">
-        <div class="solde-label">رصيدك</div>
-        <div class="solde-amount" id="solde">0</div>
-        <div class="solde-label">Crédits</div>
+    <!-- Header -->
+    <div class="dash-header">
+        <div class="logo">PREMIUM</div>
+        <p class="welcome">مرحباً <strong id="userName">...</strong> 👋</p>
     </div>
     
-    <div class="actions">
-        <a href="earn.html" class="btn btn-green">🎁 كسب crédits</a>
-        <button class="btn btn-red" onclick="getCode()">🍿 الحصول على كود</button>
+    <!-- Balance -->
+    <div class="balance-card">
+        <div class="balance-label">💎 رصيدك</div>
+        <div class="balance-amount" id="solde">0</div>
+        <div class="balance-label" style="margin-top:5px;">Crédit</div>
     </div>
     
+    <!-- Actions -->
+    <div class="actions-grid">
+        <a href="earn.html" class="action-btn">
+            <div class="icon">🎁</div>
+            <div class="label">كسب crédits</div>
+            <div class="sublabel">إعلانات · دعوة أصدقاء</div>
+        </a>
+        <div class="action-btn" onclick="getCode()">
+            <div class="icon">🎬</div>
+            <div class="label">كود Netflix</div>
+            <div class="sublabel">استخدم 1 crédit</div>
+        </div>
+    </div>
+    
+    <!-- Code Result -->
     <div id="codeResult"></div>
     
-    <p style="text-align:center; margin-top:20px;">
-        <a href="index.html" style="color:#E50914; text-decoration:none;">← الرجوع للرئيسية</a>
-    </p>
+    <!-- Bottom Nav -->
+    <div class="bottom-nav">
+        <a href="index.html">الرئيسية</a>
+        <span class="separator">|</span>
+        <a href="earn.html">كسب crédits</a>
+        <span class="separator">|</span>
+        <a href="#" onclick="logout()">خروج</a>
+    </div>
+
 </div>
 
 <script>
 const API_URL = 'https://netflix-server-l0ci.onrender.com';
 
-// Charger le solde
 function loadDashboard() {
     const email = localStorage.getItem('currentUser');
-    if (!email) {
-        window.location.href = 'login.html';
-        return;
-    }
+    if (!email) { window.location.href = 'login.html'; return; }
+    
+    document.getElementById('userName').textContent = email.split('@')[0];
     
     let users = JSON.parse(localStorage.getItem('users') || '{}');
     const user = users[email];
-    
-    if (!user) {
-        window.location.href = 'login.html';
-        return;
-    }
+    if (!user) { window.location.href = 'login.html'; return; }
     
     document.getElementById('solde').textContent = user.credits || 0;
 }
 
 async function getCode() {
     const email = localStorage.getItem('currentUser');
-    if (!email) return;
-    
     let users = JSON.parse(localStorage.getItem('users') || '{}');
     const user = users[email];
     
     if (!user || user.credits < 1) {
         document.getElementById('codeResult').innerHTML = 
-            '<p style="color:#e87c03; text-align:center; margin-top:15px;">❌ لا يوجد لديك crédits كافية. اكسب المزيد.</p>';
+            '<p style="text-align:center; color:#e87c03; margin-top:15px;">❌ لا يوجد لديك crédits كافية. <a href="earn.html" style="color:#E50914;">اكسب المزيد</a></p>';
         return;
     }
     
     document.getElementById('codeResult').innerHTML = 
-        '<p style="text-align:center; margin-top:15px; color:#f0ad4e;">⏳ جاري توليد الكود...</p>';
+        '<p style="text-align:center; color:#f0ad4e; margin-top:15px;">⏳ جاري إنشاء الكود...</p>';
     
     try {
         const resp = await fetch(`${API_URL}/api/generate-code?secret=monpassword123&user_id=${email}`);
         const data = await resp.json();
         
         if (data.success) {
-            // Déduire 1 crédit
             user.credits -= 1;
             user.history = user.history || [];
-            user.history.push({
-                code: data.code,
-                date: new Date().toISOString(),
-                type: 'used'
-            });
-            
+            user.history.push({ code: data.code, date: new Date().toISOString() });
             users[email] = user;
             localStorage.setItem('users', JSON.stringify(users));
             
             document.getElementById('codeResult').innerHTML = `
-                <div class="code-display">
-                    <h3>✅ تم إنشاء الكود !</h3>
-                    <div class="code-value">${data.code}</div>
-                    <p style="color:#aaa; margin-top:10px;">⏰ صالح لمدة 10 دقائق | ⚠️ يستخدم مرة واحدة</p>
-                    <a href="https://www.netflix.com/?code=${data.code}" target="_blank" class="btn btn-red" style="margin-top:15px;">🎬 فتح Netflix</a>
+                <div class="code-result">
+                    <div class="title">✅ تم إنشاء الكود !</div>
+                    <div class="code">${data.code}</div>
+                    <div class="info">⏰ صالح لمدة 10 دقائق | ⚠️ يستخدم مرة واحدة</div>
+                    <a href="https://www.netflix.com/?code=${data.code}" target="_blank" class="btn-open">🎬 فتح Netflix</a>
                 </div>
             `;
-            
             loadDashboard();
         } else {
             document.getElementById('codeResult').innerHTML = 
-                '<p style="color:#e87c03; text-align:center; margin-top:15px;">❌ خطأ: ' + data.error + '</p>';
+                '<p style="text-align:center; color:#e87c03; margin-top:15px;">❌ ' + data.error + '</p>';
         }
     } catch(e) {
         document.getElementById('codeResult').innerHTML = 
-            '<p style="color:#e87c03; text-align:center; margin-top:15px;">❌ خطأ في الاتصال</p>';
+            '<p style="text-align:center; color:#e87c03; margin-top:15px;">❌ خطأ في الاتصال</p>';
     }
+}
+
+function logout() {
+    localStorage.removeItem('currentUser');
+    window.location.href = 'login.html';
 }
 
 loadDashboard();
