@@ -68,7 +68,56 @@
             margin-top: 3px;
         }
         
-        /* Cards */
+        /* Ad Banner Box */
+        .ad-banner-box {
+            background: var(--card);
+            border: 1px solid var(--border);
+            border-radius: 18px;
+            padding: 20px;
+            text-align: center;
+            margin-bottom: 14px;
+        }
+        
+        .ad-banner-box .ad-label {
+            font-size: 13px;
+            color: var(--text2);
+            margin-bottom: 12px;
+        }
+        
+        .ad-banner-box .ad-placeholder {
+            min-height: 200px;
+            background: #000;
+            border: 1px dashed #2a2a2a;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 15px;
+            font-size: 14px;
+            color: #555;
+        }
+        
+        .btn-claim {
+            width: 100%;
+            padding: 14px;
+            background: #333;
+            color: #888;
+            border: none;
+            border-radius: 12px;
+            font-size: 15px;
+            font-weight: 700;
+            cursor: not-allowed;
+            font-family: 'Cairo', sans-serif;
+            transition: 0.3s;
+        }
+        
+        .btn-claim.active {
+            background: var(--green);
+            color: #000;
+            cursor: pointer;
+        }
+        
+        /* Earn Cards */
         .earn-card {
             background: var(--card);
             border: 1px solid var(--border);
@@ -80,8 +129,6 @@
             gap: 18px;
             cursor: pointer;
             transition: 0.2s;
-            position: relative;
-            overflow: hidden;
         }
         
         .earn-card:hover {
@@ -140,23 +187,9 @@
             display: flex;
             align-items: center;
             gap: 18px;
-            transition: 0.2s;
             text-decoration: none;
             color: var(--text);
-            position: relative;
-            overflow: hidden;
-        }
-        
-        .buy-card::before {
-            content: '';
-            position: absolute;
-            top: -20px;
-            right: -20px;
-            width: 80px;
-            height: 80px;
-            background: var(--blue);
-            opacity: 0.1;
-            border-radius: 50%;
+            transition: 0.2s;
         }
         
         .buy-card:hover {
@@ -327,12 +360,23 @@
         <p>اختر طريقة لكسب crédits</p>
     </div>
     
-    <!-- Watch Ad -->
-    <div class="earn-card" onclick="watchAd()">
-        <div class="card-sticker">📺</div>
+    <!-- Bannière pub intégrée -->
+    <div class="ad-banner-box" id="adBannerBox">
+        <div class="ad-label">📺 شاهد الإعلان لتحصل على 1 crédit</div>
+        <div class="ad-placeholder" id="adPlaceholder">
+            <span id="adTimer">⏳ الإعلان هنا</span>
+        </div>
+        <button class="btn-claim" id="btnClaim" disabled onclick="claimBannerCredit()">
+            ⏳ انتظر 10 ثواني...
+        </button>
+    </div>
+    
+    <!-- Lien Work.ink -->
+    <div class="earn-card" onclick="watchWorkink()">
+        <div class="card-sticker">🔗</div>
         <div class="card-info">
-            <h4>مشاهدة إعلان</h4>
-            <p>شاهد إعلان قصير واكسب</p>
+            <h4>مشاهدة إعلان خارجي</h4>
+            <p>افتح رابط خارجي واكسب</p>
         </div>
         <div class="card-badge">+1 🪙</div>
     </div>
@@ -376,6 +420,18 @@ function loadEarn() {
     if (!email) { window.location.href = 'login.html'; return; }
     document.getElementById('refLink').textContent = 
         `https://netflixstream547.github.io/premium-zone/signup.html?ref=${btoa(email)}`;
+    
+    // Activer le bouton bannière après 10 secondes
+    setTimeout(() => {
+        const btn = document.getElementById('btnClaim');
+        if (btn) {
+            btn.disabled = false;
+            btn.textContent = '🎁 الحصول على 1 crédit';
+            btn.classList.add('active');
+        }
+        const timer = document.getElementById('adTimer');
+        if (timer) timer.textContent = '✅ يمكنك الآن الحصول على crédit';
+    }, 10000);
 }
 
 function showPopup(title, sub) {
@@ -390,20 +446,36 @@ function showPopup(title, sub) {
     setTimeout(() => { popup.remove(); }, 3000);
 }
 
-function watchAd() {
+function addCredit() {
+    const email = localStorage.getItem('currentUser');
+    if (!email) return;
+    let users = JSON.parse(localStorage.getItem('users') || '{}');
+    if (users[email]) {
+        users[email].credits = (users[email].credits || 0) + 1;
+        localStorage.setItem('users', JSON.stringify(users));
+        showPopup('مبروك ! 🎉', 'تمت إضافة 1 crédit إلى رصيدك');
+    }
+}
+
+// Méthode 1 : Bannière intégrée
+function claimBannerCredit() {
+    addCredit();
+    document.getElementById('adBannerBox').innerHTML = `
+        <p style="color:var(--green); font-size:16px; font-weight:700; padding:20px;">🎉 مبروك ! تمت إضافة 1 crédit</p>
+    `;
+    setTimeout(() => { location.reload(); }, 2000);
+}
+
+// Méthode 2 : Lien Work.ink
+function watchWorkink() {
     const email = localStorage.getItem('currentUser');
     if (!email) return;
     
-    window.open('https://link-hub.net/6758368/mejnQNKikL8O', '_blank');
+    window.open('https://work.ink/2FM3/premuimzone', '_blank');
     
     setTimeout(() => {
-        let users = JSON.parse(localStorage.getItem('users') || '{}');
-        if (users[email]) {
-            users[email].credits = (users[email].credits || 0) + 1;
-            localStorage.setItem('users', JSON.stringify(users));
-            showPopup('مبروك ! 🎉', 'تمت إضافة 1 crédit إلى رصيدك');
-        }
-    }, 12000);
+        addCredit();
+    }, 10000);
 }
 
 function showRef() {
