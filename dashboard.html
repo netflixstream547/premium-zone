@@ -1,3 +1,4 @@
+```html
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
@@ -238,6 +239,19 @@
             font-size: 14px;
         }
         
+        .error-box {
+            background: var(--card);
+            border: 1px solid #e87c03;
+            border-radius: 14px;
+            padding: 20px;
+            text-align: center;
+            margin-bottom: 15px;
+        }
+        .error-box .error-icon { font-size: 45px; margin-bottom: 10px; }
+        .error-box .error-title { font-size: 16px; font-weight: 700; color: #e87c03; margin-bottom: 5px; }
+        .error-box .error-sub { font-size: 12px; color: var(--text2); }
+        .error-box .error-sub a { color: var(--red); }
+        
         .contact-card {
             background: var(--card);
             border: 1px solid #2a2a2a;
@@ -250,65 +264,22 @@
             transition: 0.2s;
         }
         
-        .contact-card:hover {
-            border-color: #e87c03;
-        }
-        
-        .contact-card .contact-icon {
-            font-size: 24px;
-        }
-        
-        .contact-card .contact-text {
-            flex: 1;
-            font-size: 12px;
-            color: var(--text2);
-        }
-        
-        .contact-card .contact-text strong {
-            color: #e87c03;
-            display: block;
-            font-size: 13px;
-        }
-        
+        .contact-card:hover { border-color: #e87c03; }
+        .contact-card .contact-icon { font-size: 24px; }
+        .contact-card .contact-text { flex: 1; font-size: 12px; color: var(--text2); }
+        .contact-card .contact-text strong { color: #e87c03; display: block; font-size: 13px; }
         .contact-card .btn-contact {
-            padding: 8px 16px;
-            background: #e87c03;
-            color: #000;
-            border: none;
-            border-radius: 8px;
-            font-size: 12px;
-            font-weight: 700;
-            cursor: pointer;
-            font-family: 'Cairo', sans-serif;
-            text-decoration: none;
-            white-space: nowrap;
+            padding: 8px 16px; background: #e87c03; color: #000; border: none;
+            border-radius: 8px; font-size: 12px; font-weight: 700; cursor: pointer;
+            font-family: 'Cairo', sans-serif; text-decoration: none; white-space: nowrap;
         }
         
-        .bottom-nav {
-            display: flex;
-            justify-content: center;
-            gap: 12px;
-            margin-top: 15px;
-        }
-        
-        .bottom-nav a {
-            color: var(--text2);
-            text-decoration: none;
-            font-size: 12px;
-            transition: 0.2s;
-        }
-        
+        .bottom-nav { display: flex; justify-content: center; gap: 12px; margin-top: 15px; }
+        .bottom-nav a { color: var(--text2); text-decoration: none; font-size: 12px; transition: 0.2s; }
         .bottom-nav a:hover { color: var(--red); }
         .bottom-nav .separator { color: #333; }
         
-        .ad-box {
-            background: var(--card);
-            border: 1px solid var(--border);
-            border-radius: 14px;
-            padding: 12px;
-            text-align: center;
-            margin-bottom: 14px;
-        }
+        .ad-box { background: var(--card); border: 1px solid var(--border); border-radius: 14px; padding: 12px; text-align: center; margin-bottom: 14px; }
         .ad-box .ad-label { color: var(--text2); font-size: 10px; margin-bottom: 6px; }
         
         @media (max-width: 400px) {
@@ -329,16 +300,8 @@
     
     <div class="ad-box">
         <div class="ad-label">📢 Publicité</div>
-        <script type="text/javascript">
-            atOptions = {
-                'key' : '05465015283265c1417592a008fdb083',
-                'format' : 'iframe',
-                'height' : 250,
-                'width' : 300,
-                'params' : {}
-            };
-        </script>
-        <script type="text/javascript" src="//www.highperformancedisplayformat.com/05465015283265c1417592a008fdb083/invoke.js"></script>
+        <script type="text/javascript">atOptions={'key':'05465015283265c1417592a008fdb083','format':'iframe','height':250,'width':300,'params':{}};</script>
+        <script src="//www.highperformancedisplayformat.com/05465015283265c1417592a008fdb083/invoke.js"></script>
     </div>
     
     <div class="balance-card">
@@ -348,35 +311,20 @@
     </div>
     
     <div class="actions-grid">
-        <a href="earn.html" class="action-btn">
-            <div class="icon">🎁</div>
-            <div class="label">كسب crédits</div>
-            <div class="sublabel">إعلانات · دعوة أصدقاء</div>
-        </a>
-        <div class="action-btn" onclick="getCode()">
-            <div class="icon">🎬</div>
-            <div class="label">كود Netflix</div>
-            <div class="sublabel">يستهلك <span id="btnCodePrice">1</span> 🪙</div>
-        </div>
+        <a href="earn.html" class="action-btn"><div class="icon">🎁</div><div class="label">كسب crédits</div><div class="sublabel">إعلانات · دعوة أصدقاء</div></a>
+        <div class="action-btn" onclick="getCode()"><div class="icon">🎬</div><div class="label">كود Netflix</div><div class="sublabel">يستهلك <span id="btnCodePrice">1</span> 🪙</div></div>
     </div>
     
     <div class="contact-card">
         <div class="contact-icon">⚠️</div>
-        <div class="contact-text">
-            <strong>هل تواجه مشكلة ؟</strong>
-            تواصل مع الإدارة للمساعدة
-        </div>
+        <div class="contact-text"><strong>هل تواجه مشكلة ؟</strong>تواصل مع الإدارة للمساعدة</div>
         <a href="https://www.facebook.com/tonprofil" target="_blank" class="btn-contact">💬 تواصل</a>
     </div>
     
     <div id="codeResult"></div>
     
     <div class="bottom-nav">
-        <a href="index.html">الرئيسية</a>
-        <span class="separator">|</span>
-        <a href="earn.html">كسب crédits</a>
-        <span class="separator">|</span>
-        <a href="#" onclick="logout()">خروج</a>
+        <a href="index.html">الرئيسية</a><span class="separator">|</span><a href="earn.html">كسب crédits</a><span class="separator">|</span><a href="#" onclick="logout()">خروج</a>
     </div>
 
 </div>
@@ -388,16 +336,12 @@ let codePrice = 1;
 function loadDashboard() {
     const email = localStorage.getItem('currentUser');
     if (!email) { window.location.href = 'login.html'; return; }
-    
     document.getElementById('userName').textContent = email.split('@')[0];
-    
     let users = JSON.parse(localStorage.getItem('users') || '{}');
     const user = users[email];
     if (!user) { window.location.href = 'login.html'; return; }
-    
     let config = JSON.parse(localStorage.getItem('siteConfig') || '{}');
     codePrice = config.codePrice || 1;
-    
     document.getElementById('solde').textContent = user.credits || 0;
     document.getElementById('codePriceDisplay').textContent = codePrice;
     document.getElementById('btnCodePrice').textContent = codePrice;
@@ -410,50 +354,53 @@ async function getCode() {
     
     if (!user || user.credits < codePrice) {
         document.getElementById('codeResult').innerHTML = 
-            '<p style="text-align:center; color:#e87c03; margin-top:15px;">❌ لا يوجد لديك crédits كافية. تحتاج ' + codePrice + ' 🪙. <a href="earn.html" style="color:#E50914;">اكسب المزيد</a></p>';
+            '<div class="error-box"><div class="error-icon">🪙</div><div class="error-title">Crédits insuffisants</div><div class="error-sub">تحتاج ' + codePrice + ' 🪙 لطلب كود جديد. <a href="earn.html">اكسب المزيد</a></div></div>';
         return;
     }
     
-    document.getElementById('codeResult').innerHTML = 
-        '<p style="text-align:center; color:#f0ad4e; margin-top:15px;">⏳ جاري إنشاء الكود...</p>';
+    document.getElementById('codeResult').innerHTML = '<p style="text-align:center; color:#f0ad4e; margin-top:15px;">⏳ جاري إنشاء الكود...</p>';
     
     try {
         const resp = await fetch(`${API_URL}/api/generate-code?secret=monpassword123&user_id=${email}`);
         const data = await resp.json();
         
-        if (data.success) {
-            user.credits -= codePrice;
-            user.history = user.history || [];
-            user.history.push({ code: data.code, date: new Date().toISOString() });
-            users[email] = user;
-            localStorage.setItem('users', JSON.stringify(users));
+        if (!data.success) {
+            let errorMsg = data.error || 'Erreur inconnue';
+            let errorTitle = 'Erreur';
+            let errorIcon = '❌';
             
-            document.getElementById('codeResult').innerHTML = `
-                <div class="code-result">
-                    <div class="title">✅ تم إنشاء الكود !</div>
-                    <div class="code">${data.code}</div>
-                    <div class="info">⏰ صالح لمدة 10 دقائق | ⚠️ يستخدم مرة واحدة</div>
-                    <a href="https://www.netflix.com/?code=${data.code}" target="_blank" class="btn-open">🎬 فتح Netflix</a>
-                </div>
-            `;
-            loadDashboard();
-        } else {
+            if (errorMsg.includes('pleins') || errorMsg.includes('plein')) {
+                errorTitle = 'Tous les comptes sont occupés';
+                errorIcon = '📦';
+                errorMsg = 'جميع الحسابات ممتلئة حالياً. يرجى المحاولة لاحقاً أو التواصل مع الإدارة.';
+            }
+            
             document.getElementById('codeResult').innerHTML = 
-                '<p style="text-align:center; color:#e87c03; margin-top:15px;">❌ ' + data.error + '</p>';
+                '<div class="error-box"><div class="error-icon">' + errorIcon + '</div><div class="error-title">' + errorTitle + '</div><div class="error-sub">' + errorMsg + '</div></div>';
+            return;
         }
+        
+        user.credits -= codePrice;
+        user.history = user.history || [];
+        user.history.push({ code: data.code, date: new Date().toISOString() });
+        users[email] = user;
+        localStorage.setItem('users', JSON.stringify(users));
+        
+        document.getElementById('codeResult').innerHTML = 
+            '<div class="code-result"><div class="title">✅ تم إنشاء الكود !</div><div class="code">' + data.code + '</div><div class="info">⏰ صالح لمدة 10 دقائق | ⚠️ يستخدم مرة واحدة</div><a href="https://www.netflix.com/?code=' + data.code + '" target="_blank" class="btn-open">🎬 فتح Netflix</a></div>';
+        loadDashboard();
+        
     } catch(e) {
         document.getElementById('codeResult').innerHTML = 
-            '<p style="text-align:center; color:#e87c03; margin-top:15px;">❌ خطأ في الاتصال</p>';
+            '<div class="error-box"><div class="error-icon">🔌</div><div class="error-title">Problème de connexion</div><div class="error-sub">تعذر الاتصال بالخادم. يرجى المحاولة لاحقاً.</div></div>';
     }
 }
 
-function logout() {
-    localStorage.removeItem('currentUser');
-    window.location.href = 'login.html';
-}
+function logout() { localStorage.removeItem('currentUser'); window.location.href = 'login.html'; }
 
 loadDashboard();
 </script>
 
 </body>
 </html>
+```
