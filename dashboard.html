@@ -168,13 +168,17 @@ async function loadCredits(email) {
     const doc = await db.collection('users').doc(email).get();
     return doc.exists ? (doc.data().credits || 0) : 0;
 }
+async function getSiteConfig() {
+    const doc = await db.collection('settings').doc('siteConfig').get();
+    return doc.exists ? doc.data() : {};
+}
 
 async function loadDashboard() {
     const email = localStorage.getItem('currentUser');
     if (!email) { window.location.href = 'login.html'; return; }
     document.getElementById('userName').textContent = email.split('@')[0];
     let credits = await loadCredits(email);
-    let config = JSON.parse(localStorage.getItem('siteConfig') || '{}');
+    let config = await getSiteConfig();
     codePrice = config.codePrice || 1;
     document.getElementById('solde').textContent = credits;
     document.getElementById('codePriceDisplay').textContent = codePrice;
@@ -217,4 +221,3 @@ loadDashboard();
 
 </body>
 </html>
-
