@@ -46,13 +46,6 @@
         .badge-green { background: var(--green); color: #000; }
         .badge-gold { background: var(--gold); color: #000; }
         
-        .ref-earn-box { background: var(--card); border: 1px solid var(--gold); border-radius: 18px; padding: 25px; text-align: center; margin-bottom: 14px; }
-        .ref-earn-box .ref-earn-icon { font-size: 50px; margin-bottom: 8px; }
-        .ref-earn-box .ref-earn-title { font-size: 16px; font-weight: 700; color: var(--gold); margin-bottom: 5px; }
-        .ref-earn-box .ref-earn-sub { font-size: 12px; color: var(--text2); margin-bottom: 12px; }
-        .ref-earn-box .ref-earn-code { background: #000; border: 1px solid var(--gold); border-radius: 10px; padding: 10px 15px; font-size: 18px; font-weight: 900; color: white; letter-spacing: 3px; display: inline-block; margin-bottom: 12px; }
-        .ref-earn-box .btn-copy-ref { background: var(--gold); color: #000; border: none; padding: 10px 22px; border-radius: 50px; font-weight: 700; cursor: pointer; font-family: 'Cairo', sans-serif; font-size: 14px; }
-        
         .buy-card { background: linear-gradient(135deg, #0c0c0c, #111); border: 1px solid #2a2a2a; border-radius: 18px; padding: 22px 20px; margin-bottom: 14px; display: flex; align-items: center; gap: 18px; text-decoration: none; color: var(--text); transition: 0.2s; }
         .buy-card:hover { border-color: var(--blue); transform: translateY(-3px); }
         .buy-card .card-sticker { font-size: 52px; flex-shrink: 0; width: 65px; text-align: center; }
@@ -108,13 +101,10 @@
         <div class="card-badge badge-green">+1 🪙</div>
     </div>
     
-    <div class="ref-earn-box">
-        <div class="ref-earn-icon">👥</div>
-        <div class="ref-earn-title">دعوة صديق</div>
-        <div class="ref-earn-sub">شارك code parrainage مع أصدقائك واربح +1 🪙</div>
-        <div class="ref-earn-code" id="refCodeEarn">...</div>
-        <br>
-        <button class="btn-copy-ref" onclick="copyRefCodeEarn()">📋 نسخ code</button>
+    <div class="earn-card" onclick="copyRefCodeEarn()">
+        <div class="card-sticker">👥</div>
+        <div class="card-info"><h4>دعوة صديق</h4><p>انسخ code parrainage وشاركه</p></div>
+        <div class="card-badge badge-gold">+1 🪙</div>
     </div>
     
     <a href="https://www.facebook.com/tonprofil" target="_blank" class="buy-card">
@@ -150,11 +140,9 @@ async function loadCredits(email) {
     return doc.exists ? (doc.data().credits || 0) : 0;
 }
 
-async function loadEarn() {
+function loadEarn() {
     const email = localStorage.getItem('currentUser');
     if (!email) { window.location.href = 'login.html'; return; }
-    const doc = await db.collection('users').doc(email).get();
-    document.getElementById('refCodeEarn').textContent = doc.exists ? (doc.data().refCode || 'N/A') : 'N/A';
     checkDaily();
 }
 
@@ -197,11 +185,21 @@ function watchExternalAd() {
     }, 10000);
 }
 
-function copyRefCodeEarn() {
-    const code = document.getElementById('refCodeEarn').textContent;
-    if (code === 'N/A') { alert('❌ ليس لديك code parrainage'); return; }
-    navigator.clipboard.writeText(code);
-    showPopup('مبروك ! 🎉', 'Code parrainage copié : ' + code);
+async function copyRefCodeEarn() {
+    const email = localStorage.getItem('currentUser');
+    if (!email) return;
+    const doc = await db.collection('users').doc(email).get();
+    if (doc.exists) {
+        let refCode = doc.data().refCode;
+        if (!refCode) {
+            refCode = email.split('@')[0].toUpperCase() + Math.random().toString(36).substring(2, 6).toUpperCase();
+            await db.collection('users').doc(email).set({ refCode: refCode }, { merge: true });
+        }
+        navigator.clipboard.writeText(refCode);
+        showPopup('مبروك ! 🎉', 'Code copié : ' + refCode);
+    } else {
+        alert('❌ خطأ');
+    }
 }
 
 function showPopup(title, sub) {
