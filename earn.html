@@ -1,3 +1,4 @@
+```html
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
@@ -69,7 +70,6 @@
         .back-link a { color: var(--text2); text-decoration: none; font-size: 12px; }
         .back-link a:hover { color: var(--red); }
         
-        /* Bannière pub */
         .ad-box { background: var(--card); border: 1px solid var(--border); border-radius: 14px; padding: 15px; text-align: center; margin-bottom: 14px; }
         .ad-box .ad-label { color: var(--text2); font-size: 11px; margin-bottom: 8px; }
         
@@ -87,19 +87,10 @@
         <p>اختر طريقة لكسب crédits</p>
     </div>
     
-    <!-- Bannière pub -->
     <div class="ad-box">
         <div class="ad-label">📢 Publicité</div>
-        <script type="text/javascript">
-            atOptions = {
-                'key' : '05465015283265c1417592a008fdb083',
-                'format' : 'iframe',
-                'height' : 250,
-                'width' : 300,
-                'params' : {}
-            };
-        </script>
-        <script type="text/javascript" src="//www.highperformancedisplayformat.com/05465015283265c1417592a008fdb083/invoke.js"></script>
+        <script type="text/javascript">atOptions={'key':'05465015283265c1417592a008fdb083','format':'iframe','height':250,'width':300,'params':{}};</script>
+        <script src="//www.highperformancedisplayformat.com/05465015283265c1417592a008fdb083/invoke.js"></script>
     </div>
     
     <div class="daily-box">
@@ -111,28 +102,19 @@
     
     <div class="earn-card" onclick="watchExternalAd()">
         <div class="card-sticker">🔗</div>
-        <div class="card-info">
-            <h4>مشاهدة إعلان خارجي</h4>
-            <p>افتح رابط خارجي واكسب</p>
-        </div>
+        <div class="card-info"><h4>مشاهدة إعلان خارجي</h4><p>افتح رابط خارجي واكسب</p></div>
         <div class="card-badge badge-green">+1 🪙</div>
     </div>
     
     <div class="earn-card" onclick="showRef()">
         <div class="card-sticker">👥</div>
-        <div class="card-info">
-            <h4>دعوة صديق</h4>
-            <p>ادعو أصدقائك واكسب</p>
-        </div>
+        <div class="card-info"><h4>دعوة صديق</h4><p>ادعو أصدقائك واكسب</p></div>
         <div class="card-badge badge-gold">+1 🪙</div>
     </div>
     
     <a href="https://www.facebook.com/tonprofil" target="_blank" class="buy-card">
         <div class="card-sticker">💳</div>
-        <div class="card-info">
-            <h4>شراء crédits</h4>
-            <p>تواصل مع الإدارة على Facebook</p>
-        </div>
+        <div class="card-info"><h4>شراء crédits</h4><p>تواصل مع الإدارة على Facebook</p></div>
         <span class="btn-buy">💬 شراء</span>
     </a>
     
@@ -142,13 +124,43 @@
         <button class="btn-copy" onclick="copyRef()">📋 نسخ الرابط</button>
     </div>
     
-    <div class="back-link">
-        <a href="dashboard.html">↩ العودة للوحة التحكم</a>
-    </div>
+    <div class="back-link"><a href="dashboard.html">↩ العودة للوحة التحكم</a></div>
 
 </div>
 
+<script src="https://www.gstatic.com/firebasejs/10.1.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.1.0/firebase-auth-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.1.0/firebase-firestore-compat.js"></script>
+
 <script>
+const firebaseConfig = {
+    apiKey: "AIzaSyAHXk3N1xEhDMu5HPq1-u3-Z3hJAeJkFRU",
+    authDomain: "premium-zone-5f17d.firebaseapp.com",
+    projectId: "premium-zone-5f17d",
+    storageBucket: "premium-zone-5f17d.firebasestorage.app",
+    messagingSenderId: "402341593844",
+    appId: "1:402341593844:web:e740eebf719fd6b54d54a1"
+};
+if (!firebase.apps.length) { firebase.initializeApp(firebaseConfig); }
+const db = firebase.firestore();
+
+async function saveCredits(email, credits) {
+    await db.collection('users').doc(email).set({ credits: credits, updatedAt: firebase.firestore.FieldValue.serverTimestamp() }, { merge: true });
+}
+
+async function loadCredits(email) {
+    const doc = await db.collection('users').doc(email).get();
+    return doc.exists ? (doc.data().credits || 0) : 0;
+}
+
+async function addCredit(amount) {
+    const email = localStorage.getItem('currentUser');
+    if (!email) return;
+    let current = await loadCredits(email);
+    await saveCredits(email, current + amount);
+    showPopup('مبروك ! 🎉', 'تمت إضافة ' + amount + ' crédit إلى رصيدك');
+}
+
 function loadEarn() {
     const email = localStorage.getItem('currentUser');
     if (!email) { window.location.href = 'login.html'; return; }
@@ -163,26 +175,21 @@ function checkDaily() {
     const btn = document.getElementById('btnDaily');
     const info = document.getElementById('dailyInfo');
     if (lastClaim && (now - parseInt(lastClaim)) < 86400000) {
-        btn.disabled = true;
-        btn.textContent = '⏳ déjà récupéré aujourd\'hui';
+        btn.disabled = true; btn.textContent = '⏳ déjà récupéré aujourd\'hui';
         const remaining = 86400000 - (now - parseInt(lastClaim));
-        const hours = Math.floor(remaining / 3600000);
-        const mins = Math.floor((remaining % 3600000) / 60000);
-        info.textContent = '⏰ disponible dans ' + hours + 'h ' + mins + 'min';
+        info.textContent = '⏰ disponible dans ' + Math.floor(remaining/3600000) + 'h ' + Math.floor((remaining%3600000)/60000) + 'min';
     }
 }
 
-function claimDaily() {
+async function claimDaily() {
     const email = localStorage.getItem('currentUser');
     if (!email) return;
     const lastClaim = localStorage.getItem('lastDaily_' + email);
     const now = Date.now();
     if (lastClaim && (now - parseInt(lastClaim)) < 86400000) { showPopup('⏳ انتظر', 'لقد حصلت على crédit aujourd\'hui'); return; }
-    
     let config = JSON.parse(localStorage.getItem('siteConfig') || '{}');
     let dailyCredits = config.dailyCredits || 1;
-    
-    addCredit(dailyCredits);
+    await addCredit(dailyCredits);
     localStorage.setItem('lastDaily_' + email, now.toString());
     checkDaily();
 }
@@ -195,29 +202,12 @@ function watchExternalAd() {
 }
 
 function showRef() { document.getElementById('refBox').style.display = 'block'; }
-
-function copyRef() {
-    navigator.clipboard.writeText(document.getElementById('refLink').textContent);
-    showPopup('مبروك ! 🎉', 'تم نسخ رابط الدعوة');
-}
-
-function addCredit(amount) {
-    const email = localStorage.getItem('currentUser');
-    if (!email) return;
-    let users = JSON.parse(localStorage.getItem('users') || '{}');
-    if (users[email]) {
-        users[email].credits = (users[email].credits || 0) + amount;
-        localStorage.setItem('users', JSON.stringify(users));
-        showPopup('مبروك ! 🎉', 'تمت إضافة ' + amount + ' crédit إلى رصيدك');
-    }
-}
+function copyRef() { navigator.clipboard.writeText(document.getElementById('refLink').textContent); showPopup('مبروك ! 🎉', 'تم نسخ رابط الدعوة'); }
 
 function showPopup(title, sub) {
-    const popup = document.createElement('div');
-    popup.className = 'success-popup';
+    const popup = document.createElement('div'); popup.className = 'success-popup';
     popup.innerHTML = '<div class="popup-icon">🎉</div><div class="popup-title">' + title + '</div><div class="popup-sub">' + sub + '</div>';
-    document.body.appendChild(popup);
-    setTimeout(() => { popup.remove(); }, 3000);
+    document.body.appendChild(popup); setTimeout(() => { popup.remove(); }, 3000);
 }
 
 loadEarn();
@@ -225,3 +215,4 @@ loadEarn();
 
 </body>
 </html>
+```
