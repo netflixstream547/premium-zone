@@ -21,10 +21,10 @@
         }
         
         * { margin: 0; padding: 0; box-sizing: border-box; }
-        body { background: var(--bg); font-family: 'Cairo', sans-serif; color: var(--text); min-height: 100vh; display: flex; justify-content: center; align-items: center; padding: 20px; }
-        .earn-page { width: 100%; max-width: 480px; }
+        body { background: var(--bg); font-family: 'Cairo', sans-serif; color: var(--text); min-height: 100vh; display: flex; justify-content: center; align-items: flex-start; padding: 20px; overflow-y: auto; }
+        .earn-page { width: 100%; max-width: 480px; padding-bottom: 30px; }
         
-        .page-header { text-align: center; margin-bottom: 30px; }
+        .page-header { text-align: center; margin-bottom: 30px; margin-top: 10px; }
         .page-header .logo { font-size: 40px; font-weight: 900; color: var(--red); letter-spacing: 5px; }
         .page-header .brand { font-size: 12px; color: var(--gold); font-weight: 700; letter-spacing: 3px; margin-top: 2px; }
         .page-header h2 { font-size: 22px; margin-top: 10px; }
@@ -70,8 +70,9 @@
         .back-link a { color: var(--text2); text-decoration: none; font-size: 12px; }
         .back-link a:hover { color: var(--red); }
         
-        .ad-box { background: var(--card); border: 1px solid var(--border); border-radius: 14px; padding: 15px; text-align: center; margin-bottom: 14px; }
-        .ad-box .ad-label { color: var(--text2); font-size: 11px; margin-bottom: 8px; }
+        .ad-box { background: var(--card); border: 1px solid var(--border); border-radius: 14px; padding: 12px; text-align: center; margin-bottom: 14px; overflow: hidden; }
+        .ad-box .ad-label { color: var(--text2); font-size: 10px; margin-bottom: 6px; }
+        .ad-box iframe { max-width: 100% !important; }
         
         @media (max-width: 400px) { .earn-card, .buy-card { flex-direction: column; text-align: center; } .earn-card .card-sticker, .buy-card .card-sticker { width: auto; } }
     </style>
@@ -89,8 +90,16 @@
     
     <div class="ad-box">
         <div class="ad-label">📢 Publicité</div>
-        <script type="text/javascript">atOptions={'key':'05465015283265c1417592a008fdb083','format':'iframe','height':250,'width':300,'params':{}};</script>
-        <script src="//www.highperformancedisplayformat.com/05465015283265c1417592a008fdb083/invoke.js"></script>
+        <script type="text/javascript">
+            atOptions = {
+                'key' : '05465015283265c1417592a008fdb083',
+                'format' : 'iframe',
+                'height' : 250,
+                'width' : 300,
+                'params' : {}
+            };
+        </script>
+        <script type="text/javascript" src="//www.highperformancedisplayformat.com/05465015283265c1417592a008fdb083/invoke.js"></script>
     </div>
     
     <div class="daily-box">
@@ -133,7 +142,6 @@
 <script src="https://www.gstatic.com/firebasejs/10.1.0/firebase-firestore-compat.js"></script>
 
 <script>
-// Firebase Config
 const firebaseConfig = {
     apiKey: "AIzaSyAHXk3N1xEhDMu5HPq1-u3-Z3hJAeJkFRU",
     authDomain: "premium-zone-5f17d.firebaseapp.com",
