@@ -39,6 +39,9 @@
     <label>كلمة المرور</label>
     <input type="password" id="password" placeholder="كلمة المرور (6 أحرف على الأقل)">
     
+    <label>Code de parrainage (اختياري)</label>
+    <input type="text" id="refCode" placeholder="أدخل code parrainage">
+    
     <button class="btn" onclick="signup()">إنشاء الحساب</button>
     <p id="msg"></p>
     
@@ -47,6 +50,7 @@
 
 <script src="https://www.gstatic.com/firebasejs/10.1.0/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.1.0/firebase-auth-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.1.0/firebase-firestore-compat.js"></script>
 
 <script>
 const firebaseConfig = {
@@ -58,8 +62,9 @@ const firebaseConfig = {
     appId: "1:402341593844:web:e740eebf719fd6b54d54a1",
     measurementId: "G-3D7WMPFGZM"
 };
-firebase.initializeApp(firebaseConfig);
+if (!firebase.apps.length) { firebase.initializeApp(firebaseConfig); }
 const auth = firebase.auth();
+const db = firebase.firestore();
 
 const ALLOWED_DOMAINS = ['gmail.com', 'outlook.com', 'hotmail.com'];
 const BLOCKED_DOMAINS = ['mohmal.com', 'mohmal.fr', 'temp-mail.org', 'tempmail.com', '10minutemail.com', 'guerrillamail.com', 'mailinator.com', 'yopmail.com', 'throwaway.email', 'trashmail.com', 'sharklasers.com', 'spam4.me', 'tempr.email', 'discard.email', 'disposable.com', 'maildrop.cc', 'emailinbo.live', 'emailnax.com', 'emailtemp.com'];
@@ -67,20 +72,14 @@ const BLOCKED_DOMAINS = ['mohmal.com', 'mohmal.fr', 'temp-mail.org', 'tempmail.c
 function isBlocked(email) { const domain = email.split('@')[1]?.toLowerCase(); return BLOCKED_DOMAINS.some(d => domain?.includes(d)); }
 function isAllowed(email) { const domain = email.split('@')[1]?.toLowerCase(); return ALLOWED_DOMAINS.includes(domain); }
 
-function saveUser(email) {
-    localStorage.setItem('currentUser', email);
-    let users = JSON.parse(localStorage.getItem('users') || '{}');
-    if (!users[email]) {
-        let config = JSON.parse(localStorage.getItem('siteConfig') || '{}');
-        let welcomeCredits = config.welcomeCredits || 0;
-        users[email] = { password: '', credits: welcomeCredits, history: [], createdAt: Date.now() };
-        localStorage.setItem('users', JSON.stringify(users));
-    }
+async function saveCredits(email, credits) {
+    await db.collection('users').doc(email).set({ credits: credits, updatedAt: firebase.firestore.FieldValue.serverTimestamp() }, { merge: true });
 }
 
 function signup() {
     const email = document.getElementById('email').value.trim();
     const password = document.getElementById('password').value.trim();
+    const refCode = document.getElementById('refCode').value.trim();
     const msg = document.getElementById('msg');
     
     if (!email || !password) { msg.style.color = '#e87c03'; msg.textContent = '❌ أكمل جميع الحقول'; return; }
@@ -91,7 +90,31 @@ function signup() {
     msg.style.color = '#f0ad4e'; msg.textContent = '⏳ جاري إنشاء الحساب...';
     
     auth.createUserWithEmailAndPassword(email, password)
-        .then(() => { saveUser(email); window.location.href = 'dashboard.html'; })
+        .then(async () => {
+            // Générer code de parrainage
+            const myRefCode = email.split('@')[0].toUpperCase() + Math.random().toString(36).substring(2, 6).toUpperCase();
+            
+            let config = JSON.parse(localStorage.getItem('siteConfig') || '{}');
+            let welcomeCredits = config.welcomeCredits || 0;
+            
+            await db.collection('users').doc(email).set({
+                password: '', credits: welcomeCredits, history: [], refCode: myRefCode, createdAt: Date.now()
+            });
+            
+            // Vérifier parrainage
+            if (refCode) {
+                const snapshot = await db.collection('users').where('refCode', '==', refCode).get();
+                if (!snapshot.empty) {
+                    const parrainDoc = snapshot.docs[0];
+                    const parrainEmail = parrainDoc.id;
+                    let parrainCredits = parrainDoc.data().credits || 0;
+                    await saveCredits(parrainEmail, parrainCredits + 1);
+                }
+            }
+            
+            localStorage.setItem('currentUser', email);
+            window.location.href = 'dashboard.html';
+        })
         .catch((error) => { msg.style.color = '#e87c03'; msg.textContent = '❌ ' + (error.code === 'auth/email-already-in-use' ? 'هذا البريد مسجل بالفعل' : error.message); });
 }
 </script>
