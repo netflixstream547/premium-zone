@@ -1,3 +1,4 @@
+```html
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
@@ -335,7 +336,38 @@
     </div>
 </div>
 
+<!-- Firebase -->
+<script src="https://www.gstatic.com/firebasejs/10.1.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.1.0/firebase-auth-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.1.0/firebase-firestore-compat.js"></script>
+
 <script>
+// Firebase Config
+const firebaseConfig = {
+    apiKey: "AIzaSyAHXk3N1xEhDMu5HPq1-u3-Z3hJAeJkFRU",
+    authDomain: "premium-zone-5f17d.firebaseapp.com",
+    projectId: "premium-zone-5f17d",
+    storageBucket: "premium-zone-5f17d.firebasestorage.app",
+    messagingSenderId: "402341593844",
+    appId: "1:402341593844:web:e740eebf719fd6b54d54a1"
+};
+if (!firebase.apps.length) { firebase.initializeApp(firebaseConfig); }
+const db = firebase.firestore();
+
+// Fonctions Firestore
+async function saveCredits(email, credits) {
+    await db.collection('users').doc(email).set({ credits: credits, updatedAt: firebase.firestore.FieldValue.serverTimestamp() }, { merge: true });
+}
+async function loadCredits(email) {
+    const doc = await db.collection('users').doc(email).get();
+    return doc.exists ? (doc.data().credits || 0) : 0;
+}
+async function userExists(email) {
+    const doc = await db.collection('users').doc(email).get();
+    return doc.exists;
+}
+
+// Admin
 const ADMIN_EMAIL = "beyassine789@gmail.com";
 const ADMIN_PASS = "yassine1919";
 const RECOVERY_CODE = "premium2026";
@@ -344,34 +376,22 @@ function adminLogin() {
     const email = document.getElementById('adminEmail').value.trim();
     const pass = document.getElementById('adminPass').value.trim();
     const msg = document.getElementById('loginMsg');
-    
     if (email === ADMIN_EMAIL && pass === ADMIN_PASS) {
         localStorage.setItem('adminLoggedIn', 'true');
         document.getElementById('loginBox').style.display = 'none';
         document.getElementById('panelBox').style.display = 'block';
         loadAll();
-    } else {
-        msg.className = 'msg msg-error';
-        msg.textContent = '❌ Email ou mot de passe incorrect';
-    }
+    } else { msg.className = 'msg msg-error'; msg.textContent = '❌ Email ou mot de passe incorrect'; }
 }
 
 function forgotPassword() {
     const email = document.getElementById('adminEmail').value.trim();
     const msg = document.getElementById('loginMsg');
-    
     if (!email) { msg.textContent = '❌ Entre ton email'; return; }
     if (email !== ADMIN_EMAIL) { msg.textContent = '❌ Email non reconnu'; return; }
-    
     const code = prompt('🔑 Code de récupération :');
-    if (code === RECOVERY_CODE) {
-        alert('✅ Mot de passe : ' + ADMIN_PASS);
-        msg.className = 'msg msg-success';
-        msg.textContent = '✅ Mot de passe affiché';
-    } else {
-        msg.className = 'msg msg-error';
-        msg.textContent = '❌ Code incorrect';
-    }
+    if (code === RECOVERY_CODE) { alert('✅ Mot de passe : ' + ADMIN_PASS); msg.className = 'msg msg-success'; msg.textContent = '✅ Mot de passe affiché'; }
+    else { msg.className = 'msg msg-error'; msg.textContent = '❌ Code incorrect'; }
 }
 
 function logout() { localStorage.removeItem('adminLoggedIn'); location.reload(); }
@@ -394,75 +414,66 @@ function loadConfig() {
     document.getElementById('configWelcome').value = config.welcomeCredits || 0;
 }
 
-function addCredits() {
+// Ajouter crédits (Firestore)
+async function addCredits() {
     const email = document.getElementById('userEmail').value.trim();
     const credits = parseInt(document.getElementById('credits').value);
     const msg = document.getElementById('addMsg');
-    
     if (!email || !credits) { msg.className = 'msg msg-error'; msg.textContent = '❌ Remplis tous les champs'; return; }
-    
-    let users = JSON.parse(localStorage.getItem('users') || '{}');
-    if (!users[email]) { msg.className = 'msg msg-error'; msg.textContent = '❌ Utilisateur introuvable'; return; }
-    
-    users[email].credits = (users[email].credits || 0) + credits;
-    localStorage.setItem('users', JSON.stringify(users));
-    
+    const exists = await userExists(email);
+    if (!exists) { msg.className = 'msg msg-error'; msg.textContent = '❌ Utilisateur introuvable'; return; }
+    let current = await loadCredits(email);
+    await saveCredits(email, current + credits);
     msg.className = 'msg msg-success';
     msg.textContent = `✅ ${credits} crédits ajoutés à ${email}`;
     document.getElementById('userEmail').value = '';
     loadAll();
 }
 
-function checkEmail() {
+// Vérifier email (Firestore)
+async function checkEmail() {
     const email = document.getElementById('checkEmail').value.trim();
     const msg = document.getElementById('checkMsg');
     if (!email) { msg.className = 'msg msg-error'; msg.textContent = '❌ Entre un email'; return; }
-    
     let blocked = JSON.parse(localStorage.getItem('blockedUsers') || '[]');
     if (blocked.includes(email)) { msg.className = 'msg msg-error'; msg.textContent = '🚫 هذا المستخدم محظور'; return; }
-    
-    let users = JSON.parse(localStorage.getItem('users') || '{}');
-    if (users[email]) {
+    const exists = await userExists(email);
+    if (exists) {
+        let credits = await loadCredits(email);
         msg.className = 'msg msg-success';
-        msg.textContent = `✅ مسجل | 🪙 ${users[email].credits || 0} crédits | 📅 ${(users[email].history || []).length} codes`;
-    } else {
-        msg.className = 'msg';
-        msg.textContent = '⚠️ غير مسجل';
-    }
+        msg.textContent = `✅ مسجل | 🪙 ${credits} crédits`;
+    } else { msg.className = 'msg'; msg.textContent = '⚠️ غير مسجل'; }
 }
 
+// Bloquer utilisateur
 function banUser() {
     const email = document.getElementById('checkEmail').value.trim();
     const msg = document.getElementById('checkMsg');
     if (!email) { msg.className = 'msg msg-error'; msg.textContent = '❌ Entre un email'; return; }
-    
     let blocked = JSON.parse(localStorage.getItem('blockedUsers') || '[]');
     if (blocked.includes(email)) { msg.className = 'msg msg-error'; msg.textContent = '❌ محظور بالفعل'; return; }
-    
     blocked.push(email);
     localStorage.setItem('blockedUsers', JSON.stringify(blocked));
-    
-    let users = JSON.parse(localStorage.getItem('users') || '{}');
-    delete users[email];
-    localStorage.setItem('users', JSON.stringify(users));
-    
+    db.collection('users').doc(email).delete();
     msg.className = 'msg msg-success';
     msg.textContent = `🚫 ${email} محظور`;
     document.getElementById('checkEmail').value = '';
     loadAll();
 }
 
-function deleteUser(email) {
+// Supprimer utilisateur
+async function deleteUser(email) {
     if (!confirm(`Supprimer ${email} ?`)) return;
-    let users = JSON.parse(localStorage.getItem('users') || '{}');
-    delete users[email];
-    localStorage.setItem('users', JSON.stringify(users));
+    await db.collection('users').doc(email).delete();
     loadAll();
 }
 
-function loadAll() {
-    let users = JSON.parse(localStorage.getItem('users') || '{}');
+// Charger tout (Firestore)
+async function loadAll() {
     let blocked = JSON.parse(localStorage.getItem('blockedUsers') || '[]');
+    const snapshot = await db.collection('users').get();
+    let users = {};
+    snapshot.forEach(doc => { users[doc.id] = doc.data(); });
     let emails = Object.keys(users);
     
     document.getElementById('statUsers').textContent = emails.length;
@@ -510,3 +521,4 @@ if (localStorage.getItem('adminLoggedIn') === 'true') {
 
 </body>
 </html>
+```
