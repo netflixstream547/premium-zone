@@ -128,11 +128,12 @@
 
 </div>
 
+<!-- Firebase -->
 <script src="https://www.gstatic.com/firebasejs/10.1.0/firebase-app-compat.js"></script>
-<script src="https://www.gstatic.com/firebasejs/10.1.0/firebase-auth-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.1.0/firebase-firestore-compat.js"></script>
 
 <script>
+// Firebase Config
 const firebaseConfig = {
     apiKey: "AIzaSyAHXk3N1xEhDMu5HPq1-u3-Z3hJAeJkFRU",
     authDomain: "premium-zone-5f17d.firebaseapp.com",
@@ -147,18 +148,9 @@ const db = firebase.firestore();
 async function saveCredits(email, credits) {
     await db.collection('users').doc(email).set({ credits: credits, updatedAt: firebase.firestore.FieldValue.serverTimestamp() }, { merge: true });
 }
-
 async function loadCredits(email) {
     const doc = await db.collection('users').doc(email).get();
     return doc.exists ? (doc.data().credits || 0) : 0;
-}
-
-async function addCredit(amount) {
-    const email = localStorage.getItem('currentUser');
-    if (!email) return;
-    let current = await loadCredits(email);
-    await saveCredits(email, current + amount);
-    showPopup('مبروك ! 🎉', 'تمت إضافة ' + amount + ' crédit إلى رصيدك');
 }
 
 function loadEarn() {
@@ -189,8 +181,10 @@ async function claimDaily() {
     if (lastClaim && (now - parseInt(lastClaim)) < 86400000) { showPopup('⏳ انتظر', 'لقد حصلت على crédit aujourd\'hui'); return; }
     let config = JSON.parse(localStorage.getItem('siteConfig') || '{}');
     let dailyCredits = config.dailyCredits || 1;
-    await addCredit(dailyCredits);
+    let current = await loadCredits(email);
+    await saveCredits(email, current + dailyCredits);
     localStorage.setItem('lastDaily_' + email, now.toString());
+    showPopup('مبروك ! 🎉', 'تمت إضافة ' + dailyCredits + ' crédit à رصيدك');
     checkDaily();
 }
 
@@ -198,11 +192,19 @@ function watchExternalAd() {
     const email = localStorage.getItem('currentUser');
     if (!email) return;
     window.open('https://link-hub.net/6758368/mejnQNKikL8O', '_blank');
-    setTimeout(() => { addCredit(1); }, 10000);
+    setTimeout(async () => {
+        let current = await loadCredits(email);
+        await saveCredits(email, current + 1);
+        showPopup('مبروك ! 🎉', 'تمت إضافة 1 crédit à رصيدك');
+    }, 10000);
 }
 
 function showRef() { document.getElementById('refBox').style.display = 'block'; }
-function copyRef() { navigator.clipboard.writeText(document.getElementById('refLink').textContent); showPopup('مبروك ! 🎉', 'تم نسخ رابط الدعوة'); }
+
+function copyRef() {
+    navigator.clipboard.writeText(document.getElementById('refLink').textContent);
+    showPopup('مبروك ! 🎉', 'تم نسخ رابط الدعوة');
+}
 
 function showPopup(title, sub) {
     const popup = document.createElement('div'); popup.className = 'success-popup';
