@@ -1,3 +1,4 @@
+```html
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
@@ -39,11 +40,6 @@
         .dash-header .brand { font-size: 13px; color: var(--gold); font-weight: 700; letter-spacing: 3px; text-transform: uppercase; }
         .dash-header .welcome { color: var(--text2); font-size: 14px; margin-top: 8px; }
         .dash-header .welcome strong { color: var(--text); font-size: 16px; }
-        
-        .ref-code-box { background: var(--card); border: 1px solid var(--gold); border-radius: 14px; padding: 18px; text-align: center; margin-bottom: 14px; }
-        .ref-code-box .ref-label { color: var(--gold); font-size: 12px; margin-bottom: 5px; }
-        .ref-code-box .ref-code { font-size: 22px; font-weight: 900; color: white; letter-spacing: 3px; margin-bottom: 10px; }
-        .ref-code-box .btn-copy-ref { background: var(--gold); color: #000; border: none; padding: 8px 18px; border-radius: 8px; font-weight: 700; cursor: pointer; font-family: 'Cairo', sans-serif; font-size: 13px; }
         
         .balance-card { background: var(--card); border: 1px solid var(--border); border-radius: 20px; padding: 35px 25px; text-align: center; margin-bottom: 20px; position: relative; overflow: hidden; }
         .balance-card::before { content: ''; position: absolute; top: -30px; right: -30px; width: 100px; height: 100px; background: var(--red); opacity: 0.08; border-radius: 50%; }
@@ -91,7 +87,6 @@
         .ad-box .ad-label { color: var(--text2); font-size: 10px; margin-bottom: 6px; }
         .ad-box iframe { max-width: 100% !important; }
         
-        /* Modal */
         .modal-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.85); z-index: 1000; display: flex; align-items: center; justify-content: center; }
         .modal-box { background: var(--card); border: 1px solid var(--border); border-radius: 20px; padding: 30px 25px; text-align: center; max-width: 400px; width: 90%; animation: fadeIn 0.3s; }
         .modal-box .modal-icon { font-size: 55px; margin-bottom: 15px; }
@@ -114,14 +109,6 @@
         <div class="logo">PREMIUM</div>
         <div class="brand">👑 PREMIUM ZONE 👑</div>
         <p class="welcome">مرحباً <strong id="userName">...</strong> 👋</p>
-    </div>
-    
-    <!-- Code de parrainage -->
-    <div class="ref-code-box">
-        <div class="ref-label">🔗 Code de parrainage</div>
-        <div class="ref-code" id="refCodeDisplay">...</div>
-        <button class="btn-copy-ref" onclick="copyRefCode()">📋 نسخ code</button>
-        <p style="color:var(--text2); font-size:10px; margin-top:8px;">شارك هذا code مع أصدقائك لتربح +1 🪙</p>
     </div>
     
     <div class="ad-box">
@@ -182,12 +169,6 @@ async function loadCredits(email) {
     return doc.exists ? (doc.data().credits || 0) : 0;
 }
 
-function copyRefCode() {
-    const code = document.getElementById('refCodeDisplay').textContent;
-    navigator.clipboard.writeText(code);
-    alert('✅ Code de parrainage copié : ' + code);
-}
-
 async function loadDashboard() {
     const email = localStorage.getItem('currentUser');
     if (!email) { window.location.href = 'login.html'; return; }
@@ -198,17 +179,12 @@ async function loadDashboard() {
     document.getElementById('solde').textContent = credits;
     document.getElementById('codePriceDisplay').textContent = codePrice;
     document.getElementById('btnCodePrice').textContent = codePrice;
-    
-    // Afficher le code de parrainage
-    const doc = await db.collection('users').doc(email).get();
-    document.getElementById('refCodeDisplay').textContent = doc.data().refCode || 'N/A';
 }
 
 async function getCode() {
     const email = localStorage.getItem('currentUser');
     let credits = await loadCredits(email);
     const hasSeenWarning = localStorage.getItem('seenExtensionWarning_' + email);
-    
     if (!hasSeenWarning) { showExtensionWarning(email, credits); return; }
     proceedToGetCode(email, credits);
 }
@@ -241,3 +217,4 @@ loadDashboard();
 
 </body>
 </html>
+```
