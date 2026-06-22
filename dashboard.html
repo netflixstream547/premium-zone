@@ -1,3 +1,4 @@
+```html
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
@@ -20,9 +21,21 @@
         
         * { margin: 0; padding: 0; box-sizing: border-box; }
         
-        body { background: var(--bg); font-family: 'Cairo', sans-serif; color: var(--text); min-height: 100vh; display: flex; justify-content: center; align-items: center; padding: 20px; }
-        .dashboard { width: 100%; max-width: 480px; }
-        .dash-header { text-align: center; margin-bottom: 30px; }
+        body {
+            background: var(--bg);
+            font-family: 'Cairo', sans-serif;
+            color: var(--text);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: flex-start;
+            padding: 20px;
+            overflow-y: auto;
+        }
+        
+        .dashboard { width: 100%; max-width: 480px; padding-bottom: 30px; }
+        
+        .dash-header { text-align: center; margin-bottom: 30px; margin-top: 10px; }
         .dash-header .logo { font-size: 40px; font-weight: 900; color: var(--red); letter-spacing: 6px; margin-bottom: 2px; }
         .dash-header .brand { font-size: 13px; color: var(--gold); font-weight: 700; letter-spacing: 3px; text-transform: uppercase; }
         .dash-header .welcome { color: var(--text2); font-size: 14px; margin-top: 8px; }
@@ -70,8 +83,20 @@
         .bottom-nav a:hover { color: var(--red); }
         .bottom-nav .separator { color: #333; }
         
-        .ad-box { background: var(--card); border: 1px solid var(--border); border-radius: 14px; padding: 12px; text-align: center; margin-bottom: 14px; }
+        .ad-box { background: var(--card); border: 1px solid var(--border); border-radius: 14px; padding: 12px; text-align: center; margin-bottom: 14px; overflow: hidden; }
         .ad-box .ad-label { color: var(--text2); font-size: 10px; margin-bottom: 6px; }
+        .ad-box iframe { max-width: 100% !important; }
+        
+        /* Modal */
+        .modal-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.85); z-index: 1000; display: flex; align-items: center; justify-content: center; }
+        .modal-box { background: var(--card); border: 1px solid var(--border); border-radius: 20px; padding: 30px 25px; text-align: center; max-width: 400px; width: 90%; animation: fadeIn 0.3s; }
+        .modal-box .modal-icon { font-size: 55px; margin-bottom: 15px; }
+        .modal-box .modal-title { font-size: 18px; font-weight: 700; margin-bottom: 8px; }
+        .modal-box .modal-sub { font-size: 13px; color: var(--text2); margin-bottom: 20px; }
+        .modal-box .btn-download { display: inline-block; padding: 12px 25px; background: var(--red); color: white; border-radius: 10px; text-decoration: none; font-weight: 700; font-size: 14px; margin: 8px 5px; }
+        .modal-box .btn-skip { display: inline-block; padding: 12px 25px; background: #333; color: #aaa; border: none; border-radius: 10px; font-weight: 700; font-size: 14px; cursor: pointer; font-family: 'Cairo', sans-serif; margin: 8px 5px; }
+        .modal-box .dont-show { display: block; margin-top: 12px; color: var(--text2); font-size: 11px; cursor: pointer; }
+        .modal-box .dont-show:hover { color: var(--red); }
         
         @media (max-width: 400px) { .actions-grid { grid-template-columns: 1fr; } .balance-amount { font-size: 48px; } }
     </style>
@@ -125,7 +150,6 @@
 const API_URL = 'https://netflix-server-l0ci.onrender.com';
 let codePrice = 1;
 
-// Firebase
 const firebaseConfig = {
     apiKey: "AIzaSyAHXk3N1xEhDMu5HPq1-u3-Z3hJAeJkFRU",
     authDomain: "premium-zone-5f17d.firebaseapp.com",
@@ -134,14 +158,12 @@ const firebaseConfig = {
     messagingSenderId: "402341593844",
     appId: "1:402341593844:web:e740eebf719fd6b54d54a1"
 };
-
 if (!firebase.apps.length) { firebase.initializeApp(firebaseConfig); }
 const db = firebase.firestore();
 
 async function saveCredits(email, credits) {
     await db.collection('users').doc(email).set({ credits: credits, updatedAt: firebase.firestore.FieldValue.serverTimestamp() }, { merge: true });
 }
-
 async function loadCredits(email) {
     const doc = await db.collection('users').doc(email).get();
     return doc.exists ? (doc.data().credits || 0) : 0;
@@ -162,7 +184,39 @@ async function loadDashboard() {
 async function getCode() {
     const email = localStorage.getItem('currentUser');
     let credits = await loadCredits(email);
+    const hasSeenWarning = localStorage.getItem('seenExtensionWarning_' + email);
     
+    if (!hasSeenWarning) {
+        showExtensionWarning(email, credits);
+        return;
+    }
+    proceedToGetCode(email, credits);
+}
+
+function showExtensionWarning(email, credits) {
+    const modal = document.createElement('div');
+    modal.className = 'modal-overlay';
+    modal.id = 'warningModal';
+    modal.innerHTML = `
+        <div class="modal-box">
+            <div class="modal-icon">🧩</div>
+            <div class="modal-title">هل قمت بتثبيت الإضافة ؟</div>
+            <div class="modal-sub">يجب تثبيت إضافة Netflix Auto Connect لتتمكن من استخدام الكود</div>
+            <a href="https://drive.google.com/file/d/1JAqgRaHh-zNMrs-SOYu-zjc6arDPYZc6/view?usp=sharing" target="_blank" class="btn-download">📥 تحميل الإضافة</a>
+            <button class="btn-skip" onclick="closeWarningAndProceed('${email}', ${credits})">✅ نعم، الإضافة مثبتة</button>
+            <span class="dont-show" onclick="closeWarningAndProceed('${email}', ${credits}); localStorage.setItem('seenExtensionWarning_${email}', 'true');">⚠️ لا تظهر هذا مجدداً</span>
+        </div>
+    `;
+    document.body.appendChild(modal);
+}
+
+function closeWarningAndProceed(email, credits) {
+    const modal = document.getElementById('warningModal');
+    if (modal) modal.remove();
+    proceedToGetCode(email, credits);
+}
+
+async function proceedToGetCode(email, credits) {
     if (credits < codePrice) {
         document.getElementById('codeResult').innerHTML = '<div class="error-box"><div class="error-icon">🪙</div><div class="error-title">Crédits insuffisants</div><div class="error-sub">تحتاج ' + codePrice + ' 🪙 لطلب كود جديد. <a href="earn.html">اكسب المزيد</a></div></div>';
         return;
@@ -199,3 +253,4 @@ loadDashboard();
 
 </body>
 </html>
+```
