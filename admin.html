@@ -1,4 +1,4 @@
-```html
+
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
@@ -67,7 +67,6 @@
         
         .logout-btn:hover { border-color: var(--red); color: var(--red); }
         
-        /* Stats */
         .stats-grid {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
@@ -85,12 +84,10 @@
         }
         
         .stat-card:hover { border-color: var(--red); }
-        
         .stat-card .stat-icon { font-size: 28px; margin-bottom: 8px; }
         .stat-card .stat-num { font-size: 32px; font-weight: 900; }
         .stat-card .stat-label { color: var(--text2); font-size: 11px; margin-top: 4px; }
         
-        /* Sections */
         .section-card {
             background: var(--card);
             border: 1px solid var(--border);
@@ -109,7 +106,6 @@
         
         .section-card h3 .icon { font-size: 20px; }
         
-        /* Form */
         .form-row {
             display: flex;
             gap: 10px;
@@ -156,7 +152,6 @@
         .btn-outline:hover { border-color: var(--red); color: var(--red); }
         .btn-sm { padding: 8px 14px; font-size: 11px; border-radius: 6px; }
         
-        /* User list */
         .user-list { max-height: 400px; overflow-y: auto; }
         
         .user-row {
@@ -174,7 +169,6 @@
         }
         
         .user-row:hover { border-color: #333; }
-        
         .user-info { flex: 1; min-width: 150px; }
         .user-email { font-size: 14px; word-break: break-all; font-weight: 600; }
         .user-date { font-size: 11px; color: var(--text2); margin-top: 2px; }
@@ -187,7 +181,6 @@
         .msg-success { color: var(--green); }
         .msg-error { color: #e87c03; }
         
-        /* Login */
         .login-box {
             max-width: 440px;
             margin: 80px auto;
@@ -237,7 +230,6 @@
 </head>
 <body>
 
-<!-- LOGIN -->
 <div class="login-box" id="loginBox">
     <h2>🔐 <span>Admin</span> Panel</h2>
     <p class="subtitle">لوحة التحكم</p>
@@ -248,7 +240,6 @@
     <p id="loginMsg" class="msg"></p>
 </div>
 
-<!-- PANEL -->
 <div class="admin-container" id="panelBox" style="display:none;">
     <div class="admin-header">
         <h1>⚙️ <span>Premium Zone</span> Panel</h1>
@@ -256,44 +247,18 @@
     </div>
 
     <div class="stats-grid">
-        <div class="stat-card">
-            <div class="stat-icon">👥</div>
-            <div class="stat-num" id="statUsers" style="color:var(--red);">0</div>
-            <div class="stat-label">مستخدم</div>
-        </div>
-        <div class="stat-card">
-            <div class="stat-icon">🎬</div>
-            <div class="stat-num" id="statCodes" style="color:var(--green);">0</div>
-            <div class="stat-label">كود مستخدم</div>
-        </div>
-        <div class="stat-card">
-            <div class="stat-icon">📦</div>
-            <div class="stat-num" id="statCookies" style="color:var(--gold);">0</div>
-            <div class="stat-label">حساب Netflix</div>
-        </div>
-        <div class="stat-card">
-            <div class="stat-icon">🚫</div>
-            <div class="stat-num" id="statBlocked" style="color:#e87c03;">0</div>
-            <div class="stat-label">محظور</div>
-        </div>
+        <div class="stat-card"><div class="stat-icon">👥</div><div class="stat-num" id="statUsers" style="color:var(--red);">0</div><div class="stat-label">مستخدم</div></div>
+        <div class="stat-card"><div class="stat-icon">🎬</div><div class="stat-num" id="statCodes" style="color:var(--green);">0</div><div class="stat-label">كود مستخدم</div></div>
+        <div class="stat-card"><div class="stat-icon">📦</div><div class="stat-num" id="statCookies" style="color:var(--gold);">0</div><div class="stat-label">حساب Netflix</div></div>
+        <div class="stat-card"><div class="stat-icon">🚫</div><div class="stat-num" id="statBlocked" style="color:#e87c03;">0</div><div class="stat-label">محظور</div></div>
     </div>
 
-    <!-- Configuration du site -->
     <div class="section-card">
         <h3><span class="icon">⚙️</span> Configuration du site</h3>
         <div class="form-row">
-            <div style="flex:1; min-width:140px;">
-                <label style="display:block; color:#aaa; font-size:12px; margin-bottom:5px;">💎 Prix d'un code (jetons)</label>
-                <input type="number" id="configCodePrice" value="1" min="1" style="width:100%; padding:13px; background:#0a0a0a; border:1px solid var(--border); border-radius:10px; color:var(--text); font-family:'Cairo',sans-serif;">
-            </div>
-            <div style="flex:1; min-width:140px;">
-                <label style="display:block; color:#aaa; font-size:12px; margin-bottom:5px;">🎁 Jetons quotidiens gratuits</label>
-                <input type="number" id="configDaily" value="1" min="0" style="width:100%; padding:13px; background:#0a0a0a; border:1px solid var(--border); border-radius:10px; color:var(--text); font-family:'Cairo',sans-serif;">
-            </div>
-            <div style="flex:1; min-width:140px;">
-                <label style="display:block; color:#aaa; font-size:12px; margin-bottom:5px;">🎉 Jetons de bienvenue</label>
-                <input type="number" id="configWelcome" value="0" min="0" style="width:100%; padding:13px; background:#0a0a0a; border:1px solid var(--border); border-radius:10px; color:var(--text); font-family:'Cairo',sans-serif;">
-            </div>
+            <div style="flex:1; min-width:140px;"><label style="display:block; color:#aaa; font-size:12px; margin-bottom:5px;">💎 Prix d'un code (jetons)</label><input type="number" id="configCodePrice" value="1" min="1" style="width:100%; padding:13px; background:#0a0a0a; border:1px solid var(--border); border-radius:10px; color:var(--text); font-family:'Cairo',sans-serif;"></div>
+            <div style="flex:1; min-width:140px;"><label style="display:block; color:#aaa; font-size:12px; margin-bottom:5px;">🎁 Jetons quotidiens gratuits</label><input type="number" id="configDaily" value="1" min="0" style="width:100%; padding:13px; background:#0a0a0a; border:1px solid var(--border); border-radius:10px; color:var(--text); font-family:'Cairo',sans-serif;"></div>
+            <div style="flex:1; min-width:140px;"><label style="display:block; color:#aaa; font-size:12px; margin-bottom:5px;">🎉 Jetons de bienvenue</label><input type="number" id="configWelcome" value="0" min="0" style="width:100%; padding:13px; background:#0a0a0a; border:1px solid var(--border); border-radius:10px; color:var(--text); font-family:'Cairo',sans-serif;"></div>
         </div>
         <button class="btn btn-green" onclick="saveConfig()" style="margin-top:15px;">💾 Sauvegarder la configuration</button>
         <p id="configMsg" class="msg"></p>
@@ -301,48 +266,34 @@
 
     <div class="section-card">
         <h3><span class="icon">💰</span> إضافة crédits</h3>
-        <div class="form-row">
-            <input type="email" id="userEmail" placeholder="Email المستخدم">
-            <input type="number" id="credits" value="30" min="1" placeholder="Crédits">
-            <button class="btn btn-green" onclick="addCredits()">✅ إضافة</button>
-        </div>
+        <div class="form-row"><input type="email" id="userEmail" placeholder="Email المستخدم"><input type="number" id="credits" value="30" min="1" placeholder="Crédits"><button class="btn btn-green" onclick="addCredits()">✅ إضافة</button></div>
         <p id="addMsg" class="msg"></p>
     </div>
 
     <div class="section-card">
         <h3><span class="icon">🔍</span> فحص مستخدم</h3>
-        <div class="form-row">
-            <input type="email" id="checkEmail" placeholder="Email للفحص">
-            <button class="btn btn-blue" onclick="checkEmail()">🔍 فحص</button>
-            <button class="btn btn-red" onclick="banUser()">🚫 حظر</button>
-        </div>
+        <div class="form-row"><input type="email" id="checkEmail" placeholder="Email للفحص"><button class="btn btn-blue" onclick="checkEmail()">🔍 فحص</button><button class="btn btn-red" onclick="banUser()">🚫 حظر</button></div>
         <p id="checkMsg" class="msg"></p>
     </div>
 
     <div class="section-card">
         <h3><span class="icon">👥</span> قائمة المستخدمين</h3>
-        <div class="user-list" id="userList">
-            <p style="color:var(--text2); text-align:center;">لا يوجد مستخدمين</p>
-        </div>
+        <div class="user-list" id="userList"><p style="color:var(--text2); text-align:center;">لا يوجد مستخدمين</p></div>
     </div>
 
     <div class="section-card">
         <h3><span class="icon">📦</span> حسابات Netflix</h3>
-        <p style="color:var(--text2); font-size:13px; margin-bottom:12px;">
-            لإضافة كوكيز جديد، ضع ملف JSON في روم admin على Discord.
-        </p>
+        <p style="color:var(--text2); font-size:13px; margin-bottom:12px;">لإضافة كوكيز جديد، ضع ملف JSON في روم admin على Discord.</p>
         <button class="btn btn-outline" onclick="window.open('https://netflix-server-l0ci.onrender.com/')">🔍 فحص حالة API</button>
         <button class="btn btn-outline" onclick="window.open('https://discord.com/channels/')" style="margin-right:8px;">💬 Discord Admin</button>
     </div>
 </div>
 
-<!-- Firebase -->
 <script src="https://www.gstatic.com/firebasejs/10.1.0/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.1.0/firebase-auth-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.1.0/firebase-firestore-compat.js"></script>
 
 <script>
-// Firebase Config
 const firebaseConfig = {
     apiKey: "AIzaSyAHXk3N1xEhDMu5HPq1-u3-Z3hJAeJkFRU",
     authDomain: "premium-zone-5f17d.firebaseapp.com",
@@ -354,7 +305,6 @@ const firebaseConfig = {
 if (!firebase.apps.length) { firebase.initializeApp(firebaseConfig); }
 const db = firebase.firestore();
 
-// Fonctions Firestore
 async function saveCredits(email, credits) {
     await db.collection('users').doc(email).set({ credits: credits, updatedAt: firebase.firestore.FieldValue.serverTimestamp() }, { merge: true });
 }
@@ -367,7 +317,6 @@ async function userExists(email) {
     return doc.exists;
 }
 
-// Admin
 const ADMIN_EMAIL = "beyassine789@gmail.com";
 const ADMIN_PASS = "yassine1919";
 const RECOVERY_CODE = "premium2026";
@@ -376,12 +325,8 @@ function adminLogin() {
     const email = document.getElementById('adminEmail').value.trim();
     const pass = document.getElementById('adminPass').value.trim();
     const msg = document.getElementById('loginMsg');
-    if (email === ADMIN_EMAIL && pass === ADMIN_PASS) {
-        localStorage.setItem('adminLoggedIn', 'true');
-        document.getElementById('loginBox').style.display = 'none';
-        document.getElementById('panelBox').style.display = 'block';
-        loadAll();
-    } else { msg.className = 'msg msg-error'; msg.textContent = '❌ Email ou mot de passe incorrect'; }
+    if (email === ADMIN_EMAIL && pass === ADMIN_PASS) { localStorage.setItem('adminLoggedIn', 'true'); document.getElementById('loginBox').style.display = 'none'; document.getElementById('panelBox').style.display = 'block'; loadAll(); }
+    else { msg.className = 'msg msg-error'; msg.textContent = '❌ Email ou mot de passe incorrect'; }
 }
 
 function forgotPassword() {
@@ -396,13 +341,14 @@ function forgotPassword() {
 
 function logout() { localStorage.removeItem('adminLoggedIn'); location.reload(); }
 
-function saveConfig() {
+async function saveConfig() {
     const config = {
         codePrice: parseInt(document.getElementById('configCodePrice').value) || 1,
         dailyCredits: parseInt(document.getElementById('configDaily').value) || 1,
         welcomeCredits: parseInt(document.getElementById('configWelcome').value) || 0
     };
     localStorage.setItem('siteConfig', JSON.stringify(config));
+    await db.collection('settings').doc('siteConfig').set(config);
     document.getElementById('configMsg').className = 'msg msg-success';
     document.getElementById('configMsg').textContent = '✅ Configuration sauvegardée !';
 }
@@ -414,7 +360,6 @@ function loadConfig() {
     document.getElementById('configWelcome').value = config.welcomeCredits || 0;
 }
 
-// Ajouter crédits (Firestore)
 async function addCredits() {
     const email = document.getElementById('userEmail').value.trim();
     const credits = parseInt(document.getElementById('credits').value);
@@ -424,13 +369,10 @@ async function addCredits() {
     if (!exists) { msg.className = 'msg msg-error'; msg.textContent = '❌ Utilisateur introuvable'; return; }
     let current = await loadCredits(email);
     await saveCredits(email, current + credits);
-    msg.className = 'msg msg-success';
-    msg.textContent = `✅ ${credits} crédits ajoutés à ${email}`;
+    msg.className = 'msg msg-success'; msg.textContent = `✅ ${credits} crédits ajoutés à ${email}`;
     document.getElementById('userEmail').value = '';
-    // loadAll sera appelé automatiquement par le listener
 }
 
-// Vérifier email (Firestore)
 async function checkEmail() {
     const email = document.getElementById('checkEmail').value.trim();
     const msg = document.getElementById('checkMsg');
@@ -438,90 +380,47 @@ async function checkEmail() {
     let blocked = JSON.parse(localStorage.getItem('blockedUsers') || '[]');
     if (blocked.includes(email)) { msg.className = 'msg msg-error'; msg.textContent = '🚫 هذا المستخدم محظور'; return; }
     const exists = await userExists(email);
-    if (exists) {
-        let credits = await loadCredits(email);
-        msg.className = 'msg msg-success';
-        msg.textContent = `✅ مسجل | 🪙 ${credits} crédits`;
-    } else { msg.className = 'msg'; msg.textContent = '⚠️ غير مسجل'; }
+    if (exists) { let credits = await loadCredits(email); msg.className = 'msg msg-success'; msg.textContent = `✅ مسجل | 🪙 ${credits} crédits`; }
+    else { msg.className = 'msg'; msg.textContent = '⚠️ غير مسجل'; }
 }
 
-// Bloquer utilisateur
 function banUser() {
     const email = document.getElementById('checkEmail').value.trim();
     const msg = document.getElementById('checkMsg');
     if (!email) { msg.className = 'msg msg-error'; msg.textContent = '❌ Entre un email'; return; }
     let blocked = JSON.parse(localStorage.getItem('blockedUsers') || '[]');
     if (blocked.includes(email)) { msg.className = 'msg msg-error'; msg.textContent = '❌ محظور بالفعل'; return; }
-    blocked.push(email);
-    localStorage.setItem('blockedUsers', JSON.stringify(blocked));
+    blocked.push(email); localStorage.setItem('blockedUsers', JSON.stringify(blocked));
     db.collection('users').doc(email).delete();
-    msg.className = 'msg msg-success';
-    msg.textContent = `🚫 ${email} محظور`;
+    msg.className = 'msg msg-success'; msg.textContent = `🚫 ${email} محظور`;
     document.getElementById('checkEmail').value = '';
-    // loadAll sera appelé automatiquement par le listener
 }
 
-// Supprimer utilisateur
 async function deleteUser(email) {
     if (!confirm(`Supprimer ${email} ?`)) return;
     await db.collection('users').doc(email).delete();
-    // loadAll sera appelé automatiquement par le listener
 }
 
-// Charger tout (Firestore) - AVEC LISTENER EN TEMPS RÉEL
 function loadAll() {
     let blocked = JSON.parse(localStorage.getItem('blockedUsers') || '[]');
-    
-    // Écouter les changements en temps réel
     db.collection('users').onSnapshot((snapshot) => {
-        let users = {};
-        snapshot.forEach(doc => { users[doc.id] = doc.data(); });
+        let users = {}; snapshot.forEach(doc => { users[doc.id] = doc.data(); });
         let emails = Object.keys(users);
-        
         document.getElementById('statUsers').textContent = emails.length;
         document.getElementById('statBlocked').textContent = blocked.length;
-        
-        let totalCodes = 0;
-        emails.forEach(e => { totalCodes += (users[e].history || []).length; });
+        let totalCodes = 0; emails.forEach(e => { totalCodes += (users[e].history || []).length; });
         document.getElementById('statCodes').textContent = totalCodes;
-        
         let html = '';
-        if (emails.length === 0) {
-            html = '<p style="color:var(--text2); text-align:center;">لا يوجد مستخدمين</p>';
-        } else {
-            emails.forEach(email => {
-                const u = users[email];
-                const isBlocked = blocked.includes(email);
-                html += `
-                    <div class="user-row">
-                        <div class="user-info">
-                            <div class="user-email">${email}</div>
-                            <div class="user-date">🪙 ${u.credits || 0} crédits | 📅 ${(u.history || []).length} codes</div>
-                        </div>
-                        <span class="user-status ${isBlocked ? 'status-blocked' : 'status-active'}">${isBlocked ? '🚫 محظور' : '✅ نشط'}</span>
-                        <button class="btn btn-red btn-sm" onclick="deleteUser('${email}')">🗑️</button>
-                    </div>
-                `;
-            });
-        }
+        if (emails.length === 0) { html = '<p style="color:var(--text2); text-align:center;">لا يوجد مستخدمين</p>'; }
+        else { emails.forEach(email => { const u = users[email], isBlocked = blocked.includes(email); html += `<div class="user-row"><div class="user-info"><div class="user-email">${email}</div><div class="user-date">🪙 ${u.credits || 0} crédits | 📅 ${(u.history || []).length} codes</div></div><span class="user-status ${isBlocked?'status-blocked':'status-active'}">${isBlocked?'🚫 محظور':'✅ نشط'}</span><button class="btn btn-red btn-sm" onclick="deleteUser('${email}')">🗑️</button></div>`; }); }
         document.getElementById('userList').innerHTML = html;
     });
-    
-    fetch('https://netflix-server-l0ci.onrender.com/')
-        .then(r => r.json())
-        .then(data => { document.getElementById('statCookies').textContent = data.comptes || 0; })
-        .catch(() => { document.getElementById('statCookies').textContent = '?'; });
-    
+    fetch('https://netflix-server-l0ci.onrender.com/').then(r=>r.json()).then(data=>{document.getElementById('statCookies').textContent=data.comptes||0;}).catch(()=>{document.getElementById('statCookies').textContent='?';});
     loadConfig();
 }
 
-if (localStorage.getItem('adminLoggedIn') === 'true') {
-    document.getElementById('loginBox').style.display = 'none';
-    document.getElementById('panelBox').style.display = 'block';
-    loadAll();
-}
+if (localStorage.getItem('adminLoggedIn') === 'true') { document.getElementById('loginBox').style.display = 'none'; document.getElementById('panelBox').style.display = 'block'; loadAll(); }
 </script>
 
 </body>
 </html>
-```
