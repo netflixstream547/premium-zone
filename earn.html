@@ -1,3 +1,4 @@
+```html
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
@@ -54,11 +55,6 @@
         .buy-card .card-info p { font-size: 12px; color: var(--text2); }
         .btn-buy { padding: 12px 24px; background: var(--blue); color: #fff; border-radius: 50px; font-size: 14px; font-weight: 700; white-space: nowrap; }
         
-        .ref-box { background: var(--card); border: 1px solid var(--border); border-radius: 16px; padding: 20px; margin-top: 15px; text-align: center; display:none; }
-        .ref-box p { font-size: 13px; color: var(--text2); margin-bottom: 10px; }
-        .ref-box .ref-link { background: #000; border: 1px solid var(--border); border-radius: 10px; padding: 12px; font-size: 11px; color: var(--text2); word-break: break-all; direction: ltr; margin-bottom: 10px; }
-        .btn-copy { padding: 10px 20px; background: var(--blue); color: #fff; border: none; border-radius: 10px; font-size: 13px; font-weight: 700; cursor: pointer; font-family: 'Cairo', sans-serif; }
-        
         .success-popup { position: fixed; top: 20px; left: 50%; transform: translateX(-50%); background: var(--card); border: 2px solid var(--green); border-radius: 14px; padding: 18px 28px; text-align: center; z-index: 999; animation: slideDown 0.4s ease; box-shadow: 0 10px 40px rgba(0,0,0,0.6); }
         @keyframes slideDown { from { opacity: 0; transform: translateX(-50%) translateY(-30px); } to { opacity: 1; transform: translateX(-50%) translateY(0); } }
         .success-popup .popup-icon { font-size: 40px; margin-bottom: 5px; }
@@ -89,16 +85,8 @@
     
     <div class="ad-box">
         <div class="ad-label">📢 Publicité</div>
-        <script type="text/javascript">
-            atOptions = {
-                'key' : '05465015283265c1417592a008fdb083',
-                'format' : 'iframe',
-                'height' : 250,
-                'width' : 300,
-                'params' : {}
-            };
-        </script>
-        <script type="text/javascript" src="//www.highperformancedisplayformat.com/05465015283265c1417592a008fdb083/invoke.js"></script>
+        <script type="text/javascript">atOptions={'key':'05465015283265c1417592a008fdb083','format':'iframe','height':250,'width':300,'params':{}};</script>
+        <script src="//www.highperformancedisplayformat.com/05465015283265c1417592a008fdb083/invoke.js"></script>
     </div>
     
     <div class="daily-box">
@@ -114,9 +102,9 @@
         <div class="card-badge badge-green">+1 🪙</div>
     </div>
     
-    <div class="earn-card" onclick="showRef()">
+    <div class="earn-card" onclick="showRefCode()">
         <div class="card-sticker">👥</div>
-        <div class="card-info"><h4>دعوة صديق</h4><p>ادعو أصدقائك واكسب</p></div>
+        <div class="card-info"><h4>دعوة صديق</h4><p>شارك code parrainage واكسب</p></div>
         <div class="card-badge badge-gold">+1 🪙</div>
     </div>
     
@@ -126,17 +114,10 @@
         <span class="btn-buy">💬 شراء</span>
     </a>
     
-    <div class="ref-box" id="refBox">
-        <p>🔗 رابط الدعوة الخاص بك :</p>
-        <div class="ref-link" id="refLink"></div>
-        <button class="btn-copy" onclick="copyRef()">📋 نسخ الرابط</button>
-    </div>
-    
     <div class="back-link"><a href="dashboard.html">↩ العودة للوحة التحكم</a></div>
 
 </div>
 
-<!-- Firebase -->
 <script src="https://www.gstatic.com/firebasejs/10.1.0/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.1.0/firebase-firestore-compat.js"></script>
 
@@ -160,10 +141,16 @@ async function loadCredits(email) {
     return doc.exists ? (doc.data().credits || 0) : 0;
 }
 
+async function getRefCode() {
+    const email = localStorage.getItem('currentUser');
+    if (!email) return 'N/A';
+    const doc = await db.collection('users').doc(email).get();
+    return doc.exists ? (doc.data().refCode || 'N/A') : 'N/A';
+}
+
 function loadEarn() {
     const email = localStorage.getItem('currentUser');
     if (!email) { window.location.href = 'login.html'; return; }
-    document.getElementById('refLink').textContent = 'https://netflixstream547.github.io/premium-zone/signup.html?ref=' + btoa(email);
     checkDaily();
 }
 
@@ -206,17 +193,17 @@ function watchExternalAd() {
     }, 10000);
 }
 
-function showRef() { document.getElementById('refBox').style.display = 'block'; }
-
-function copyRef() {
-    navigator.clipboard.writeText(document.getElementById('refLink').textContent);
-    showPopup('مبروك ! 🎉', 'تم نسخ رابط الدعوة');
+async function showRefCode() {
+    const code = await getRefCode();
+    if (code === 'N/A') { alert('❌ ليس لديك code parrainage'); return; }
+    navigator.clipboard.writeText(code);
+    showPopup('مبروك ! 🎉', 'Code parrainage copié : ' + code + '\nشاركه مع أصدقائك');
 }
 
 function showPopup(title, sub) {
     const popup = document.createElement('div'); popup.className = 'success-popup';
     popup.innerHTML = '<div class="popup-icon">🎉</div><div class="popup-title">' + title + '</div><div class="popup-sub">' + sub + '</div>';
-    document.body.appendChild(popup); setTimeout(() => { popup.remove(); }, 3000);
+    document.body.appendChild(popup); setTimeout(() => { popup.remove(); }, 4000);
 }
 
 loadEarn();
@@ -224,4 +211,4 @@ loadEarn();
 
 </body>
 </html>
-
+```
