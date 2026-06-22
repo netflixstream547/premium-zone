@@ -1,3 +1,4 @@
+```html
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
@@ -139,6 +140,10 @@ async function loadCredits(email) {
     const doc = await db.collection('users').doc(email).get();
     return doc.exists ? (doc.data().credits || 0) : 0;
 }
+async function getSiteConfig() {
+    const doc = await db.collection('settings').doc('siteConfig').get();
+    return doc.exists ? doc.data() : {};
+}
 
 function loadEarn() {
     const email = localStorage.getItem('currentUser');
@@ -165,7 +170,7 @@ async function claimDaily() {
     const lastClaim = localStorage.getItem('lastDaily_' + email);
     const now = Date.now();
     if (lastClaim && (now - parseInt(lastClaim)) < 86400000) { showPopup('⏳ انتظر', 'لقد حصلت على crédit aujourd\'hui'); return; }
-    let config = JSON.parse(localStorage.getItem('siteConfig') || '{}');
+    let config = await getSiteConfig();
     let dailyCredits = config.dailyCredits || 1;
     let current = await loadCredits(email);
     await saveCredits(email, current + dailyCredits);
@@ -197,8 +202,6 @@ async function copyRefCodeEarn() {
         }
         navigator.clipboard.writeText(refCode);
         showPopup('مبروك ! 🎉', 'Code copié : ' + refCode);
-    } else {
-        alert('❌ خطأ');
     }
 }
 
@@ -213,3 +216,4 @@ loadEarn();
 
 </body>
 </html>
+```
