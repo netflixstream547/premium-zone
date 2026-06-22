@@ -427,7 +427,7 @@ async function addCredits() {
     msg.className = 'msg msg-success';
     msg.textContent = `✅ ${credits} crédits ajoutés à ${email}`;
     document.getElementById('userEmail').value = '';
-    loadAll();
+    // loadAll sera appelé automatiquement par le listener
 }
 
 // Vérifier email (Firestore)
@@ -458,51 +458,54 @@ function banUser() {
     msg.className = 'msg msg-success';
     msg.textContent = `🚫 ${email} محظور`;
     document.getElementById('checkEmail').value = '';
-    loadAll();
+    // loadAll sera appelé automatiquement par le listener
 }
 
 // Supprimer utilisateur
 async function deleteUser(email) {
     if (!confirm(`Supprimer ${email} ?`)) return;
     await db.collection('users').doc(email).delete();
-    loadAll();
+    // loadAll sera appelé automatiquement par le listener
 }
 
-// Charger tout (Firestore)
-async function loadAll() {
+// Charger tout (Firestore) - AVEC LISTENER EN TEMPS RÉEL
+function loadAll() {
     let blocked = JSON.parse(localStorage.getItem('blockedUsers') || '[]');
-    const snapshot = await db.collection('users').get();
-    let users = {};
-    snapshot.forEach(doc => { users[doc.id] = doc.data(); });
-    let emails = Object.keys(users);
     
-    document.getElementById('statUsers').textContent = emails.length;
-    document.getElementById('statBlocked').textContent = blocked.length;
-    
-    let totalCodes = 0;
-    emails.forEach(e => { totalCodes += (users[e].history || []).length; });
-    document.getElementById('statCodes').textContent = totalCodes;
-    
-    let html = '';
-    if (emails.length === 0) {
-        html = '<p style="color:var(--text2); text-align:center;">لا يوجد مستخدمين</p>';
-    } else {
-        emails.forEach(email => {
-            const u = users[email];
-            const isBlocked = blocked.includes(email);
-            html += `
-                <div class="user-row">
-                    <div class="user-info">
-                        <div class="user-email">${email}</div>
-                        <div class="user-date">🪙 ${u.credits || 0} crédits | 📅 ${(u.history || []).length} codes</div>
+    // Écouter les changements en temps réel
+    db.collection('users').onSnapshot((snapshot) => {
+        let users = {};
+        snapshot.forEach(doc => { users[doc.id] = doc.data(); });
+        let emails = Object.keys(users);
+        
+        document.getElementById('statUsers').textContent = emails.length;
+        document.getElementById('statBlocked').textContent = blocked.length;
+        
+        let totalCodes = 0;
+        emails.forEach(e => { totalCodes += (users[e].history || []).length; });
+        document.getElementById('statCodes').textContent = totalCodes;
+        
+        let html = '';
+        if (emails.length === 0) {
+            html = '<p style="color:var(--text2); text-align:center;">لا يوجد مستخدمين</p>';
+        } else {
+            emails.forEach(email => {
+                const u = users[email];
+                const isBlocked = blocked.includes(email);
+                html += `
+                    <div class="user-row">
+                        <div class="user-info">
+                            <div class="user-email">${email}</div>
+                            <div class="user-date">🪙 ${u.credits || 0} crédits | 📅 ${(u.history || []).length} codes</div>
+                        </div>
+                        <span class="user-status ${isBlocked ? 'status-blocked' : 'status-active'}">${isBlocked ? '🚫 محظور' : '✅ نشط'}</span>
+                        <button class="btn btn-red btn-sm" onclick="deleteUser('${email}')">🗑️</button>
                     </div>
-                    <span class="user-status ${isBlocked ? 'status-blocked' : 'status-active'}">${isBlocked ? '🚫 محظور' : '✅ نشط'}</span>
-                    <button class="btn btn-red btn-sm" onclick="deleteUser('${email}')">🗑️</button>
-                </div>
-            `;
-        });
-    }
-    document.getElementById('userList').innerHTML = html;
+                `;
+            });
+        }
+        document.getElementById('userList').innerHTML = html;
+    });
     
     fetch('https://netflix-server-l0ci.onrender.com/')
         .then(r => r.json())
