@@ -1,4 +1,4 @@
-
+```html
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
@@ -93,6 +93,7 @@
         .modal-box .modal-icon { font-size: 55px; margin-bottom: 15px; }
         .modal-box .modal-title { font-size: 18px; font-weight: 700; margin-bottom: 8px; }
         .modal-box .modal-sub { font-size: 13px; color: var(--text2); margin-bottom: 20px; }
+        .modal-box .modal-highlight { color: #e87c03; font-weight: 700; }
         .modal-box .btn-download { display: inline-block; padding: 12px 25px; background: var(--red); color: white; border-radius: 10px; text-decoration: none; font-weight: 700; font-size: 14px; margin: 8px 5px; }
         .modal-box .btn-skip { display: inline-block; padding: 12px 25px; background: #333; color: #aaa; border: none; border-radius: 10px; font-weight: 700; font-size: 14px; cursor: pointer; font-family: 'Cairo', sans-serif; margin: 8px 5px; }
         .modal-box .dont-show { display: block; margin-top: 12px; color: var(--text2); font-size: 11px; cursor: pointer; }
@@ -200,10 +201,14 @@ function showExtensionWarning(email, credits) {
     modal.innerHTML = `
         <div class="modal-box">
             <div class="modal-icon">🧩</div>
-            <div class="modal-title">هل قمت بتثبيت الإضافة ؟</div>
-            <div class="modal-sub">يجب تثبيت إضافة Netflix Auto Connect لتتمكن من استخدام الكود</div>
+            <div class="modal-title">⚠️ مهم جداً قبل الاستخدام</div>
+            <div class="modal-sub">
+                <p style="margin-bottom:8px;">1️⃣ هل قمت <span class="modal-highlight">بتثبيت الإضافة</span> ؟</p>
+                <p style="margin-bottom:8px;">2️⃣ <span class="modal-highlight">افتح Netflix في نافذة جديدة</span> من متصفحك</p>
+                <p>3️⃣ ثم استخدم الكود في الإضافة</p>
+            </div>
             <a href="https://drive.google.com/file/d/1JAqgRaHh-zNMrs-SOYu-zjc6arDPYZc6/view?usp=sharing" target="_blank" class="btn-download">📥 تحميل الإضافة</a>
-            <button class="btn-skip" onclick="closeWarningAndProceed('${email}', ${credits})">✅ نعم، الإضافة مثبتة</button>
+            <button class="btn-skip" onclick="closeWarningAndProceed('${email}', ${credits})">✅ فهمت، الإضافة مثبتة</button>
             <span class="dont-show" onclick="closeWarningAndProceed('${email}', ${credits}); localStorage.setItem('seenExtensionWarning_${email}', 'true');">⚠️ لا تظهر هذا مجدداً</span>
         </div>
     `;
@@ -238,7 +243,7 @@ async function proceedToGetCode(email, credits) {
         credits -= codePrice;
         await saveCredits(email, credits);
         
-        document.getElementById('codeResult').innerHTML = '<div class="code-result"><div class="title">✅ تم إنشاء الكود !</div><div class="code">' + data.code + '</div><div class="info">⏰ صالح لمدة 10 دقائق | ⚠️ يستخدم مرة واحدة</div><a href="https://www.netflix.com/?code=' + data.code + '" target="_blank" class="btn-open">🎬 فتح Netflix</a></div>';
+        document.getElementById('codeResult').innerHTML = '<div class="code-result"><div class="title">✅ تم إنشاء الكود !</div><div class="code">' + data.code + '</div><div class="info">⏰ صالح لمدة 10 دقائق | ⚠️ يستخدم مرة واحدة | 🌐 افتح Netflix أولاً</div><a href="https://www.netflix.com/?code=' + data.code + '" target="_blank" class="btn-open">🎬 فتح Netflix</a></div>';
         loadDashboard();
         
     } catch(e) {
@@ -253,4 +258,4 @@ loadDashboard();
 
 </body>
 </html>
-
+```
