@@ -1,4 +1,3 @@
-```html
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
@@ -94,7 +93,7 @@ function signup() {
     if (!email || !password) { msg.style.color = '#e87c03'; msg.textContent = '❌ أكمل جميع الحقول'; return; }
     if (password.length < 6) { msg.style.color = '#e87c03'; msg.textContent = '❌ كلمة المرور قصيرة (6 أحرف)'; return; }
     if (isBlocked(email)) { msg.style.color = '#e87c03'; msg.textContent = '❌ البريد المؤقت غير مسموح'; return; }
-    if (!isAllowed(email)) { msg.style.color = '#e87c03'; msg.textContent = '❌ فقط Gmail أو Outlook مسموح'; return; }
+    if (!isAllowed(email)) { msg.style.color = '#e87c03'; msg.textContent = '❌ فقط Gmail ou Outlook مسموح'; return; }
     
     msg.style.color = '#f0ad4e'; msg.textContent = '⏳ جاري إنشاء الحساب...';
     
@@ -102,25 +101,39 @@ function signup() {
         .then(async () => {
             const myRefCode = email.split('@')[0].toUpperCase() + Math.random().toString(36).substring(2, 6).toUpperCase();
             
-            // Lire la config depuis Firestore
             let welcomeCredits = await getWelcomeCredits();
             
-            await db.collection('users').doc(email).set({
-                password: '', credits: welcomeCredits, history: [], refCode: myRefCode, createdAt: Date.now()
-            });
+            // Sauvegarder dans Firestore avec try/catch
+            try {
+                await db.collection('users').doc(email).set({
+                    password: '', credits: welcomeCredits, history: [], refCode: myRefCode, createdAt: Date.now()
+                });
+                console.log('✅ Utilisateur ajouté à Firestore:', email);
+            } catch(e) {
+                console.error('❌ Erreur Firestore:', e);
+            }
             
+            // Vérifier parrainage
             if (refCode) {
-                const snapshot = await db.collection('users').where('refCode', '==', refCode).get();
-                if (!snapshot.empty) {
-                    const parrainDoc = snapshot.docs[0];
-                    const parrainEmail = parrainDoc.id;
-                    let parrainCredits = parrainDoc.data().credits || 0;
-                    await saveCredits(parrainEmail, parrainCredits + 1);
+                try {
+                    const snapshot = await db.collection('users').where('refCode', '==', refCode).get();
+                    if (!snapshot.empty) {
+                        const parrainDoc = snapshot.docs[0];
+                        const parrainEmail = parrainDoc.id;
+                        let parrainCredits = parrainDoc.data().credits || 0;
+                        await saveCredits(parrainEmail, parrainCredits + 1);
+                    }
+                } catch(e) {
+                    console.error('❌ Erreur parrainage:', e);
                 }
             }
             
             localStorage.setItem('currentUser', email);
-            window.location.href = 'dashboard.html';
+            
+            // Attendre 1 seconde avant de rediriger
+            setTimeout(() => {
+                window.location.href = 'dashboard.html';
+            }, 1000);
         })
         .catch((error) => { msg.style.color = '#e87c03'; msg.textContent = '❌ ' + (error.code === 'auth/email-already-in-use' ? 'هذا البريد مسجل بالفعل' : error.message); });
 }
@@ -128,4 +141,3 @@ function signup() {
 
 </body>
 </html>
-```
