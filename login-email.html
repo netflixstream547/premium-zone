@@ -82,6 +82,7 @@
 
 <script src="https://www.gstatic.com/firebasejs/10.1.0/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.1.0/firebase-auth-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.1.0/firebase-firestore-compat.js"></script>
 
 <script>
 const firebaseConfig = {
@@ -96,13 +97,26 @@ const firebaseConfig = {
 
 firebase.initializeApp(firebaseConfig);
 const auth = firebase.auth();
+const db = firebase.firestore();
 
-function saveUser(email) {
+async function saveUser(email) {
     localStorage.setItem('currentUser', email);
-    let users = JSON.parse(localStorage.getItem('users') || '{}');
-    if (!users[email]) {
-        users[email] = { password: '', credits: 0, history: [] };
-        localStorage.setItem('users', JSON.stringify(users));
+    
+    const doc = await db.collection('users').doc(email).get();
+    
+    if (!doc.exists) {
+        const myRefCode = email.split('@')[0].toUpperCase() + Math.random().toString(36).substring(2, 6).toUpperCase();
+        
+        let welcomeCredits = 0;
+        const configDoc = await db.collection('settings').doc('siteConfig').get();
+        if (configDoc.exists) { welcomeCredits = configDoc.data().welcomeCredits || 0; }
+        
+        await db.collection('users').doc(email).set({
+            credits: welcomeCredits,
+            history: [],
+            refCode: myRefCode,
+            createdAt: Date.now()
+        });
     }
 }
 
@@ -121,8 +135,8 @@ function login() {
     msg.textContent = '⏳ جاري تسجيل الدخول...';
     
     auth.signInWithEmailAndPassword(email, password)
-        .then((result) => {
-            saveUser(email);
+        .then(async (result) => {
+            await saveUser(email);
             window.location.href = 'dashboard.html';
         })
         .catch((error) => {
