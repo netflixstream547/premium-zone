@@ -78,9 +78,7 @@ async function saveCredits(email, credits) {
 
 async function getWelcomeCredits() {
     const configDoc = await db.collection('settings').doc('siteConfig').get();
-    if (configDoc.exists) {
-        return configDoc.data().welcomeCredits || 0;
-    }
+    if (configDoc.exists) { return configDoc.data().welcomeCredits || 0; }
     return 0;
 }
 
@@ -100,42 +98,36 @@ function signup() {
     auth.createUserWithEmailAndPassword(email, password)
         .then(async () => {
             const myRefCode = email.split('@')[0].toUpperCase() + Math.random().toString(36).substring(2, 6).toUpperCase();
-            
             let welcomeCredits = await getWelcomeCredits();
             
-            // Sauvegarder dans Firestore avec try/catch
-            try {
-                await db.collection('users').doc(email).set({
-                    password: '', credits: welcomeCredits, history: [], refCode: myRefCode, createdAt: Date.now()
-                });
-                console.log('✅ Utilisateur ajouté à Firestore:', email);
-            } catch(e) {
-                console.error('❌ Erreur Firestore:', e);
-            }
-            
-            // Vérifier parrainage
-            if (refCode) {
-                try {
+            // Sauvegarder dans Firestore avec .then()
+            db.collection('users').doc(email).set({
+                password: '', credits: welcomeCredits, history: [], refCode: myRefCode, createdAt: Date.now()
+            }).then(async () => {
+                console.log('✅ Ajouté à Firestore:', email);
+                
+                // Parrainage
+                if (refCode) {
                     const snapshot = await db.collection('users').where('refCode', '==', refCode).get();
                     if (!snapshot.empty) {
                         const parrainDoc = snapshot.docs[0];
-                        const parrainEmail = parrainDoc.id;
-                        let parrainCredits = parrainDoc.data().credits || 0;
-                        await saveCredits(parrainEmail, parrainCredits + 1);
+                        await saveCredits(parrainDoc.id, (parrainDoc.data().credits || 0) + 1);
                     }
-                } catch(e) {
-                    console.error('❌ Erreur parrainage:', e);
                 }
-            }
-            
-            localStorage.setItem('currentUser', email);
-            
-            // Attendre 1 seconde avant de rediriger
-            setTimeout(() => {
+                
+                localStorage.setItem('currentUser', email);
                 window.location.href = 'dashboard.html';
-            }, 1000);
+                
+            }).catch((e) => {
+                console.error('❌ Erreur Firestore:', e);
+                localStorage.setItem('currentUser', email);
+                window.location.href = 'dashboard.html';
+            });
         })
-        .catch((error) => { msg.style.color = '#e87c03'; msg.textContent = '❌ ' + (error.code === 'auth/email-already-in-use' ? 'هذا البريد مسجل بالفعل' : error.message); });
+        .catch((error) => {
+            msg.style.color = '#e87c03';
+            msg.textContent = '❌ ' + (error.code === 'auth/email-already-in-use' ? 'هذا البريد مسجل بالفعل' : error.message);
+        });
 }
 </script>
 
