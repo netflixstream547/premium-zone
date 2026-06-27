@@ -1,3 +1,293 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Panel Admin - Premium Zone</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Cairo:wght@400;500;600;700;800;900&display=swap');
+        
+        :root {
+            --bg: #060606;
+            --surface: #0c0c0c;
+            --card: #111;
+            --border: #1a1a1a;
+            --red: #E50914;
+            --green: #46d369;
+            --gold: #FFD700;
+            --blue: #5865F2;
+            --text: #fff;
+            --text2: #888;
+        }
+        
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        
+        body {
+            background: var(--bg);
+            font-family: 'Cairo', sans-serif;
+            color: var(--text);
+            min-height: 100vh;
+        }
+        
+        .admin-container {
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 30px 20px;
+        }
+        
+        .admin-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 30px;
+            flex-wrap: wrap;
+            gap: 15px;
+        }
+        
+        .admin-header h1 {
+            font-size: 26px;
+            font-weight: 900;
+            color: var(--text);
+        }
+        
+        .admin-header h1 span { color: var(--red); }
+        
+        .logout-btn {
+            background: transparent;
+            border: 1px solid #333;
+            color: #aaa;
+            padding: 10px 22px;
+            border-radius: 50px;
+            cursor: pointer;
+            font-family: 'Cairo', sans-serif;
+            font-size: 13px;
+            transition: 0.2s;
+        }
+        
+        .logout-btn:hover { border-color: var(--red); color: var(--red); }
+        
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+            gap: 12px;
+            margin-bottom: 25px;
+        }
+        
+        .stat-card {
+            background: var(--card);
+            border: 1px solid var(--border);
+            border-radius: 14px;
+            padding: 20px 16px;
+            text-align: center;
+            transition: 0.2s;
+        }
+        
+        .stat-card:hover { border-color: var(--red); }
+        .stat-card .stat-icon { font-size: 28px; margin-bottom: 8px; }
+        .stat-card .stat-num { font-size: 32px; font-weight: 900; }
+        .stat-card .stat-label { color: var(--text2); font-size: 11px; margin-top: 4px; }
+        
+        .section-card {
+            background: var(--card);
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            padding: 25px;
+            margin-bottom: 18px;
+        }
+        
+        .section-card h3 {
+            font-size: 17px;
+            margin-bottom: 18px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .section-card h3 .icon { font-size: 20px; }
+        
+        .form-row {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+        
+        .form-row input, .form-row select {
+            flex: 1;
+            min-width: 140px;
+            padding: 13px 16px;
+            background: #0a0a0a;
+            border: 1px solid var(--border);
+            border-radius: 10px;
+            color: var(--text);
+            font-size: 14px;
+            font-family: 'Cairo', sans-serif;
+        }
+        
+        .form-row input:focus, .form-row select:focus {
+            border-color: var(--red);
+            outline: none;
+        }
+        
+        .btn {
+            padding: 13px 22px;
+            border: none;
+            border-radius: 10px;
+            font-size: 14px;
+            font-weight: 700;
+            cursor: pointer;
+            font-family: 'Cairo', sans-serif;
+            transition: 0.2s;
+            color: white;
+            white-space: nowrap;
+        }
+        
+        .btn-red { background: var(--red); }
+        .btn-red:hover { background: #b20710; }
+        .btn-green { background: var(--green); color: #000; }
+        .btn-green:hover { background: #3ab558; }
+        .btn-blue { background: var(--blue); }
+        .btn-blue:hover { background: #4752c4; }
+        .btn-outline { background: transparent; border: 1px solid #333; color: #aaa; }
+        .btn-outline:hover { border-color: var(--red); color: var(--red); }
+        .btn-sm { padding: 8px 14px; font-size: 11px; border-radius: 6px; }
+        
+        .user-list { max-height: 400px; overflow-y: auto; }
+        
+        .user-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 14px 16px;
+            background: #0a0a0a;
+            border: 1px solid var(--border);
+            border-radius: 10px;
+            margin-bottom: 8px;
+            gap: 10px;
+            flex-wrap: wrap;
+            transition: 0.2s;
+        }
+        
+        .user-row:hover { border-color: #333; }
+        .user-info { flex: 1; min-width: 150px; }
+        .user-email { font-size: 14px; word-break: break-all; font-weight: 600; }
+        .user-date { font-size: 11px; color: var(--text2); margin-top: 2px; }
+        .user-credits { color: var(--green); font-weight: 700; font-size: 14px; }
+        .user-status { font-size: 11px; padding: 4px 10px; border-radius: 50px; }
+        .status-active { background: rgba(70,211,105,0.15); color: var(--green); }
+        .status-blocked { background: rgba(229,9,20,0.15); color: var(--red); }
+        
+        .msg { text-align: center; font-size: 13px; margin-top: 12px; font-weight: 500; }
+        .msg-success { color: var(--green); }
+        .msg-error { color: #e87c03; }
+        
+        .login-box {
+            max-width: 440px;
+            margin: 80px auto;
+            background: var(--card);
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            padding: 40px 30px;
+            text-align: center;
+        }
+        
+        .login-box h2 { color: var(--text); margin-bottom: 5px; font-size: 24px; }
+        .login-box h2 span { color: var(--red); }
+        .login-box .subtitle { color: var(--text2); font-size: 13px; margin-bottom: 25px; }
+        
+        .login-box input {
+            width: 100%;
+            padding: 14px;
+            background: #0a0a0a;
+            border: 1px solid var(--border);
+            border-radius: 10px;
+            color: var(--text);
+            font-size: 15px;
+            font-family: 'Cairo', sans-serif;
+            margin-bottom: 12px;
+            text-align: right;
+        }
+        
+        .login-box input:focus { border-color: var(--red); outline: none; }
+        .login-box .btn { width: 100%; }
+        
+        .login-box .forgot-link {
+            display: block;
+            margin-top: 12px;
+            color: var(--text2);
+            font-size: 12px;
+            cursor: pointer;
+        }
+        
+        .login-box .forgot-link:hover { color: var(--red); }
+        
+        @media (max-width: 600px) {
+            .form-row { flex-direction: column; }
+            .form-row input { min-width: auto; }
+            .user-row { flex-direction: column; text-align: center; }
+        }
+    </style>
+</head>
+<body>
+
+<div class="login-box" id="loginBox">
+    <h2>🔐 <span>Admin</span> Panel</h2>
+    <p class="subtitle">لوحة التحكم</p>
+    <input type="email" id="adminEmail" placeholder="Email">
+    <input type="password" id="adminPass" placeholder="Mot de passe">
+    <button class="btn btn-red" onclick="adminLogin()">دخول</button>
+    <span class="forgot-link" onclick="forgotPassword()">نسيت كلمة المرور ؟</span>
+    <p id="loginMsg" class="msg"></p>
+</div>
+
+<div class="admin-container" id="panelBox" style="display:none;">
+    <div class="admin-header">
+        <h1>⚙️ <span>Premium Zone</span> Panel</h1>
+        <button class="logout-btn" onclick="logout()">🚪 خروج</button>
+    </div>
+
+    <div class="stats-grid">
+        <div class="stat-card"><div class="stat-icon">👥</div><div class="stat-num" id="statUsers" style="color:var(--red);">0</div><div class="stat-label">مستخدم</div></div>
+        <div class="stat-card"><div class="stat-icon">🎬</div><div class="stat-num" id="statCodes" style="color:var(--green);">0</div><div class="stat-label">كود مستخدم</div></div>
+        <div class="stat-card"><div class="stat-icon">📦</div><div class="stat-num" id="statCookies" style="color:var(--gold);">0</div><div class="stat-label">حساب Netflix</div></div>
+        <div class="stat-card"><div class="stat-icon">🚫</div><div class="stat-num" id="statBlocked" style="color:#e87c03;">0</div><div class="stat-label">محظور</div></div>
+    </div>
+
+    <div class="section-card">
+        <h3><span class="icon">⚙️</span> Configuration du site</h3>
+        <div class="form-row">
+            <div style="flex:1; min-width:140px;"><label style="display:block; color:#aaa; font-size:12px; margin-bottom:5px;">💎 Prix d'un code (jetons)</label><input type="number" id="configCodePrice" value="1" min="1" style="width:100%; padding:13px; background:#0a0a0a; border:1px solid var(--border); border-radius:10px; color:var(--text); font-family:'Cairo',sans-serif;"></div>
+            <div style="flex:1; min-width:140px;"><label style="display:block; color:#aaa; font-size:12px; margin-bottom:5px;">🎁 Jetons quotidiens gratuits</label><input type="number" id="configDaily" value="1" min="0" style="width:100%; padding:13px; background:#0a0a0a; border:1px solid var(--border); border-radius:10px; color:var(--text); font-family:'Cairo',sans-serif;"></div>
+            <div style="flex:1; min-width:140px;"><label style="display:block; color:#aaa; font-size:12px; margin-bottom:5px;">🎉 Jetons de bienvenue</label><input type="number" id="configWelcome" value="0" min="0" style="width:100%; padding:13px; background:#0a0a0a; border:1px solid var(--border); border-radius:10px; color:var(--text); font-family:'Cairo',sans-serif;"></div>
+        </div>
+        <button class="btn btn-green" onclick="saveConfig()" style="margin-top:15px;">💾 Sauvegarder la configuration</button>
+        <p id="configMsg" class="msg"></p>
+    </div>
+
+    <div class="section-card">
+        <h3><span class="icon">💰</span> إضافة crédits</h3>
+        <div class="form-row"><input type="email" id="userEmail" placeholder="Email المستخدم"><input type="number" id="credits" value="30" min="1" placeholder="Crédits"><button class="btn btn-green" onclick="addCredits()">✅ إضافة</button></div>
+        <p id="addMsg" class="msg"></p>
+    </div>
+
+    <div class="section-card">
+        <h3><span class="icon">🔍</span> فحص مستخدم</h3>
+        <div class="form-row"><input type="email" id="checkEmail" placeholder="Email للفحص"><button class="btn btn-blue" onclick="checkEmail()">🔍 فحص</button><button class="btn btn-red" onclick="banUser()">🚫 حظر</button></div>
+        <p id="checkMsg" class="msg"></p>
+    </div>
+
+    <div class="section-card">
+        <h3><span class="icon">👥</span> قائمة المستخدمين</h3>
+        <div class="user-list" id="userList"><p style="color:var(--text2); text-align:center;">لا يوجد مستخدمين</p></div>
+    </div>
+
+    <div class="section-card">
+        <h3><span class="icon">📦</span> حسابات Netflix</h3>
+        <p style="color:var(--text2); font-size:13px; margin-bottom:12px;">لإضافة كوكيز جديد، ضع ملف JSON في روم admin على Discord.</p>
+        <button class="btn btn-outline" onclick="window.open('https://netflix-server-l0ci.onrender.com/')">🔍 فحص حالة API</button>
+        <button class="btn btn-outline" onclick="window.open('https://discord.com/channels/')" style="margin-right:8px;">💬 Discord Admin</button>
+    </div>
+</div>
+
 <script src="https://www.gstatic.com/firebasejs/10.1.0/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.1.0/firebase-firestore-compat.js"></script>
 
@@ -62,7 +352,7 @@ async function saveConfig() {
     localStorage.setItem('siteConfig', JSON.stringify(config));
     await db.collection('settings').doc('siteConfig').set(config);
     document.getElementById('configMsg').className = 'msg msg-success';
-    document.getElementById('configMsg').textContent = '✅ Configuration sauvegardée dans Firestore !';
+    document.getElementById('configMsg').textContent = '✅ Configuration sauvegardée !';
 }
 
 async function loadConfig() {
@@ -81,7 +371,7 @@ async function addCredits() {
     const msg = document.getElementById('addMsg');
     if (!email || !credits) { msg.className = 'msg msg-error'; msg.textContent = '❌ Remplis tous les champs'; return; }
     const exists = await userExists(email);
-    if (!exists) { msg.className = 'msg msg-error'; msg.textContent = '❌ Utilisateur introuvable dans Firestore'; return; }
+    if (!exists) { msg.className = 'msg msg-error'; msg.textContent = '❌ Utilisateur introuvable'; return; }
     let current = await loadCredits(email);
     await saveCredits(email, current + credits);
     msg.className = 'msg msg-success'; msg.textContent = `✅ ${credits} crédits ajoutés à ${email}`;
@@ -97,7 +387,7 @@ async function checkEmail() {
         let credits = await loadCredits(email);
         msg.className = 'msg msg-success';
         msg.textContent = `✅ مسجل | 🪙 ${credits} crédits`;
-    } else { msg.className = 'msg msg-error'; msg.textContent = '❌ غير مسجل dans Firestore'; }
+    } else { msg.className = 'msg'; msg.textContent = '⚠️ غير مسجل'; }
 }
 
 function banUser() {
@@ -105,7 +395,7 @@ function banUser() {
     const msg = document.getElementById('checkMsg');
     if (!email) { msg.className = 'msg msg-error'; msg.textContent = '❌ Entre un email'; return; }
     db.collection('users').doc(email).delete().then(() => {
-        msg.className = 'msg msg-success'; msg.textContent = `🚫 ${email} supprimé de Firestore`;
+        msg.className = 'msg msg-success'; msg.textContent = `🚫 ${email} supprimé`;
         document.getElementById('checkEmail').value = '';
     });
 }
@@ -126,7 +416,7 @@ function loadAll() {
         document.getElementById('statCodes').textContent = totalCodes;
         let html = '';
         if (emails.length === 0) {
-            html = '<p style="color:var(--text2); text-align:center;">لا يوجد مستخدمين dans Firestore</p>';
+            html = '<p style="color:var(--text2); text-align:center;">لا يوجد مستخدمين</p>';
         } else {
             emails.forEach(email => {
                 const u = users[email];
@@ -135,7 +425,7 @@ function loadAll() {
         }
         document.getElementById('userList').innerHTML = html;
     }, (error) => {
-        document.getElementById('userList').innerHTML = '<p style="color:#e87c03; text-align:center;">❌ Erreur Firestore: ' + error.message + '</p>';
+        document.getElementById('userList').innerHTML = '<p style="color:#e87c03; text-align:center;">❌ Erreur: ' + error.message + '</p>';
     });
     
     fetch('https://netflix-server-l0ci.onrender.com/')
@@ -152,3 +442,6 @@ if (localStorage.getItem('adminLoggedIn') === 'true') {
     loadAll();
 }
 </script>
+
+</body>
+</html>
