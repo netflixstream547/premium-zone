@@ -1,4 +1,4 @@
-
+```html
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
@@ -304,6 +304,7 @@ const firebaseConfig = {
 };
 if (!firebase.apps.length) { firebase.initializeApp(firebaseConfig); }
 const db = firebase.firestore();
+const auth = firebase.auth();
 
 async function saveCredits(email, credits) {
     await db.collection('users').doc(email).set({ credits: credits, updatedAt: firebase.firestore.FieldValue.serverTimestamp() }, { merge: true });
@@ -325,8 +326,43 @@ function adminLogin() {
     const email = document.getElementById('adminEmail').value.trim();
     const pass = document.getElementById('adminPass').value.trim();
     const msg = document.getElementById('loginMsg');
-    if (email === ADMIN_EMAIL && pass === ADMIN_PASS) { localStorage.setItem('adminLoggedIn', 'true'); document.getElementById('loginBox').style.display = 'none'; document.getElementById('panelBox').style.display = 'block'; loadAll(); }
-    else { msg.className = 'msg msg-error'; msg.textContent = '❌ Email ou mot de passe incorrect'; }
+    
+    if (email !== ADMIN_EMAIL || pass !== ADMIN_PASS) {
+        msg.className = 'msg msg-error';
+        msg.textContent = '❌ Email ou mot de passe incorrect';
+        return;
+    }
+    
+    msg.className = 'msg';
+    msg.textContent = '⏳ Connexion...';
+    
+    // Connexion Firebase Auth
+    auth.signInWithEmailAndPassword(email, pass)
+        .then(() => {
+            localStorage.setItem('adminLoggedIn', 'true');
+            document.getElementById('loginBox').style.display = 'none';
+            document.getElementById('panelBox').style.display = 'block';
+            loadAll();
+        })
+        .catch((error) => {
+            if (error.code === 'auth/user-not-found') {
+                // Créer le compte s'il n'existe pas
+                auth.createUserWithEmailAndPassword(email, pass)
+                    .then(() => {
+                        localStorage.setItem('adminLoggedIn', 'true');
+                        document.getElementById('loginBox').style.display = 'none';
+                        document.getElementById('panelBox').style.display = 'block';
+                        loadAll();
+                    })
+                    .catch((err) => {
+                        msg.className = 'msg msg-error';
+                        msg.textContent = '❌ ' + err.message;
+                    });
+            } else {
+                msg.className = 'msg msg-error';
+                msg.textContent = '❌ ' + error.message;
+            }
+        });
 }
 
 function forgotPassword() {
@@ -339,7 +375,11 @@ function forgotPassword() {
     else { msg.className = 'msg msg-error'; msg.textContent = '❌ Code incorrect'; }
 }
 
-function logout() { localStorage.removeItem('adminLoggedIn'); location.reload(); }
+function logout() {
+    auth.signOut();
+    localStorage.removeItem('adminLoggedIn');
+    location.reload();
+}
 
 async function saveConfig() {
     const config = {
@@ -354,10 +394,14 @@ async function saveConfig() {
 }
 
 function loadConfig() {
-    let config = JSON.parse(localStorage.getItem('siteConfig') || '{}');
-    document.getElementById('configCodePrice').value = config.codePrice || 1;
-    document.getElementById('configDaily').value = config.dailyCredits || 1;
-    document.getElementById('configWelcome').value = config.welcomeCredits || 0;
+    db.collection('settings').doc('siteConfig').get().then((doc) => {
+        if (doc.exists) {
+            const config = doc.data();
+            document.getElementById('configCodePrice').value = config.codePrice || 1;
+            document.getElementById('configDaily').value = config.dailyCredits || 1;
+            document.getElementById('configWelcome').value = config.welcomeCredits || 0;
+        }
+    });
 }
 
 async function addCredits() {
@@ -419,8 +463,16 @@ function loadAll() {
     loadConfig();
 }
 
-if (localStorage.getItem('adminLoggedIn') === 'true') { document.getElementById('loginBox').style.display = 'none'; document.getElementById('panelBox').style.display = 'block'; loadAll(); }
+// Vérifier la connexion Firebase au chargement
+auth.onAuthStateChanged((user) => {
+    if (user && localStorage.getItem('adminLoggedIn') === 'true') {
+        document.getElementById('loginBox').style.display = 'none';
+        document.getElementById('panelBox').style.display = 'block';
+        loadAll();
+    }
+});
 </script>
 
 </body>
 </html>
+```
