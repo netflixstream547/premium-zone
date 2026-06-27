@@ -138,50 +138,42 @@ const db = firebase.firestore();
 async function saveUser(email) {
     localStorage.setItem('currentUser', email);
     
-    // Vérifier si l'utilisateur existe déjà dans Firestore
     const doc = await db.collection('users').doc(email).get();
     
     if (!doc.exists) {
-        // Générer un code de parrainage
         const myRefCode = email.split('@')[0].toUpperCase() + Math.random().toString(36).substring(2, 6).toUpperCase();
         
-        // Lire la config pour les crédits de bienvenue
         let welcomeCredits = 0;
         const configDoc = await db.collection('settings').doc('siteConfig').get();
         if (configDoc.exists) {
             welcomeCredits = configDoc.data().welcomeCredits || 0;
         }
         
-        // Sauvegarder dans Firestore
-        db.collection('users').doc(email).set({
+        await db.collection('users').doc(email).set({
             credits: welcomeCredits,
             history: [],
             refCode: myRefCode,
             createdAt: Date.now()
-        }).then(() => {
-            console.log('✅ Google user ajouté à Firestore:', email);
-        }).catch((e) => {
-            console.error('❌ Erreur Firestore:', e);
         });
+        console.log('✅ Google user ajouté à Firestore:', email);
     }
 }
 
-function loginGoogle() {
+async function loginGoogle() {
     const provider = new firebase.auth.GoogleAuthProvider();
     const msg = document.getElementById('msg');
     msg.style.color = '#f0ad4e';
     msg.textContent = '⏳ جاري تسجيل الدخول...';
     
-    auth.signInWithPopup(provider)
-        .then((result) => {
-            const email = result.user.email;
-            saveUser(email);
-            window.location.href = 'dashboard.html';
-        })
-        .catch((error) => {
-            msg.style.color = '#e87c03';
-            msg.textContent = '❌ ' + error.message;
-        });
+    try {
+        const result = await auth.signInWithPopup(provider);
+        const email = result.user.email;
+        await saveUser(email);
+        window.location.href = 'dashboard.html';
+    } catch (error) {
+        msg.style.color = '#e87c03';
+        msg.textContent = '❌ ' + error.message;
+    }
 }
 
 function facebookSoon() {
